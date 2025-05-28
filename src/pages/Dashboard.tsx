@@ -96,7 +96,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen py-6 px-4 sm:px-6 lg:px-8">
+      <div className="py-6">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -168,26 +168,23 @@ const Dashboard: React.FC = () => {
                 </motion.div>
 
                 {/* Dishes Grid */}
-                {mealBox.dishes ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {mealBox.dishes.map((dish) => (
-                      <div key={dish.title} className="h-full">
-                        <MealCard
-                          meal={dish}
-                          reviews={reviews[dish.title] || []}
-                          averageRating={getAverageRating(dish.title)}
-                          user={user}
-                          onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
-                          onUpdateReview={(reviewId, comment, rating) => 
-                            updateReview(dish.title, reviewId, comment, rating)
-                          }
-                          onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="max-w-2xl mx-auto">
+                <div className={`${mealBox.dishes ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8' : 'max-w-2xl mx-auto'}`}>
+                  {mealBox.dishes ? (
+                    mealBox.dishes.map((dish) => (
+                      <MealCard
+                        key={dish.title}
+                        meal={dish}
+                        reviews={reviews[dish.title] || []}
+                        averageRating={getAverageRating(dish.title)}
+                        user={user}
+                        onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
+                        onUpdateReview={(reviewId, comment, rating) => 
+                          updateReview(dish.title, reviewId, comment, rating)
+                        }
+                        onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
+                      />
+                    ))
+                  ) : (
                     <MealCard
                       meal={mealBox}
                       reviews={reviews[mealBox.title] || []}
@@ -199,8 +196,8 @@ const Dashboard: React.FC = () => {
                       }
                       onDeleteReview={(reviewId) => deleteReview(mealBox.title, reviewId)}
                     />
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             ))}
           </motion.div>
