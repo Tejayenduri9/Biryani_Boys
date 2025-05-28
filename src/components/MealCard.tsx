@@ -39,7 +39,7 @@ const MealCard: React.FC<MealCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`rounded-2xl overflow-hidden shadow-lg ${meal.bg} relative`}
+      className={`rounded-2xl overflow-hidden shadow-lg ${meal.bg} relative group`}
     >
       {/* Main Content */}
       <div className="p-6">
@@ -90,28 +90,50 @@ const MealCard: React.FC<MealCardProps> = ({
           <span className="font-medium">
             {isExpanded ? 'Hide Reviews' : `Show Reviews (${reviews.length})`}
           </span>
-          {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          <motion.div
+            animate={{ rotate: isExpanded ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronDown size={20} />
+          </motion.div>
         </motion.button>
       </div>
 
       {/* Reviews Section */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {isExpanded && (
           <motion.div
-            key={`${meal.title}-reviews`}
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="border-t border-gray-200 dark:border-gray-700"
+            animate={{ 
+              height: 'auto', 
+              opacity: 1,
+              transition: {
+                height: { duration: 0.3 },
+                opacity: { duration: 0.2, delay: 0.1 }
+              }
+            }}
+            exit={{ 
+              height: 0, 
+              opacity: 0,
+              transition: {
+                height: { duration: 0.3 },
+                opacity: { duration: 0.2 }
+              }
+            }}
+            className="border-t border-gray-200 dark:border-gray-700 overflow-hidden"
           >
             <div className="p-6 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm space-y-6">
               {/* Review Form */}
               {user && !hasUserReviewed && (
-                <div className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-lg">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-lg"
+                >
                   <h3 className="font-semibold text-lg mb-4">Share Your Experience</h3>
                   <ReviewForm onSubmit={onSubmitReview} />
-                </div>
+                </motion.div>
               )}
 
               {/* Reviews List */}
@@ -120,11 +142,18 @@ const MealCard: React.FC<MealCardProps> = ({
                   {reviews.length > 0 ? 'Recent Reviews' : 'No reviews yet'}
                 </h3>
 
-                <div className="space-y-4 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-amber-200 dark:scrollbar-thumb-amber-800 scrollbar-track-transparent">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-4 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-amber-200 dark:scrollbar-thumb-amber-800 scrollbar-track-transparent"
+                >
                   {reviews.length > 0 ? (
                     reviews.map((review) => (
-                      <div 
-                        key={review.id} 
+                      <motion.div 
+                        key={review.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
                         className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-md transition-transform hover:scale-[1.02]"
                       >
                         <ReviewItem
@@ -133,16 +162,21 @@ const MealCard: React.FC<MealCardProps> = ({
                           onUpdate={onUpdateReview}
                           onDelete={onDeleteReview}
                         />
-                      </div>
+                      </motion.div>
                     ))
                   ) : (
-                    <div className="text-center py-8 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-amber-200 dark:border-amber-800">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-center py-8 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-amber-200 dark:border-amber-800"
+                    >
                       <p className="text-gray-500 dark:text-gray-400">
                         Be the first to share your thoughts!
                       </p>
-                    </div>
+                    </motion.div>
                   )}
-                </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
