@@ -81,7 +81,7 @@ const MealCard: React.FC<MealCardProps> = ({
           layout
         >
           <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/WhatsApp_icon.png/479px-WhatsApp_icon.png"
             alt="WhatsApp"
             className="w-5 h-5"
           />
