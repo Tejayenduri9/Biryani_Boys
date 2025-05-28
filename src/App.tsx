@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
 import { useAuth } from './context/AuthContext';
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
@@ -19,7 +20,11 @@ function AppContent() {
     return <LandingPage />;
   }
 
-  return <Dashboard />;
+  return (
+    <CartProvider>
+      <Dashboard />
+    </CartProvider>
+  );
 }
 
 function App() {
