@@ -1,0 +1,198 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Facebook, Instagram, Clock } from 'lucide-react';
+
+const images = [
+  "https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg",
+  "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg",
+  "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg",
+  "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg",
+];
+
+const reviews = [
+  {
+    name: "John D.",
+    rating: 5,
+    text: "Best biryani in town! The flavors are authentic and the portion size is generous.",
+    date: "2 days ago"
+  },
+  {
+    name: "Sarah M.",
+    rating: 5,
+    text: "Amazing food and great service. The Andhra Chicken is a must-try!",
+    date: "1 week ago"
+  },
+  {
+    name: "Mike R.",
+    rating: 5,
+    text: "Finally found authentic Indian cuisine. The Bisi Bele Bath is outstanding!",
+    date: "2 weeks ago"
+  }
+];
+
+const LandingPage: React.FC = () => {
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900">
+      {/* Logo Section */}
+      <motion.div
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="pt-8 pb-12 text-center"
+      >
+        <div className="relative inline-block">
+          <div className="absolute -inset-2 rounded-full bg-gradient-to-tr from-yellow-300 to-orange-400 blur-lg opacity-25"></div>
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="relative w-40 h-40 rounded-full border-4 border-amber-600 dark:border-amber-500 overflow-hidden bg-white"
+          >
+            <img
+              src="/logo.jpg"
+              alt="Biryani Boyz Logo"
+              className="w-full h-full object-cover translate-x-1"
+            />
+          </motion.div>
+        </div>
+        <h1 className="mt-6 text-4xl font-bold">
+          Biryani <span className="text-amber-600">Boyz</span>
+        </h1>
+      </motion.div>
+
+      {/* Image Carousel */}
+      <div className="relative h-[400px] overflow-hidden">
+        {images.map((image, index) => (
+          <motion.div
+            key={image}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+          >
+            <img
+              src={image}
+              alt={`Food ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+        ))}
+
+        {/* Order Options */}
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 px-4">
+            <motion.a
+              href="/menu"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-amber-600 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-amber-700 transition-colors"
+            >
+              Order Online
+            </motion.a>
+            <motion.a
+              href="tel:+15185287832"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white text-amber-600 px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-gray-100 transition-colors"
+            >
+              Call to Order
+            </motion.a>
+          </div>
+        </div>
+      </div>
+
+      {/* Google Reviews */}
+      <div className="py-16 px-4 bg-white dark:bg-gray-800">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {reviews.map((review, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-[#fdf6e3] dark:bg-gray-900 p-6 rounded-lg shadow-lg"
+              >
+                <div className="flex items-center gap-2 mb-4">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span key={i} className="text-yellow-500">★</span>
+                  ))}
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 mb-4">{review.text}</p>
+                <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
+                  <span>{review.name}</span>
+                  <span>{review.date}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <motion.a
+              href="https://g.page/r/CZ_zEY4CdlWIEAI/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-block bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-amber-700 transition-colors"
+            >
+              Leave us a Review
+            </motion.a>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <footer className="bg-gray-100 dark:bg-gray-900 py-12 px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Social Links */}
+          <div className="text-center md:text-left">
+            <h3 className="text-xl font-bold mb-4">Follow Us</h3>
+            <div className="flex justify-center md:justify-start gap-4">
+              <motion.a
+                href="https://instagram.com/biryaniboyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                className="text-amber-600 hover:text-amber-700"
+              >
+                <Instagram size={24} />
+              </motion.a>
+              <motion.a
+                href="https://facebook.com/biryaniboyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                className="text-amber-600 hover:text-amber-700"
+              >
+                <Facebook size={24} />
+              </motion.a>
+            </div>
+          </div>
+
+          {/* Hours */}
+          <div className="text-center md:text-right">
+            <h3 className="text-xl font-bold mb-4">Hours of Operation</h3>
+            <div className="space-y-2">
+              <div className="flex items-center justify-center md:justify-end gap-2">
+                <Clock size={20} className="text-amber-600" />
+                <p>Thursday & Friday</p>
+              </div>
+              <p className="font-medium">Lunch: 10:00 AM - 4:00 PM</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;

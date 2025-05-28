@@ -2,6 +2,7 @@ import React from 'react';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './context/AuthContext';
 import Dashboard from './pages/Dashboard';
+import LandingPage from './pages/LandingPage';
 import SignIn from './components/SignIn';
 
 function AppContent() {
@@ -15,7 +16,11 @@ function AppContent() {
     );
   }
 
-  return user ? <Dashboard /> : <SignIn />;
+  if (!user) {
+    return <LandingPage />;
+  }
+
+  return <Dashboard />;
 }
 
 function App() {
@@ -26,4 +31,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
