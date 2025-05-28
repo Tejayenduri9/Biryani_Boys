@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import Cart from './Cart';
 import { Menu } from 'lucide-react';
 
 interface LayoutProps {
@@ -10,6 +11,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 text-black dark:text-white">
@@ -21,18 +23,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             borderRadius: '10px',
             background: '#333',
             color: '#fff',
-          },
-          success: {
-            iconTheme: {
-              primary: '#10B981',
-              secondary: '#FFFFFF',
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: '#EF4444',
-              secondary: '#FFFFFF',
-            },
           },
         }}
       />
@@ -50,9 +40,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Main Content */}
       <div className="md:pl-64 transition-all duration-300">
-        <Header />
+        <Header onCartClick={() => setIsCartOpen(true)} />
         <main className="p-4">{children}</main>
       </div>
+
+      {/* Cart */}
+      <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 };
