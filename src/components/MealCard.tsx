@@ -62,9 +62,28 @@ const MealCard: React.FC<MealCardProps> = ({
 
         {/* Title and Description */}
         <motion.div className="text-center space-y-4 mb-6" layout>
-          <h2 className="text-2xl font-bold">
-            {meal.title}
-          </h2>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold">
+              {meal.title}
+            </h2>
+            {meal.isNew && (
+              <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium animate-pulse">
+                NEW
+              </span>
+            )}
+            {meal.tags && meal.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 justify-center mt-2">
+                {meal.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-block bg-white/70 dark:bg-gray-800/70 text-xs px-2 py-1 rounded-full font-medium text-gray-700 dark:text-gray-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
           {meal.description && (
             <p className="text-gray-600 dark:text-gray-400">
               {meal.description}
