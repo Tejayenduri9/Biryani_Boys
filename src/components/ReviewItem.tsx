@@ -64,13 +64,13 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
 
   return (
     <motion.div 
-      layout
+      layout="position"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="space-y-3"
     >
-      <div className="flex justify-between items-start">
+      <motion.div layout="position" className="flex justify-between items-start">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900 dark:to-amber-800 flex items-center justify-center text-amber-800 dark:text-amber-200 font-semibold text-lg">
             {review.user.name.charAt(0).toUpperCase()}
@@ -80,28 +80,30 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
             <span className="text-xs text-gray-500 dark:text-gray-400">{formattedDate}</span>
           </div>
         </div>
-      </div>
+      </motion.div>
       
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {isEditing ? (
           <motion.form 
             key="edit-form"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            layout="position"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
             onSubmit={handleEditSubmit}
             className="space-y-4"
           >
-            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+            <motion.div layout="position" className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
               <StarRating 
                 rating={editRating} 
                 setRating={setEditRating} 
                 size="sm"
                 disabled={isUpdating}
               />
-            </div>
+            </motion.div>
             
-            <textarea
+            <motion.textarea
+              layout="position"
               value={editComment}
               onChange={(e) => setEditComment(e.target.value)}
               disabled={isUpdating}
@@ -110,7 +112,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
               placeholder="Share your thoughts..."
             />
             
-            <div className="flex gap-2">
+            <motion.div layout="position" className="flex gap-2">
               <motion.button
                 type="submit"
                 disabled={isUpdating || !editComment.trim() || editRating === 0}
@@ -138,17 +140,18 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
               >
                 Cancel
               </motion.button>
-            </div>
+            </motion.div>
           </motion.form>
         ) : (
           <motion.div
             key="review-content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            layout="position"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             className="space-y-3"
           >
-            <div className="flex gap-1">
+            <motion.div layout="position" className="flex gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
@@ -160,12 +163,12 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                   }`}
                 />
               ))}
-            </div>
+            </motion.div>
             
-            <p className="text-base leading-relaxed">{review.comment}</p>
+            <motion.p layout="position" className="text-base leading-relaxed">{review.comment}</motion.p>
             
             {isOwner && (
-              <div className="flex gap-4 items-center pt-2">
+              <motion.div layout="position" className="flex gap-4 items-center pt-2">
                 <motion.button
                   onClick={() => setIsEditing(true)}
                   disabled={isDeleting}
@@ -196,7 +199,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                     </>
                   )}
                 </motion.button>
-              </div>
+              </motion.div>
             )}
           </motion.div>
         )}
