@@ -1,11 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Layout from '../components/Layout';
 import MealCard from '../components/MealCard';
 import { useReviews } from '../hooks/useReviews';
 import { useAuth } from '../context/AuthContext';
 import { MealBox } from '../types';
-import { WifiOff } from 'lucide-react';
+import { WifiOff, ChevronDown } from 'lucide-react';
 
 const mealBoxes: MealBox[] = [
   {
@@ -74,6 +74,7 @@ const mealBoxes: MealBox[] = [
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const [expandedMeal, setExpandedMeal] = useState<string | null>(null);
   const { 
     reviews, 
     loading, 
@@ -92,6 +93,10 @@ const Dashboard: React.FC = () => {
         staggerChildren: 0.1
       }
     }
+  };
+
+  const handleMealClick = (mealTitle: string) => {
+    setExpandedMeal(expandedMeal === mealTitle ? null : mealTitle);
   };
 
   return (
@@ -142,7 +147,8 @@ const Dashboard: React.FC = () => {
                 >
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-4 sm:px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm w-full sm:w-auto"
+                    onClick={() => mealBox.dishes && handleMealClick(mealBox.title)}
+                    className={`bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-4 sm:px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm w-full sm:w-auto ${mealBox.dishes ? 'cursor-pointer' : ''}`}
                   >
                     <h2 className="flex items-center justify-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold">
                       <span className="text-3xl sm:text-4xl md:text-5xl">{mealBox.emoji}</span>
@@ -151,6 +157,14 @@ const Dashboard: React.FC = () => {
                         <span className="bg-green-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full font-medium animate-pulse">
                           NEW
                         </span>
+                      )}
+                      {mealBox.dishes && (
+                        <motion.div
+                          animate={{ rotate: expandedMeal === mealBox.title ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ChevronDown className="w-6 h-6" />
+                        </motion.div>
                       )}
                     </h2>
                   </motion.div>
@@ -168,36 +182,46 @@ const Dashboard: React.FC = () => {
                 </motion.div>
 
                 {/* Dishes Grid */}
-                <div className={`${mealBox.dishes ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8' : 'max-w-2xl mx-auto'}`}>
-                  {mealBox.dishes ? (
-                    mealBox.dishes.map((dish) => (
-                      <MealCard
-                        key={dish.title}
-                        meal={dish}
-                        reviews={reviews[dish.title] || []}
-                        averageRating={getAverageRating(dish.title)}
-                        user={user}
-                        onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
-                        onUpdateReview={(reviewId, comment, rating) => 
-                          updateReview(dish.title, reviewId, comment, rating)
-                        }
-                        onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
-                      />
-                    ))
-                  ) : (
-                    <MealCard
-                      meal={mealBox}
-                      reviews={reviews[mealBox.title] || []}
-                      averageRating={getAverageRating(mealBox.title)}
-                      user={user}
-                      onSubmitReview={(comment, rating) => submitReview(mealBox.title, comment, rating)}
-                      onUpdateReview={(reviewId, comment, rating) => 
-                        updateReview(mealBox.title, reviewId, comment, rating)
-                      }
-                      onDeleteReview={(reviewId) => deleteReview(mealBox.title, reviewId)}
-                    />
+                <AnimatePresence mode="wait">
+                  {(!mealBox.dishes || expandedMeal === mealBox.title) && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className={`${mealBox.dishes ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8' : 'max-w-2xl mx-auto'}`}
+                    >
+                      {mealBox.dishes ? (
+                        mealBox.dishes.map((dish) => (
+                          <MealCard
+                            key={dish.title}
+                            meal={dish}
+                            reviews={reviews[dish.title] || []}
+                            averageRating={getAverageRating(dish.title)}
+                            user={user}
+                            onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
+                            onUpdateReview={(reviewId, comment, rating) => 
+                              updateReview(dish.title, reviewId, comment, rating)
+                            }
+                            onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
+                          />
+                        ))
+                      ) : (
+                        <MealCard
+                          meal={mealBox}
+                          reviews={reviews[mealBox.title] || []}
+                          averageRating={getAverageRating(mealBox.title)}
+                          user={user}
+                          onSubmitReview={(comment, rating) => submitReview(mealBox.title, comment, rating)}
+                          onUpdateReview={(reviewId, comment, rating) => 
+                            updateReview(mealBox.title, reviewId, comment, rating)
+                          }
+                          onDeleteReview={(reviewId) => deleteReview(mealBox.title, reviewId)}
+                        />
+                      )}
+                    </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
               </div>
             ))}
           </motion.div>
