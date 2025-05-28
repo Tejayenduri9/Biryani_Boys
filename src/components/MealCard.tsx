@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, MessageCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Star, MessageCircle, ChevronDown } from 'lucide-react';
 import { MealBox, Review } from '../types';
 import { User } from '../types';
 import ReviewForm from './ReviewForm';
@@ -91,6 +91,7 @@ const MealCard: React.FC<MealCardProps> = ({
             {isExpanded ? 'Hide Reviews' : `Show Reviews (${reviews.length})`}
           </span>
           <motion.div
+            initial={false}
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -100,9 +101,10 @@ const MealCard: React.FC<MealCardProps> = ({
       </div>
 
       {/* Reviews Section */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isExpanded && (
           <motion.div
+            key={`reviews-${meal.title}`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ 
               height: 'auto', 
@@ -116,8 +118,8 @@ const MealCard: React.FC<MealCardProps> = ({
               height: 0, 
               opacity: 0,
               transition: {
-                height: { duration: 0.3 },
-                opacity: { duration: 0.2 }
+                height: { duration: 0.2 },
+                opacity: { duration: 0.1 }
               }
             }}
             className="border-t border-gray-200 dark:border-gray-700 overflow-hidden"
@@ -149,11 +151,12 @@ const MealCard: React.FC<MealCardProps> = ({
                   className="space-y-4 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-amber-200 dark:scrollbar-thumb-amber-800 scrollbar-track-transparent"
                 >
                   {reviews.length > 0 ? (
-                    reviews.map((review) => (
+                    reviews.map((review, index) => (
                       <motion.div 
                         key={review.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
                         className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-md transition-transform hover:scale-[1.02]"
                       >
                         <ReviewItem
