@@ -15,14 +15,14 @@ const menuItems: MenuItem[] = [
   // Biryani Section
   {
     title: "Chicken Biryani",
-    description: "Served with Pulav, Channa Masala, and Chapati",
+    description: "Classic Hyderabadi style biryani",
     price: 10,
     category: "biryani",
     image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
   },
   {
     title: "Extra Meat Chicken Biryani",
-    description: "Must Pre-order! Served with Pulav, Channa Masala, and Chapati",
+    description: "Must Pre-order!",
     price: 12,
     category: "biryani",
     image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
@@ -33,7 +33,7 @@ const menuItems: MenuItem[] = [
     description: "Served with Pulav, Channa Masala, and Chapati",
     price: 12,
     category: "veg",
-    image: "https://images.pexels.com/photos/3926135/pexels-photo-3926135.jpeg"
+    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
   },
   {
     title: "Okra Masala",
@@ -43,12 +43,13 @@ const menuItems: MenuItem[] = [
     isNew: true,
     image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
   },
+  // Others Section
   {
     title: "Bisi Bele Bath",
-    description: "Served with Pulav, Channa Masala, and Chapati",
+    description: "Traditional Karnataka style rice dish",
     price: 12,
-    category: "veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    category: "others",
+    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
   },
   // Non-Veg Meal Box Section
   {
@@ -56,14 +57,14 @@ const menuItems: MenuItem[] = [
     description: "Served with Pulav, Channa Masala, and Chapati",
     price: 12,
     category: "non-veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
   },
   {
     title: "Kadai Chicken",
     description: "Served with Pulav, Channa Masala, and Chapati",
     price: 12,
     category: "non-veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    image: "https://myfoodstory.com/wp-content/uploads/2021/09/kadai-chicken-1.jpg"
   }
 ];
 
@@ -71,7 +72,8 @@ const Menu: React.FC = () => {
   const categories = {
     biryani: "Biryani Special",
     veg: "Veg Meal Box",
-    "non-veg": "Non-Veg Meal Box"
+    "non-veg": "Non-Veg Meal Box",
+    others: "Others"
   };
 
   return (
@@ -86,20 +88,22 @@ const Menu: React.FC = () => {
         </motion.h1>
 
         <div className="space-y-12">
-          {Object.entries(categories).map(([key, title]) => (
-            <div key={key} className="space-y-6">
-              <motion.h2 
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="text-2xl font-semibold"
-              >
-                {title}
-              </motion.h2>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {menuItems
-                  .filter(item => item.category === key)
-                  .map((item) => (
+          {Object.entries(categories).map(([key, title]) => {
+            const categoryItems = menuItems.filter(item => item.category === key);
+            if (categoryItems.length === 0) return null;
+            
+            return (
+              <div key={key} className="space-y-6">
+                <motion.h2 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="text-2xl font-semibold"
+                >
+                  {title}
+                </motion.h2>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {categoryItems.map((item) => (
                     <motion.div
                       key={item.title}
                       initial={{ opacity: 0, y: 20 }}
@@ -133,9 +137,10 @@ const Menu: React.FC = () => {
                       </div>
                     </motion.div>
                   ))}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </Layout>

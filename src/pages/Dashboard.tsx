@@ -13,7 +13,7 @@ const mealBoxes: MealBox[] = [
   // Biryani Section
   {
     title: "Chicken Biryani",
-    description: "Classic Hyderabadi style biryani served with Pulav, Channa Masala, and Chapati",
+    description: "Classic Hyderabadi style biryani",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
     price: 10,
@@ -22,7 +22,7 @@ const mealBoxes: MealBox[] = [
   },
   {
     title: "Extra Meat Chicken Biryani",
-    description: "Extra portion of meat! Must pre-order. Served with Pulav, Channa Masala, and Chapati",
+    description: "Extra portion of meat! Must pre-order",
     emoji: "🍖",
     bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
     price: 12,
@@ -38,7 +38,7 @@ const mealBoxes: MealBox[] = [
     bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
     price: 12,
     category: "veg",
-    image: "https://images.pexels.com/photos/3926135/pexels-photo-3926135.jpeg"
+    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
   },
   {
     title: "Okra Masala",
@@ -50,14 +50,15 @@ const mealBoxes: MealBox[] = [
     isNew: true,
     image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
   },
+  // Others Section
   {
     title: "Bisi Bele Bath",
-    description: "Traditional Karnataka style rice dish served with Pulav, Channa Masala, and Chapati",
+    description: "Traditional Karnataka style rice dish",
     emoji: "🍚",
-    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+    bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
     price: 12,
-    category: "veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    category: "others",
+    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
   },
   // Non-Veg Meal Box Section
   {
@@ -67,7 +68,7 @@ const mealBoxes: MealBox[] = [
     bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
     price: 12,
     category: "non-veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
   },
   {
     title: "Kadai Chicken",
@@ -76,7 +77,7 @@ const mealBoxes: MealBox[] = [
     bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
     price: 12,
     category: "non-veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    image: "https://myfoodstory.com/wp-content/uploads/2021/09/kadai-chicken-1.jpg"
   }
 ];
 
@@ -129,9 +130,9 @@ const Dashboard: React.FC = () => {
               </div>
             )}
 
-            {/* Search and Cart */}
-            <div className="mt-6 max-w-md mx-auto flex items-center gap-4">
-              <div className="relative flex-1">
+            {/* Search */}
+            <div className="mt-6 max-w-md mx-auto">
+              <div className="relative">
                 <input
                   type="text"
                   placeholder="Search meals..."
@@ -141,14 +142,6 @@ const Dashboard: React.FC = () => {
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsCartOpen(true)}
-                className="p-2 bg-amber-600 text-white rounded-full hover:bg-amber-700 transition-colors"
-              >
-                <ShoppingBag className="w-5 h-5" />
-              </motion.button>
             </div>
           </motion.div>
 
