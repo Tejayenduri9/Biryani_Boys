@@ -28,10 +28,11 @@ const MealCard: React.FC<MealCardProps> = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const hasUserReviewed = user && reviews.some(r => r.user.uid === user.uid);
 
-  const handleOrder = () => {
+  const handleOrder = (e: React.MouseEvent) => {
+    e.preventDefault();
     const message = `Hi! I would like to order ${meal.title} (${meal.price}$)`;
     const whatsappUrl = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    window.location.href = whatsappUrl;
   };
 
   return (
@@ -73,11 +74,12 @@ const MealCard: React.FC<MealCardProps> = ({
         </motion.div>
 
         {/* WhatsApp Order Button */}
-        <motion.button
+        <motion.a
+          href={`https://wa.me/15185287832?text=${encodeURIComponent(`Hi! I would like to order ${meal.title} (${meal.price}$)`)}`}
           onClick={handleOrder}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4"
+          className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4 cursor-pointer"
           layout
         >
           <img 
@@ -86,7 +88,7 @@ const MealCard: React.FC<MealCardProps> = ({
             className="w-5 h-5"
           />
           <span className="font-medium">Order on WhatsApp</span>
-        </motion.button>
+        </motion.a>
 
         {/* Expand/Collapse Button */}
         <motion.button
