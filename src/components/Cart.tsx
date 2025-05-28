@@ -13,10 +13,24 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   const [address, setAddress] = useState(deliveryInfo?.address || '');
   const [instructions, setInstructions] = useState(deliveryInfo?.instructions || '');
   const [phone, setPhone] = useState(deliveryInfo?.phone || '');
+  const [errors, setErrors] = useState({ address: false, phone: false });
 
   const handleWhatsAppOrder = () => {
+    // Reset errors
+    setErrors({ address: false, phone: false });
+    let hasError = false;
+
     if (!address.trim()) {
-      alert('Please enter your delivery address');
+      setErrors(prev => ({ ...prev, address: true }));
+      hasError = true;
+    }
+
+    if (!phone.trim()) {
+      setErrors(prev => ({ ...prev, phone: true }));
+      hasError = true;
+    }
+
+    if (hasError) {
       return;
     }
 
@@ -24,7 +38,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
       `• ${item.title} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})`
     ).join('\n');
 
-    const message = `🛍️ *New Order*\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n${instructions ? `📝 Instructions: ${instructions}\n` : ''}${phone ? `📞 Phone: ${phone}` : ''}`;
+    const message = `🛍️ *New Order*\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n_Note: Our team will review your order and confirm shortly._`;
 
     // Save delivery info
     setDeliveryInfo({ address, instructions, phone });
@@ -112,26 +126,52 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                 <div className="space-y-4 pt-4">
                   <div className="border-t dark:border-gray-800 pt-4">
                     <h3 className="font-medium mb-2">Delivery Details</h3>
-                    <input
-                      type="text"
-                      placeholder="Delivery Address"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="w-full p-2 border dark:border-gray-700 rounded mb-2 bg-transparent"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Phone Number (optional)"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full p-2 border dark:border-gray-700 rounded mb-2 bg-transparent"
-                    />
-                    <textarea
-                      placeholder="Special Instructions (optional)"
-                      value={instructions}
-                      onChange={(e) => setInstructions(e.target.value)}
-                      className="w-full p-2 border dark:border-gray-700 rounded h-24 bg-transparent"
-                    />
+                    <div className="space-y-3">
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Delivery Address *"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                          className={`w-full p-2 border rounded bg-transparent ${
+                            errors.address 
+                              ? 'border-red-500 dark:border-red-500' 
+                              : 'dark:border-gray-700'
+                          }`}
+                        />
+                        {errors.address && (
+                          <p className="text-red-500 text-sm mt-1">Delivery address is required</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <input
+                          type="tel"
+                          placeholder="Phone Number *"
+                          value={phone}
+                          onChange={(e) => setPhone(e.target.value)}
+                          className={`w-full p-2 border rounded bg-transparent ${
+                            errors.phone 
+                              ? 'border-red-500 dark:border-red-500' 
+                              : 'dark:border-gray-700'
+                          }`}
+                        />
+                        {errors.phone && (
+                          <p className="text-red-500 text-sm mt-1">Phone number is required</p>
+                        )}
+                      </div>
+
+                      <textarea
+                        placeholder="Special Instructions (optional)"
+                        value={instructions}
+                        onChange={(e) => setInstructions(e.target.value)}
+                        className="w-full p-2 border dark:border-gray-700 rounded h-24 bg-transparent"
+                      />
+
+                      <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                        * Required fields
+                      </p>
+                    </div>
                   </div>
                 </div>
               )}
@@ -144,6 +184,9 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                   <span className="font-medium">Total</span>
                   <span className="text-xl font-bold">${total.toFixed(2)}</span>
                 </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
+                  Our team will review your order and confirm shortly
+                </p>
                 <button
                   onClick={handleWhatsAppOrder}
                   className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white py-3 rounded-lg flex items-center justify-center gap-2 font-medium"
