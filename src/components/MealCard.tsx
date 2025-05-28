@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, Star } from 'lucide-react';
+import { ChevronDown, ChevronUp, Star, DollarSign } from 'lucide-react';
 import StarRating from './StarRating';
 import ReviewForm from './ReviewForm';
 import ReviewItem from './ReviewItem';
@@ -66,7 +66,11 @@ const MealCard: React.FC<MealCardProps> = ({
 
             {/* Content */}
             <div className="relative z-20">
-              <div className="flex items-center justify-end mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-1.5 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-lg">
+                  <DollarSign className="w-4 h-4" />
+                  <span className="font-semibold">{meal.price}</span>
+                </div>
                 <div className="flex items-center gap-1.5 bg-white dark:bg-gray-800 px-4 py-2 rounded-full shadow-lg">
                   <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
                   <span className="font-semibold">{averageRating}</span>
@@ -75,7 +79,35 @@ const MealCard: React.FC<MealCardProps> = ({
                 </div>
               </div>
 
-              <h2 className="text-2xl font-bold text-center mb-3">{meal.title}</h2>
+              <h2 className="text-2xl font-bold text-center mb-3">
+                {meal.title}
+                {meal.isNew && (
+                  <span className="ml-2 inline-block px-2 py-1 text-xs font-semibold bg-yellow-400 text-black rounded-full">
+                    NEW
+                  </span>
+                )}
+              </h2>
+
+              {meal.description && (
+                <p className="text-center text-gray-600 dark:text-gray-400 mb-3">
+                  {meal.description}
+                </p>
+              )}
+
+              {meal.dishes && meal.dishes.length > 0 && (
+                <div className="mb-4">
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {meal.dishes.map((dish, index) => (
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-white/50 dark:bg-gray-800/50 rounded-full text-sm font-medium"
+                      >
+                        {dish}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               <div className="flex items-center justify-center">
                 <motion.div

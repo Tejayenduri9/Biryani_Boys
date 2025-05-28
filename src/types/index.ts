@@ -20,6 +20,10 @@ export interface MealBox {
   title: string;
   emoji: string;
   bg: string;
+  price: number;
+  description?: string;
+  isNew?: boolean;
+  dishes?: string[];
 }
 
 export interface ReviewsByMeal {

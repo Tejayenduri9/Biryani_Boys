@@ -8,14 +8,36 @@ import { MealBox } from '../types';
 import { WifiOff } from 'lucide-react';
 
 const mealBoxes: MealBox[] = [
-  { title: "Chicken Biryani", emoji: "🍗", bg: "bg-amber-100 dark:bg-amber-900/30" },
-  { title: "Veg Meal Box", emoji: "🥬", bg: "bg-green-100 dark:bg-green-900/30" },
-  { title: "Non-Veg Meal Box", emoji: "🍖", bg: "bg-red-100 dark:bg-red-900/30" },
-  { title: "Kadai Paneer", emoji: "🧀", bg: "bg-yellow-100 dark:bg-yellow-900/30" },
-  { title: "Okra Masala", emoji: "🥬", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-  { title: "Bisi Bele Bath", emoji: "🍚", bg: "bg-orange-100 dark:bg-orange-900/30" },
-  { title: "Andhra Chicken", emoji: "🌶️", bg: "bg-red-100 dark:bg-red-900/30" },
-  { title: "Kadai Chicken", emoji: "🍗", bg: "bg-amber-100 dark:bg-amber-900/30" },
+  {
+    title: "Non-Veg Meal Box",
+    emoji: "🍖",
+    bg: "bg-red-100 dark:bg-red-900/30",
+    price: 12,
+    description: "Comes with Pulav, Channa Masala, Chapati",
+    dishes: [
+      "Andhra Chicken",
+      "Kadai Chicken"
+    ]
+  },
+  {
+    title: "Veg Meal Box",
+    emoji: "🥬",
+    bg: "bg-green-100 dark:bg-green-900/30",
+    price: 12,
+    description: "Comes with Pulav, Channa Masala, Chapati",
+    dishes: [
+      "Kadai Paneer",
+      "Okra Masala",
+      "Bisi Bele Bath"
+    ]
+  },
+  {
+    title: "Chicken Biryani",
+    emoji: "🍗",
+    bg: "bg-amber-100 dark:bg-amber-900/30",
+    price: 10,
+    description: "Authentic Hyderabadi style biryani"
+  }
 ];
 
 const Dashboard: React.FC = () => {
