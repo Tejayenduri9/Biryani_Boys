@@ -25,6 +25,7 @@ export interface MealBox {
   isNew?: boolean;
   dishes?: MealBox[];
   tags?: string[];
+  category?: string;
 }
 
 export interface ReviewsByMeal {
