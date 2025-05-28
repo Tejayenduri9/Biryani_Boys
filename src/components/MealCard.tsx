@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, Star, DollarSign } from 'lucide-react';
+import { ChevronDown, ChevronUp, Star, DollarSign, MessageCircle } from 'lucide-react';
 import StarRating from './StarRating';
 import ReviewForm from './ReviewForm';
 import ReviewItem from './ReviewItem';
@@ -35,6 +35,12 @@ const MealCard: React.FC<MealCardProps> = ({
     tap: { scale: 0.98, transition: { duration: 0.1 } }
   };
 
+  const handleOrder = () => {
+    const message = `Hi! I would like to order ${meal.title} (${meal.price}$)`;
+    const whatsappUrl = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <motion.div
       layout
@@ -52,12 +58,9 @@ const MealCard: React.FC<MealCardProps> = ({
         className={`relative rounded-2xl overflow-hidden shadow-lg ${meal.bg}`}
       >
         {/* Card Header */}
-        <motion.div 
-          className="p-6 cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          {/* Price and Rating */}
-          <div className="flex items-center justify-between mb-6">
+        <motion.div className="p-6">
+          {/* Price, Rating, and Order Button */}
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-2">
             <motion.div 
               className="flex items-center gap-1 bg-white/90 dark:bg-gray-800/90 px-4 py-2 rounded-full shadow-lg"
               whileHover={{ scale: 1.05 }}
@@ -65,6 +68,16 @@ const MealCard: React.FC<MealCardProps> = ({
               <DollarSign className="w-4 h-4 text-amber-600" />
               <span className="font-bold text-lg">{meal.price}</span>
             </motion.div>
+            
+            <motion.button
+              onClick={handleOrder}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-green-600 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span className="font-medium">Order on WhatsApp</span>
+            </motion.button>
             
             <motion.div 
               className="flex items-center gap-1.5 bg-white/90 dark:bg-gray-800/90 px-4 py-2 rounded-full shadow-lg"
@@ -116,7 +129,8 @@ const MealCard: React.FC<MealCardProps> = ({
               initial={{ rotate: 0 }}
               animate={{ rotate: isExpanded ? 180 : 0 }}
               transition={{ duration: 0.3 }}
-              className="bg-white/80 dark:bg-gray-800/80 rounded-full p-2 shadow-lg backdrop-blur-sm"
+              className="bg-white/80 dark:bg-gray-800/80 rounded-full p-2 shadow-lg backdrop-blur-sm cursor-pointer"
+              onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </motion.div>
