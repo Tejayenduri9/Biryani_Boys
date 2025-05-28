@@ -106,7 +106,7 @@ const Dashboard: React.FC = () => {
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
             Welcome to <span className="text-amber-600 dark:text-amber-500">Biryani Boyz</span>
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto px-4">
             Experience the authentic flavors of India with our carefully curated menu. Each dish is crafted with love, 
             using traditional recipes and the finest ingredients to bring you a taste of home.
           </p>
@@ -130,7 +130,7 @@ const Dashboard: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-16 max-w-7xl mx-auto"
+            className="space-y-16 max-w-7xl mx-auto px-4 sm:px-6"
           >
             {mealBoxes.map((mealBox) => (
               <div key={mealBox.title} className="space-y-8">
@@ -138,13 +138,13 @@ const Dashboard: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative flex justify-center"
+                  className="relative flex flex-col items-center text-center"
                 >
                   <motion.div
                     whileHover={{ scale: 1.05 }}
-                    className="bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm"
+                    className="bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-4 sm:px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm w-full sm:w-auto"
                   >
-                    <h2 className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold">
+                    <h2 className="flex items-center justify-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold">
                       <span className="text-3xl sm:text-4xl md:text-5xl">{mealBox.emoji}</span>
                       <span>{mealBox.title}</span>
                       {mealBox.isNew && (
@@ -160,7 +160,7 @@ const Dashboard: React.FC = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.2 }}
-                      className="absolute -bottom-8 text-sm sm:text-base text-gray-600 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner"
+                      className="mt-6 text-sm sm:text-base text-gray-600 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner max-w-full sm:max-w-[80%] break-words"
                     >
                       {mealBox.description}
                     </motion.p>
