@@ -24,13 +24,12 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#fdf6e3] dark:bg-gray-900 text-black dark:text-white">
-      {/* Left Section */}
+    <div className="flex min-h-screen w-screen overflow-hidden bg-[#fdf6e3] dark:bg-gray-900 text-black dark:text-white">
       <motion.div
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex flex-col items-center justify-center w-full md:w-1/2 px-6 py-8 space-y-6"
+        className="flex flex-col items-center justify-center w-full px-6 py-8 space-y-8"
       >
         {/* Logo with Halo and Animation */}
         <div className="relative">
@@ -57,18 +56,23 @@ const SignIn: React.FC = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-4xl font-extrabold text-center"
         >
-          Biryani Boyz Reviews
+          Biryani Boyz
         </motion.h1>
 
         {/* Tagline */}
-        <motion.p
+        <motion.div
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="text-lg font-medium text-gray-700 dark:text-gray-300 text-center"
+          className="text-center space-y-4 max-w-2xl"
         >
-          Share your honest reviews
-        </motion.p>
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
+            Your opinion matters to us!
+          </p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Join our community and share your dining experiences. Your honest reviews help us improve and guide other food lovers in discovering authentic Indian cuisine. Every review contributes to making our service better for everyone.
+          </p>
+        </motion.div>
 
         {/* Google Sign-In Button */}
         <motion.button
@@ -96,15 +100,6 @@ const SignIn: React.FC = () => {
           © 2025 Biryani Boyz. All rights reserved.
         </p>
       </motion.div>
-
-      {/* Right Section - Background Image */}
-      <motion.div
-        initial={{ x: 100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="hidden md:block w-1/2 bg-cover bg-center"
-        style={{ backgroundImage: "url('/dish.png')" }}
-      />
     </div>
   );
 };
