@@ -30,7 +30,7 @@ const MealCard: React.FC<MealCardProps> = ({
 
   const handleOrder = (e: React.MouseEvent) => {
     e.preventDefault();
-    const message = `Thank you for choosing Biryani Boyz! 🙏\n\nYour Order: ${meal.title} ($${meal.price})\n\nPlease provide:\n1. Complete order details\n2. Delivery address\n3. Contact number\n\nOur team will confirm your order shortly! 😊`;
+    const message = `Hi Biryani Boyz! 🌟\n\n*I would like to order:*\n${meal.title} ($${meal.price})\n\n${meal.tags?.includes("Pre-Order Required") ? "*Note: This item requires pre-ordering*\n\n" : ""}Please reply with:\n1️⃣ Preferred delivery/pickup time\n2️⃣ Delivery address\n3️⃣ Any special instructions\n\nThank you! 😊`;
     window.location.href = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
   };
 
@@ -93,7 +93,7 @@ const MealCard: React.FC<MealCardProps> = ({
 
         {/* WhatsApp Order Button */}
         <motion.a
-          href={`https://wa.me/15185287832?text=${encodeURIComponent(`Thank you for choosing Biryani Boyz! 🙏\n\nYour Order: ${meal.title} ($${meal.price})\n\nPlease provide:\n1. Complete order details\n2. Delivery address\n3. Contact number\n\nOur team will confirm your order shortly! 😊`)}`}
+          href={`https://wa.me/15185287832?text=${encodeURIComponent(`Hi Biryani Boyz! 🌟\n\n*I would like to order:*\n${meal.title} ($${meal.price})\n\n${meal.tags?.includes("Pre-Order Required") ? "*Note: This item requires pre-ordering*\n\n" : ""}Please reply with:\n1️⃣ Preferred delivery/pickup time\n2️⃣ Delivery address\n3️⃣ Any special instructions\n\nThank you! 😊`)}`}
           onClick={handleOrder}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
