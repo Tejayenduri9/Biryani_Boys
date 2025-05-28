@@ -8,7 +8,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { icon: Home, label: 'Home', href: '/' },
+  { icon: Home, label: 'Home', href: '/dashboard' },
   { icon: Info, label: 'About Us', href: '/about' },
   { icon: MenuIcon, label: 'Menu', href: '/menu' },
   { icon: Image, label: 'Gallery', href: '/gallery' },
@@ -33,12 +33,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       </AnimatePresence>
 
       {/* Sidebar */}
-      <motion.div
-        initial={{ x: -300 }}
-        animate={{ x: isOpen ? 0 : -300 }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl z-50 md:translate-x-0`}
-      >
+      <div className={`fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-xl z-50 transform transition-transform duration-300 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      }`}>
         {/* Logo Section */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
@@ -82,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             <p>All rights reserved</p>
           </div>
         </div>
-      </motion.div>
+      </div>
     </>
   );
 };

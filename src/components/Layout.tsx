@@ -49,9 +49,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       
       {/* Main Content */}
-      <div className="md:pl-64">
+      <div className="md:pl-64 transition-all duration-300">
         <Header />
-        <main className="px-4">{children}</main>
+        <main className="px-4 py-6">{children}</main>
       </div>
     </div>
   );
