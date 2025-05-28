@@ -67,7 +67,8 @@ const mealBoxes: MealBox[] = [
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 12,
     description: "Traditional Karnataka style spicy rice with lentils and vegetables",
-    isNew: true
+    isNew: true,
+    tags: ["Pre-Order Required"]
   },
   {
     title: "Chicken Biryani",
