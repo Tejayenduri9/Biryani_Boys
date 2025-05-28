@@ -18,7 +18,7 @@ const mealBoxes: MealBox[] = [
     dishes: [
       {
         title: "Andhra Chicken",
-        description: "Spicy Andhra style chicken curry with authentic spices and herbs",
+        description: "Comes with Pulav, Channa Masala, Chapati. Spicy Andhra style chicken curry with authentic spices and herbs",
         emoji: "🌶️",
         bg: "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20",
         price: 12,
@@ -26,7 +26,7 @@ const mealBoxes: MealBox[] = [
       },
       {
         title: "Kadai Chicken",
-        description: "Tender chicken cooked with bell peppers in a rich tomato gravy",
+        description: "Comes with Pulav, Channa Masala, Chapati. Tender chicken cooked with bell peppers in a rich tomato gravy",
         emoji: "🍗",
         bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
         price: 12,
@@ -44,7 +44,7 @@ const mealBoxes: MealBox[] = [
     dishes: [
       {
         title: "Kadai Paneer",
-        description: "Fresh cottage cheese with bell peppers in aromatic spices",
+        description: "Comes with Pulav, Channa Masala, Chapati. Fresh cottage cheese with bell peppers in aromatic spices",
         emoji: "🧀",
         bg: "bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
         price: 12,
@@ -52,7 +52,7 @@ const mealBoxes: MealBox[] = [
       },
       {
         title: "Okra Masala",
-        description: "Crispy okra tossed with onions and Indian spices",
+        description: "Comes with Pulav, Channa Masala, Chapati. Crispy okra tossed with onions and Indian spices",
         emoji: "🥬",
         bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
         price: 12,
@@ -66,7 +66,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍚",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 12,
-    description: "Traditional Karnataka style spicy rice with lentils and vegetables",
+    description: "Comes with Pulav, Channa Masala, Chapati. Traditional Karnataka style spicy rice with lentils and vegetables",
     isNew: true,
     tags: ["Pre-Order Required"]
   },
@@ -74,18 +74,18 @@ const mealBoxes: MealBox[] = [
     title: "Chicken Biryani",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
-    description: "Authentic Hyderabadi style biryani",
+    description: "Comes with Pulav, Channa Masala, Chapati. Authentic Hyderabadi style biryani",
     dishes: [
       {
         title: "Regular Chicken Biryani",
-        description: "Classic Hyderabadi biryani with tender chicken pieces",
+        description: "Comes with Pulav, Channa Masala, Chapati. Classic Hyderabadi biryani with tender chicken pieces",
         emoji: "🍗",
         bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
         price: 10
       },
       {
         title: "Extra Meat Chicken Biryani",
-        description: "Our signature biryani loaded with extra chicken pieces",
+        description: "Comes with Pulav, Channa Masala, Chapati. Our signature biryani loaded with extra chicken pieces",
         emoji: "🍖",
         bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
         price: 12,
