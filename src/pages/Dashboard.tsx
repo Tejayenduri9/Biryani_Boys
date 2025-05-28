@@ -113,15 +113,21 @@ const Dashboard: React.FC = () => {
     });
   }, [searchQuery, selectedCategory]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+  const groupedMealBoxes = useMemo(() => {
+    if (selectedCategory === CATEGORIES.ALL) {
+      return Object.values(CATEGORIES).reduce((acc, category) => {
+        if (category !== CATEGORIES.ALL) {
+          const meals = filteredMealBoxes.filter(meal => meal.category === category);
+          if (meals.length > 0) {
+            acc[category] = meals;
+          }
+        }
+        return acc;
+      }, {} as Record<string, MealBox[]>);
+    } else {
+      return { [selectedCategory]: filteredMealBoxes };
     }
-  };
+  }, [selectedCategory, filteredMealBoxes]);
 
   return (
     <Layout>
@@ -187,39 +193,60 @@ const Dashboard: React.FC = () => {
             <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-t-2 border-b-2 border-amber-600"></div>
           </div>
         ) : (
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto px-4 sm:px-6"
-          >
-            {filteredMealBoxes.length === 0 ? (
+          <div className="space-y-16 max-w-7xl mx-auto px-4 sm:px-6">
+            {Object.entries(groupedMealBoxes).length === 0 ? (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="col-span-full text-center py-12"
+                className="text-center py-12"
               >
                 <p className="text-gray-600 dark:text-gray-400">
                   No meals found matching your search criteria.
                 </p>
               </motion.div>
             ) : (
-              filteredMealBoxes.map((meal) => (
-                <MealCard
-                  key={meal.title}
-                  meal={meal}
-                  reviews={reviews[meal.title] || []}
-                  averageRating={getAverageRating(meal.title)}
-                  user={user}
-                  onSubmitReview={(comment, rating) => submitReview(meal.title, comment, rating)}
-                  onUpdateReview={(reviewId, comment, rating) => 
-                    updateReview(meal.title, reviewId, comment, rating)
-                  }
-                  onDeleteReview={(reviewId) => deleteReview(meal.title, reviewId)}
-                />
+              Object.entries(groupedMealBoxes).map(([category, meals]) => (
+                <motion.div
+                  key={category}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="space-y-8"
+                >
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative flex justify-center"
+                  >
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm"
+                    >
+                      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+                        {category}
+                      </h2>
+                    </motion.div>
+                  </motion.div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    {meals.map((meal) => (
+                      <MealCard
+                        key={meal.title}
+                        meal={meal}
+                        reviews={reviews[meal.title] || []}
+                        averageRating={getAverageRating(meal.title)}
+                        user={user}
+                        onSubmitReview={(comment, rating) => submitReview(meal.title, comment, rating)}
+                        onUpdateReview={(reviewId, comment, rating) => 
+                          updateReview(meal.title, reviewId, comment, rating)
+                        }
+                        onDeleteReview={(reviewId) => deleteReview(meal.title, reviewId)}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
               ))
             )}
-          </motion.div>
+          </div>
         )}
       </div>
     </Layout>
