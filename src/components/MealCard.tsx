@@ -95,10 +95,10 @@ const MealCard: React.FC<MealCardProps> = ({
       </div>
 
       {/* Reviews Section */}
-      <AnimatePresence initial={false} mode="wait">
+      <AnimatePresence mode="wait">
         {isExpanded && (
           <motion.div
-            key="reviews"
+            key={`${meal.title}-reviews`}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
