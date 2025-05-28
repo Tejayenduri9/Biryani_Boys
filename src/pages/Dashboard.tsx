@@ -60,7 +60,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍚",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 12,
-    description: "Comes with Pulav, Channa Masala, Chapati. Traditional Karnataka style spicy rice with lentils and vegetables",
+    description: "Traditional Karnataka style spicy rice with lentils and vegetables",
     isNew: true
   },
   {
