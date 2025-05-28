@@ -51,7 +51,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Main Content */}
       <div className="md:pl-64 transition-all duration-300">
         <Header />
-        <main className="px-4 py-6">{children}</main>
+        <main className="p-4">{children}</main>
       </div>
     </div>
   );
