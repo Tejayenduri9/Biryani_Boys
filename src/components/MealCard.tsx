@@ -28,6 +28,7 @@ const MealCard: React.FC<MealCardProps> = ({
   onDeleteReview
 }) => {
   const [activeTab, setActiveTab] = useState<Tab>('details');
+  const [isExpanded, setIsExpanded] = useState(false);
   const hasUserReviewed = user && reviews.some(r => r.user.uid === user.uid);
 
   const handleOrder = (e: React.MouseEvent) => {
@@ -59,7 +60,7 @@ const MealCard: React.FC<MealCardProps> = ({
           </div>
         </div>
 
-        {/* Title and Description */}
+        {/* Title and Tags */}
         <div className="text-center space-y-4">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold">
@@ -83,12 +84,45 @@ const MealCard: React.FC<MealCardProps> = ({
               </div>
             )}
           </div>
-          {meal.description && (
-            <p className="text-gray-600 dark:text-gray-400">
-              {meal.description}
-            </p>
-          )}
         </div>
+
+        {/* Description Toggle */}
+        {meal.description && (
+          <motion.button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+          >
+            <span className="font-medium">
+              {isExpanded ? 'Hide Details' : 'View Details'}
+            </span>
+            <motion.div
+              initial={false}
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ChevronDown size={20} />
+            </motion.div>
+          </motion.button>
+        )}
+
+        {/* Expandable Description */}
+        <AnimatePresence>
+          {isExpanded && meal.description && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="bg-white/50 dark:bg-gray-800/50 rounded-xl p-4 text-center">
+                <p className="text-gray-600 dark:text-gray-400">
+                  {meal.description}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Tabs */}
         <div className="flex rounded-lg overflow-hidden bg-white/50 dark:bg-gray-800/50 p-1">
