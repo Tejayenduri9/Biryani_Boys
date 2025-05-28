@@ -64,13 +64,13 @@ const SignIn: React.FC = () => {
           initial={{ y: 10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.8 }}
-          className="text-center space-y-4 max-w-2xl"
+          className="text-center space-y-2 max-w-md"
         >
-          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
-            Your opinion matters to us!
+          <p className="text-lg font-medium text-amber-600 dark:text-amber-500">
+            Explore our delicious menu!
           </p>
-          <p className="text-gray-600 dark:text-gray-400">
-            Join our community and share your dining experiences. Your honest reviews help us improve and guide other food lovers in discovering authentic Indian cuisine. Every review contributes to making our service better for everyone.
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
+            Sign in to discover authentic Indian flavors and share your dining experiences. Your reviews help us serve you better! 🌟
           </p>
         </motion.div>
 
