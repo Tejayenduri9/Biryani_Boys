@@ -1,77 +1,79 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
-import MealCard from '../components/MealCard';
-import { useReviews } from '../hooks/useReviews';
-import { useAuth } from '../context/AuthContext';
-import { MealBox } from '../types';
 
-const menuItems: MealBox[] = [
+interface MenuItem {
+  title: string;
+  price: number;
+  description?: string;
+  isNew?: boolean;
+  category: string;
+  image: string;
+}
+
+const menuItems: MenuItem[] = [
   // Biryani Section
   {
-    title: "Regular Chicken Biryani",
-    description: "Classic Hyderabadi biryani with tender chicken pieces",
-    emoji: "🍗",
-    bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+    title: "Chicken Biryani",
+    description: "Served with Pulav, Channa Masala, and Chapati",
     price: 10,
     category: "biryani",
     image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
   },
   {
-    title: "Special Mutton Biryani",
-    description: "Rich and aromatic biryani with tender mutton pieces",
-    emoji: "🍖",
-    bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-    price: 14,
+    title: "Extra Meat Chicken Biryani",
+    description: "Must Pre-order! Served with Pulav, Channa Masala, and Chapati",
+    price: 12,
     category: "biryani",
     image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
   },
-  // Non-Veg Section
+  // Veg Meal Box Section
   {
-    title: "Butter Chicken",
-    description: "Creamy tomato-based curry with tender chicken",
-    emoji: "🍗",
-    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
+    title: "Kadai Paneer",
+    description: "Served with Pulav, Channa Masala, and Chapati",
     price: 12,
-    category: "non-veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
-  },
-  {
-    title: "Andhra Chicken",
-    description: "Spicy Andhra style chicken curry",
-    emoji: "🌶️",
-    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
-    price: 12,
-    category: "non-veg",
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
-  },
-  // Veg Section
-  {
-    title: "Paneer Butter Masala",
-    description: "Cottage cheese in rich tomato gravy",
-    emoji: "🧀",
-    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-    price: 10,
     category: "veg",
     image: "https://images.pexels.com/photos/3926135/pexels-photo-3926135.jpeg"
   },
   {
-    title: "Dal Makhani",
-    description: "Creamy black lentils cooked overnight",
-    emoji: "🥘",
-    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-    price: 8,
+    title: "Okra Masala",
+    description: "Served with Pulav, Channa Masala, and Chapati",
+    price: 12,
     category: "veg",
+    isNew: true,
+    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+  },
+  {
+    title: "Bisi Bele Bath",
+    description: "Served with Pulav, Channa Masala, and Chapati",
+    price: 12,
+    category: "veg",
+    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+  },
+  // Non-Veg Meal Box Section
+  {
+    title: "Andhra Chicken",
+    description: "Served with Pulav, Channa Masala, and Chapati",
+    price: 12,
+    category: "non-veg",
+    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+  },
+  {
+    title: "Kadai Chicken",
+    description: "Served with Pulav, Channa Masala, and Chapati",
+    price: 12,
+    category: "non-veg",
     image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
   }
 ];
 
 const Menu: React.FC = () => {
-  const { user } = useAuth();
-  const { reviews, submitReview, updateReview, deleteReview, getAverageRating } = useReviews(menuItems);
-  
-  const categories = ["biryani", "non-veg", "veg"];
-  
+  const categories = {
+    biryani: "Biryani Special",
+    veg: "Veg Meal Box",
+    "non-veg": "Non-Veg Meal Box"
+  };
+
   return (
     <Layout>
       <div className="py-8 px-4 sm:px-6 lg:px-8">
@@ -84,34 +86,52 @@ const Menu: React.FC = () => {
         </motion.h1>
 
         <div className="space-y-12">
-          {categories.map((category) => (
-            <div key={category} className="space-y-6">
+          {Object.entries(categories).map(([key, title]) => (
+            <div key={key} className="space-y-6">
               <motion.h2 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-2xl font-semibold capitalize"
+                className="text-2xl font-semibold"
               >
-                {category === "non-veg" ? "Non-Vegetarian" : 
-                 category === "veg" ? "Vegetarian" : 
-                 "Biryani Special"}
+                {title}
               </motion.h2>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {menuItems
-                  .filter(item => item.category === category)
+                  .filter(item => item.category === key)
                   .map((item) => (
-                    <MealCard
+                    <motion.div
                       key={item.title}
-                      meal={item}
-                      reviews={reviews[item.title] || []}
-                      averageRating={getAverageRating(item.title)}
-                      user={user}
-                      onSubmitReview={(comment, rating) => submitReview(item.title, comment, rating)}
-                      onUpdateReview={(reviewId, comment, rating) => 
-                        updateReview(item.title, reviewId, comment, rating)
-                      }
-                      onDeleteReview={(reviewId) => deleteReview(item.title, reviewId)}
-                    />
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg"
+                    >
+                      <div className="relative h-48">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg">
+                          <span className="text-amber-600 dark:text-amber-500 font-bold">
+                            ${item.price}
+                          </span>
+                        </div>
+                        {item.isNew && (
+                          <span className="absolute top-4 left-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                            NEW
+                          </span>
+                        )}
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                        {item.description && (
+                          <p className="text-gray-600 dark:text-gray-400 text-sm">
+                            {item.description}
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
                   ))}
               </div>
             </div>
