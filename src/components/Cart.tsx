@@ -10,15 +10,30 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
   const { items, updateQuantity, removeItem, total, deliveryInfo, setDeliveryInfo, clearCart } = useCart();
+  const [customerName, setCustomerName] = useState('');
   const [address, setAddress] = useState(deliveryInfo?.address || '');
   const [instructions, setInstructions] = useState(deliveryInfo?.instructions || '');
   const [phone, setPhone] = useState(deliveryInfo?.phone || '');
-  const [errors, setErrors] = useState({ address: false, phone: false });
+  const [errors, setErrors] = useState({ 
+    customerName: false,
+    address: false, 
+    phone: false 
+  });
 
   const handleWhatsAppOrder = () => {
     // Reset errors
-    setErrors({ address: false, phone: false });
+    setErrors({ 
+      customerName: false,
+      address: false, 
+      phone: false 
+    });
+    
     let hasError = false;
+
+    if (!customerName.trim()) {
+      setErrors(prev => ({ ...prev, customerName: true }));
+      hasError = true;
+    }
 
     if (!address.trim()) {
       setErrors(prev => ({ ...prev, address: true }));
@@ -38,10 +53,15 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
       `• ${item.title} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})`
     ).join('\n');
 
-    const message = `🛍️ *New Order*\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n_Note: Our team will review your order and confirm shortly._`;
+    const message = `🛍️ *New Order*\n\n*Customer Name:* ${customerName}\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n_Note: Our team will review your order and confirm shortly._`;
 
     // Save delivery info
-    setDeliveryInfo({ address, instructions, phone });
+    setDeliveryInfo({ 
+      customerName,
+      address, 
+      instructions, 
+      phone 
+    });
 
     // Open WhatsApp
     window.location.href = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
@@ -127,6 +147,23 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                   <div className="border-t dark:border-gray-800 pt-4">
                     <h3 className="font-medium mb-2">Delivery Details</h3>
                     <div className="space-y-3">
+                      <div>
+                        <input
+                          type="text"
+                          placeholder="Customer Name *"
+                          value={customerName}
+                          onChange={(e) => setCustomerName(e.target.value)}
+                          className={`w-full p-2 border rounded bg-transparent ${
+                            errors.customerName 
+                              ? 'border-red-500 dark:border-red-500' 
+                              : 'dark:border-gray-700'
+                          }`}
+                        />
+                        {errors.customerName && (
+                          <p className="text-red-500 text-sm mt-1">Customer name is required</p>
+                        )}
+                      </div>
+
                       <div>
                         <input
                           type="text"

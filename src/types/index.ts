@@ -41,7 +41,8 @@ export interface ReviewsByMeal {
 }
 
 export interface DeliveryInfo {
+  customerName: string;
   address: string;
   instructions?: string;
-  phone?: string;
+  phone: string;
 }
