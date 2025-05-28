@@ -30,7 +30,7 @@ const MealCard: React.FC<MealCardProps> = ({
 
   const handleOrder = (e: React.MouseEvent) => {
     e.preventDefault();
-    const message = `Thank you for choosing Biryani Boyz! 🙏\n\nYour Order: ${meal.title} ($${meal.price})\n\nPlease provide:\n1. Complete order details\n2. Delivery address\n3. Contact number\n\nOur team will confirm your order shortly! 😊`;
+    const message = `Thank you for choosing Biryani Boyz! 🙏\n\nPlease provide:\n1. Complete order details\n2. Delivery address\n3. Contact number\n\nOur team will confirm your order shortly! 😊`;
     const whatsappUrl = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
     window.location.href = whatsappUrl;
   };
