@@ -92,12 +92,11 @@ const MealCard: React.FC<MealCardProps> = ({
         </motion.div>
 
         {/* WhatsApp Order Button */}
-        <motion.a
-          href={`https://wa.me/15185287832?text=${encodeURIComponent(`Hi Biryani Boyz! 🌟\n\n*I would like to order:*\n${meal.title} ($${meal.price})\n\n${meal.tags?.includes("Pre-Order Required") ? "*Note: This item requires pre-ordering*\n\n" : ""}Please reply with:\n1️⃣ Preferred delivery/pickup time\n2️⃣ Delivery address\n3️⃣ Any special instructions\n\nThank you! 😊`)}`}
+        <motion.button
           onClick={handleOrder}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4 cursor-pointer"
+          className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4"
           layout
         >
           <img 
@@ -106,7 +105,7 @@ const MealCard: React.FC<MealCardProps> = ({
             className="w-5 h-5"
           />
           <span className="font-medium">Order on WhatsApp</span>
-        </motion.a>
+        </motion.button>
 
         {/* Expand/Collapse Button */}
         <motion.button
