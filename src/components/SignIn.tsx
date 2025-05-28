@@ -11,9 +11,13 @@ const SignIn: React.FC = () => {
     try {
       setIsSigningIn(true);
       await signInWithGoogle();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Sign in error:', error);
-      toast.error('Failed to sign in with Google');
+      if (error.code === 'auth/popup-blocked') {
+        toast.error('Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.');
+      } else {
+        toast.error('Failed to sign in with Google');
+      }
     } finally {
       setIsSigningIn(false);
     }
