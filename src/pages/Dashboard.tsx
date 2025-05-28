@@ -191,17 +191,6 @@ const Dashboard: React.FC = () => {
                       )}
                     </h2>
                   </motion.div>
-                  
-                  {mealBox.description && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                      className="mt-6 text-sm sm:text-base text-gray-600 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner max-w-full sm:max-w-[80%] break-words"
-                    >
-                      {mealBox.description}
-                    </motion.p>
-                  )}
                 </motion.div>
 
                 {/* Dishes Grid */}
