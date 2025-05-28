@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, MessageCircle, ChevronDown } from 'lucide-react';
+import { Star, ChevronDown } from 'lucide-react';
 import { MealBox, Review } from '../types';
 import { User } from '../types';
 import ReviewForm from './ReviewForm';
@@ -85,7 +85,11 @@ const MealCard: React.FC<MealCardProps> = ({
           whileTap={{ scale: 0.98 }}
           className="w-full bg-green-500 hover:bg-green-600 text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4"
         >
-          <MessageCircle className="w-5 h-5" />
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+            alt="WhatsApp"
+            className="w-5 h-5"
+          />
           <span className="font-medium">Order on WhatsApp</span>
         </motion.button>
 
