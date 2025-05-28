@@ -10,37 +10,72 @@ import { MealBox } from '../types';
 import { WifiOff, Search, ShoppingBag } from 'lucide-react';
 
 const mealBoxes: MealBox[] = [
+  // Biryani Section
   {
-    title: "Regular Chicken Biryani",
-    description: "Classic Hyderabadi biryani with tender chicken pieces",
+    title: "Chicken Biryani",
+    description: "Classic Hyderabadi style biryani served with Pulav, Channa Masala, and Chapati",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
     price: 10,
+    category: "biryani",
     image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
   },
   {
     title: "Extra Meat Chicken Biryani",
-    description: "Our signature biryani loaded with extra chicken pieces",
+    description: "Extra portion of meat! Must pre-order. Served with Pulav, Channa Masala, and Chapati",
     emoji: "🍖",
     bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
     price: 12,
+    category: "biryani",
     tags: ["Pre-Order Required"],
     image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
   },
+  // Veg Meal Box Section
+  {
+    title: "Kadai Paneer",
+    description: "Cottage cheese in rich gravy served with Pulav, Channa Masala, and Chapati",
+    emoji: "🧀",
+    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+    price: 12,
+    category: "veg",
+    image: "https://images.pexels.com/photos/3926135/pexels-photo-3926135.jpeg"
+  },
+  {
+    title: "Okra Masala",
+    description: "Fresh okra in aromatic spices served with Pulav, Channa Masala, and Chapati",
+    emoji: "🥬",
+    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+    price: 12,
+    category: "veg",
+    isNew: true,
+    image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
+  },
+  {
+    title: "Bisi Bele Bath",
+    description: "Traditional Karnataka style rice dish served with Pulav, Channa Masala, and Chapati",
+    emoji: "🍚",
+    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+    price: 12,
+    category: "veg",
+    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+  },
+  // Non-Veg Meal Box Section
   {
     title: "Andhra Chicken",
-    description: "Spicy Andhra style chicken curry with authentic spices and herbs",
+    description: "Spicy Andhra style chicken served with Pulav, Channa Masala, and Chapati",
     emoji: "🌶️",
-    bg: "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20",
+    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
     price: 12,
+    category: "non-veg",
     image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
   },
   {
     title: "Kadai Chicken",
-    description: "Tender chicken cooked with bell peppers in a rich tomato gravy",
+    description: "Chicken in aromatic kadai gravy served with Pulav, Channa Masala, and Chapati",
     emoji: "🍗",
-    bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
+    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
     price: 12,
+    category: "non-veg",
     image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
   }
 ];

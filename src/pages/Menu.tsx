@@ -41,7 +41,7 @@ const menuItems: MenuItem[] = [
     price: 12,
     category: "veg",
     isNew: true,
-    image: "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg"
+    image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
   },
   {
     title: "Bisi Bele Bath",
