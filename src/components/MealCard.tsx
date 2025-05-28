@@ -31,7 +31,7 @@ const MealCard: React.FC<MealCardProps> = ({
   const handleOrder = (e: React.MouseEvent) => {
     e.preventDefault();
     const message = `Hi Biryani Boyz! 🌟\n\n*I would like to order:*\n${meal.title} ($${meal.price})\n\n${meal.tags?.includes("Pre-Order Required") ? "*Note: This item requires pre-ordering*\n\n" : ""}Please reply with:\n1️⃣ Preferred delivery/pickup time\n2️⃣ Delivery address\n3️⃣ Any special instructions\n\nThank you! 😊`;
-    window.location.href = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
+    window.location.replace(`https://wa.me/15185287832?text=${encodeURIComponent(message)}`);
   };
 
   return (
