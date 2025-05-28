@@ -67,8 +67,23 @@ const mealBoxes: MealBox[] = [
     title: "Chicken Biryani",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
-    price: 10,
-    description: "Authentic Hyderabadi style biryani"
+    description: "Authentic Hyderabadi style biryani",
+    dishes: [
+      {
+        title: "Regular Chicken Biryani",
+        description: "Classic Hyderabadi biryani with tender chicken pieces",
+        emoji: "🍗",
+        bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+        price: 10
+      },
+      {
+        title: "Extra Meat Chicken Biryani",
+        description: "Our signature biryani loaded with extra chicken pieces",
+        emoji: "🍖",
+        bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+        price: 12
+      }
+    ]
   }
 ];
 
