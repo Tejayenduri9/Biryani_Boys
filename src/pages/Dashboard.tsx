@@ -138,39 +138,33 @@ const Dashboard: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative"
+                  className="relative flex justify-center"
                 >
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t-2 border-gray-200 dark:border-gray-700"></div>
-                  </div>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm"
+                  >
+                    <h2 className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold">
+                      <span className="text-3xl sm:text-4xl md:text-5xl">{mealBox.emoji}</span>
+                      <span>{mealBox.title}</span>
+                      {mealBox.isNew && (
+                        <span className="bg-green-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full font-medium animate-pulse">
+                          NEW
+                        </span>
+                      )}
+                    </h2>
+                  </motion.div>
                   
-                  <div className="relative flex flex-col items-center">
-                    <motion.div
-                      whileHover={{ scale: 1.05 }}
-                      className="bg-[#fdf6e3] dark:bg-gray-900 px-6 py-3 rounded-2xl shadow-lg border-2 border-amber-200 dark:border-amber-800"
+                  {mealBox.description && (
+                    <motion.p 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                      className="absolute -bottom-8 text-sm sm:text-base text-gray-600 dark:text-gray-400 bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner"
                     >
-                      <h2 className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold">
-                        <span className="text-3xl sm:text-4xl md:text-5xl">{mealBox.emoji}</span>
-                        <span>{mealBox.title}</span>
-                        {mealBox.isNew && (
-                          <span className="bg-green-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full font-medium animate-pulse">
-                            NEW
-                          </span>
-                        )}
-                      </h2>
-                    </motion.div>
-                    
-                    {mealBox.description && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-4 bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner"
-                      >
-                        {mealBox.description}
-                      </motion.p>
-                    )}
-                  </div>
+                      {mealBox.description}
+                    </motion.p>
+                  )}
                 </motion.div>
 
                 {/* Dishes Grid */}
