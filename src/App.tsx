@@ -1,8 +1,10 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { useAuth } from './context/AuthContext';
 import Dashboard from './pages/Dashboard';
+import Menu from './pages/Menu';
 import LandingPage from './pages/LandingPage';
 
 function AppContent() {
@@ -22,16 +24,22 @@ function AppContent() {
 
   return (
     <CartProvider>
-      <Dashboard />
+      <Routes>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/menu" element={<Menu />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
     </CartProvider>
   );
 }
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </Router>
   );
 }
 

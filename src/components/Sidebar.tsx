@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { X, Home, Info, Menu as MenuIcon, Image, Phone, Utensils } from 'lucide-react';
 
 interface SidebarProps {
@@ -8,15 +9,22 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { icon: Home, label: 'Home', href: '/dashboard' },
-  { icon: Info, label: 'About Us', href: '/about' },
-  { icon: MenuIcon, label: 'Menu', href: '/menu' },
-  { icon: Image, label: 'Gallery', href: '/gallery' },
-  { icon: Utensils, label: 'Catering Services', href: '/catering' },
-  { icon: Phone, label: 'Contact', href: '/contact' },
+  { icon: Home, label: 'Home', path: '/dashboard' },
+  { icon: MenuIcon, label: 'Menu', path: '/menu' },
+  { icon: Info, label: 'About Us', path: '/about' },
+  { icon: Image, label: 'Gallery', path: '/gallery' },
+  { icon: Utensils, label: 'Catering Services', path: '/catering' },
+  { icon: Phone, label: 'Contact', path: '/contact' },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    onClose();
+  };
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -61,14 +69,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         {/* Navigation Links */}
         <nav className="p-4 space-y-2">
           {menuItems.map((item) => (
-            <a
+            <button
               key={item.label}
-              href={item.href}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 hover:text-amber-600 dark:hover:text-amber-500 transition-colors"
+              onClick={() => handleNavigation(item.path)}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amber-50 dark:hover:bg-amber-900/20 hover:text-amber-600 dark:hover:text-amber-500 transition-colors w-full text-left"
             >
               <item.icon size={20} />
               <span>{item.label}</span>
-            </a>
+            </button>
           ))}
         </nav>
 
