@@ -1,6 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Facebook, Instagram, Clock } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import SignIn from '../components/SignIn';
 
 const images = [
   "https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg",
@@ -32,6 +34,8 @@ const reviews = [
 
 const LandingPage: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+  const [showSignIn, setShowSignIn] = React.useState(false);
+  const { user } = useAuth();
 
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -39,6 +43,18 @@ const LandingPage: React.FC = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleOrderOnline = () => {
+    if (user) {
+      window.location.href = '/dashboard';
+    } else {
+      setShowSignIn(true);
+    }
+  };
+
+  if (showSignIn) {
+    return <SignIn />;
+  }
 
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900">
@@ -87,14 +103,14 @@ const LandingPage: React.FC = () => {
         {/* Order Options */}
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
           <div className="flex flex-col sm:flex-row gap-6 px-4">
-            <motion.a
-              href="/menu"
+            <motion.button
+              onClick={handleOrderOnline}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-amber-600 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-amber-700 transition-colors"
             >
               Order Online
-            </motion.a>
+            </motion.button>
             <motion.a
               href="tel:+15185287832"
               whileHover={{ scale: 1.05 }}
