@@ -83,10 +83,10 @@ const MealCard: React.FC<MealCardProps> = ({
           onClick={handleOrder}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full bg-green-500 hover:bg-green-600 text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4"
+          className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4"
         >
           <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
+            src="https://cdn.cdnlogo.com/logos/w/25/whatsapp-icon.svg"
             alt="WhatsApp"
             className="w-5 h-5"
           />
