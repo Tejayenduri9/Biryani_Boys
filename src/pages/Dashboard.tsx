@@ -13,7 +13,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍖",
     bg: "bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30",
     price: 12,
-    description: "Comes with Pulav, Channa Masala, Chapati",
+    description: "Comes with Pulav, Channa Masala, Chapati, selected curry of your choice",
     dishes: [
       {
         title: "Andhra Chicken",
@@ -36,7 +36,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🥬",
     bg: "bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30",
     price: 12,
-    description: "Comes with Pulav, Channa Masala, Chapati",
+    description: "Comes with Pulav, Channa Masala, Chapati, selected curry of your choice",
     dishes: [
       {
         title: "Kadai Paneer",
@@ -60,7 +60,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍚",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 12,
-    description: "Traditional Karnataka style spicy rice with lentils and vegetables",
+    description: "Comes with Pulav, Channa Masala, Chapati. Traditional Karnataka style spicy rice with lentils and vegetables",
     isNew: true
   },
   {
@@ -68,7 +68,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 10,
-    description: "Authentic Hyderabadi style biryani"
+    description: "Comes with Pulav, Channa Masala, Chapati. Authentic Hyderabadi style biryani"
   }
 ];
 
