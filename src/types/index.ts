@@ -23,7 +23,7 @@ export interface MealBox {
   price: number;
   description?: string;
   isNew?: boolean;
-  dishes?: string[];
+  dishes?: MealBox[];
 }
 
 export interface ReviewsByMeal {

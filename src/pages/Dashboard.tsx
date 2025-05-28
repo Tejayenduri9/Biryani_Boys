@@ -15,8 +15,20 @@ const mealBoxes: MealBox[] = [
     price: 12,
     description: "Comes with Pulav, Channa Masala, Chapati",
     dishes: [
-      "Andhra Chicken",
-      "Kadai Chicken"
+      {
+        title: "Andhra Chicken",
+        description: "Spicy Andhra style chicken curry",
+        emoji: "🌶️",
+        bg: "bg-orange-100 dark:bg-orange-900/30",
+        price: 12
+      },
+      {
+        title: "Kadai Chicken",
+        description: "Flavorful chicken cooked with bell peppers",
+        emoji: "🍗",
+        bg: "bg-yellow-100 dark:bg-yellow-900/30",
+        price: 12
+      }
     ]
   },
   {
@@ -26,9 +38,28 @@ const mealBoxes: MealBox[] = [
     price: 12,
     description: "Comes with Pulav, Channa Masala, Chapati",
     dishes: [
-      "Kadai Paneer",
-      "Okra Masala",
-      "Bisi Bele Bath"
+      {
+        title: "Kadai Paneer",
+        description: "Cottage cheese with bell peppers",
+        emoji: "🧀",
+        bg: "bg-yellow-100 dark:bg-yellow-900/30",
+        price: 12
+      },
+      {
+        title: "Okra Masala",
+        description: "Fresh okra cooked with Indian spices",
+        emoji: "🥬",
+        bg: "bg-green-100 dark:bg-green-900/30",
+        price: 12,
+        isNew: true
+      },
+      {
+        title: "Bisi Bele Bath",
+        description: "Traditional Karnataka style rice dish",
+        emoji: "🍚",
+        bg: "bg-amber-100 dark:bg-amber-900/30",
+        price: 12
+      }
     ]
   },
   {
@@ -97,21 +128,62 @@ const Dashboard: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
+            className="space-y-12 max-w-7xl mx-auto px-4"
           >
-            {mealBoxes.map((meal) => (
-              <MealCard
-                key={meal.title}
-                meal={meal}
-                reviews={reviews[meal.title] || []}
-                averageRating={getAverageRating(meal.title)}
-                user={user}
-                onSubmitReview={(comment, rating) => submitReview(meal.title, comment, rating)}
-                onUpdateReview={(reviewId, comment, rating) => 
-                  updateReview(meal.title, reviewId, comment, rating)
-                }
-                onDeleteReview={(reviewId) => deleteReview(meal.title, reviewId)}
-              />
+            {mealBoxes.map((mealBox) => (
+              <div key={mealBox.title} className="space-y-6">
+                {/* Category Header */}
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-center"
+                >
+                  <h2 className="text-2xl font-bold flex items-center justify-center gap-3">
+                    <span>{mealBox.emoji}</span>
+                    <span>{mealBox.title}</span>
+                    <span className="text-lg font-normal text-gray-500">
+                      (${mealBox.price})
+                    </span>
+                  </h2>
+                  {mealBox.description && (
+                    <p className="text-gray-600 dark:text-gray-400 mt-2">
+                      {mealBox.description}
+                    </p>
+                  )}
+                </motion.div>
+
+                {/* Dishes Grid */}
+                {mealBox.dishes ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {mealBox.dishes.map((dish) => (
+                      <MealCard
+                        key={dish.title}
+                        meal={dish}
+                        reviews={reviews[dish.title] || []}
+                        averageRating={getAverageRating(dish.title)}
+                        user={user}
+                        onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
+                        onUpdateReview={(reviewId, comment, rating) => 
+                          updateReview(dish.title, reviewId, comment, rating)
+                        }
+                        onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <MealCard
+                    meal={mealBox}
+                    reviews={reviews[mealBox.title] || []}
+                    averageRating={getAverageRating(mealBox.title)}
+                    user={user}
+                    onSubmitReview={(comment, rating) => submitReview(mealBox.title, comment, rating)}
+                    onUpdateReview={(reviewId, comment, rating) => 
+                      updateReview(mealBox.title, reviewId, comment, rating)
+                    }
+                    onDeleteReview={(reviewId) => deleteReview(mealBox.title, reviewId)}
+                  />
+                )}
+              </div>
             ))}
           </motion.div>
         )}
