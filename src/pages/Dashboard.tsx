@@ -14,20 +14,23 @@ const mealBoxes: MealBox[] = [
     bg: "bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30",
     price: 12,
     description: "Comes with Pulav, Channa Masala, Chapati, selected curry of your choice",
+    tags: ["Pre-Order Required"],
     dishes: [
       {
         title: "Andhra Chicken",
         description: "Spicy Andhra style chicken curry with authentic spices and herbs",
         emoji: "🌶️",
         bg: "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20",
-        price: 12
+        price: 12,
+        tags: ["Pre-Order Required"]
       },
       {
         title: "Kadai Chicken",
         description: "Tender chicken cooked with bell peppers in a rich tomato gravy",
         emoji: "🍗",
         bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
-        price: 12
+        price: 12,
+        tags: ["Pre-Order Required"]
       }
     ]
   },
@@ -37,13 +40,15 @@ const mealBoxes: MealBox[] = [
     bg: "bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30",
     price: 12,
     description: "Comes with Pulav, Channa Masala, Chapati, selected curry of your choice",
+    tags: ["Pre-Order Required"],
     dishes: [
       {
         title: "Kadai Paneer",
         description: "Fresh cottage cheese with bell peppers in aromatic spices",
         emoji: "🧀",
         bg: "bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
-        price: 12
+        price: 12,
+        tags: ["Pre-Order Required"]
       },
       {
         title: "Okra Masala",
@@ -51,7 +56,8 @@ const mealBoxes: MealBox[] = [
         emoji: "🥬",
         bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
         price: 12,
-        isNew: true
+        isNew: true,
+        tags: ["Pre-Order Required"]
       }
     ]
   },
@@ -81,7 +87,8 @@ const mealBoxes: MealBox[] = [
         description: "Our signature biryani loaded with extra chicken pieces",
         emoji: "🍖",
         bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-        price: 12
+        price: 12,
+        tags: ["Pre-Order Required"]
       }
     ]
   }
