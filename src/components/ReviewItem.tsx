@@ -68,9 +68,13 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
       className="space-y-3"
     >
-      <motion.div layout="position" className="flex justify-between items-start">
+      <motion.div 
+        layout="position"
+        className="flex items-center justify-between"
+      >
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900 dark:to-amber-800 flex items-center justify-center text-amber-800 dark:text-amber-200 font-semibold text-lg">
             {review.user.name.charAt(0).toUpperCase()}
@@ -81,27 +85,31 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
           </div>
         </div>
       </motion.div>
-      
+
       <AnimatePresence mode="wait" initial={false}>
         {isEditing ? (
-          <motion.form 
+          <motion.form
             key="edit-form"
             layout="position"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
             onSubmit={handleEditSubmit}
             className="space-y-4"
           >
-            <motion.div layout="position" className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3">
+            <motion.div 
+              layout="position"
+              className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3"
+            >
               <StarRating 
                 rating={editRating} 
-                setRating={setEditRating} 
+                setRating={setEditRating}
                 size="sm"
                 disabled={isUpdating}
               />
             </motion.div>
-            
+
             <motion.textarea
               layout="position"
               value={editComment}
@@ -111,8 +119,11 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
               rows={3}
               placeholder="Share your thoughts..."
             />
-            
-            <motion.div layout="position" className="flex gap-2">
+
+            <motion.div 
+              layout="position"
+              className="flex gap-2"
+            >
               <motion.button
                 type="submit"
                 disabled={isUpdating || !editComment.trim() || editRating === 0}
@@ -129,7 +140,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                   'Save Changes'
                 )}
               </motion.button>
-              
+
               <motion.button
                 type="button"
                 onClick={handleCancel}
@@ -149,9 +160,13 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
             className="space-y-3"
           >
-            <motion.div layout="position" className="flex gap-1">
+            <motion.div 
+              layout="position"
+              className="flex gap-1"
+            >
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
@@ -164,11 +179,19 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                 />
               ))}
             </motion.div>
-            
-            <motion.p layout="position" className="text-base leading-relaxed">{review.comment}</motion.p>
-            
+
+            <motion.p 
+              layout="position"
+              className="text-base leading-relaxed"
+            >
+              {review.comment}
+            </motion.p>
+
             {isOwner && (
-              <motion.div layout="position" className="flex gap-4 items-center pt-2">
+              <motion.div 
+                layout="position"
+                className="flex gap-4 items-center pt-2"
+              >
                 <motion.button
                   onClick={() => setIsEditing(true)}
                   disabled={isDeleting}
@@ -179,7 +202,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                   <Pencil size={14} />
                   Edit
                 </motion.button>
-                
+
                 <motion.button
                   onClick={handleDelete}
                   disabled={isDeleting}
