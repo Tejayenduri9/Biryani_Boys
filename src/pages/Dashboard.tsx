@@ -50,16 +50,18 @@ const mealBoxes: MealBox[] = [
         description: "Crispy okra tossed with onions and Indian spices",
         emoji: "🥬",
         bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-        price: 12
-      },
-      {
-        title: "Bisi Bele Bath",
-        description: "Traditional Karnataka style spicy rice with lentils and vegetables",
-        emoji: "🍚",
-        bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-        price: 12
+        price: 12,
+        isNew: true
       }
     ]
+  },
+  {
+    title: "Bisi Bele Bath",
+    emoji: "🍚",
+    bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
+    price: 12,
+    description: "Traditional Karnataka style spicy rice with lentils and vegetables",
+    isNew: true
   },
   {
     title: "Chicken Biryani",
@@ -145,6 +147,11 @@ const Dashboard: React.FC = () => {
                   <h2 className="relative inline-flex items-center gap-3 bg-[#fdf6e3] dark:bg-gray-900 px-4 text-3xl font-bold">
                     <span className="text-4xl">{mealBox.emoji}</span>
                     <span>{mealBox.title}</span>
+                    {mealBox.isNew && (
+                      <span className="bg-green-500 text-white text-sm px-2 py-1 rounded-full font-medium">
+                        NEW
+                      </span>
+                    )}
                     <span className="text-xl font-normal text-gray-500 dark:text-gray-400">
                       (${mealBox.price})
                     </span>
