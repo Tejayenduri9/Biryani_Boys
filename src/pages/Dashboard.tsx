@@ -11,22 +11,23 @@ const mealBoxes: MealBox[] = [
   {
     title: "Non-Veg Meal Box",
     emoji: "🍖",
-    bg: "bg-red-100 dark:bg-red-900/30",
+    bg: "bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30",
     price: 12,
     description: "Comes with Pulav, Channa Masala, Chapati",
     dishes: [
       {
         title: "Andhra Chicken",
-        description: "Spicy Andhra style chicken curry",
+        description: "Spicy Andhra style chicken curry with authentic spices and herbs",
         emoji: "🌶️",
-        bg: "bg-orange-100 dark:bg-orange-900/30",
-        price: 12
+        bg: "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20",
+        price: 12,
+        isNew: true
       },
       {
         title: "Kadai Chicken",
-        description: "Flavorful chicken cooked with bell peppers",
+        description: "Tender chicken cooked with bell peppers in a rich tomato gravy",
         emoji: "🍗",
-        bg: "bg-yellow-100 dark:bg-yellow-900/30",
+        bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
         price: 12
       }
     ]
@@ -34,30 +35,30 @@ const mealBoxes: MealBox[] = [
   {
     title: "Veg Meal Box",
     emoji: "🥬",
-    bg: "bg-green-100 dark:bg-green-900/30",
+    bg: "bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30",
     price: 12,
     description: "Comes with Pulav, Channa Masala, Chapati",
     dishes: [
       {
         title: "Kadai Paneer",
-        description: "Cottage cheese with bell peppers",
+        description: "Fresh cottage cheese with bell peppers in aromatic spices",
         emoji: "🧀",
-        bg: "bg-yellow-100 dark:bg-yellow-900/30",
+        bg: "bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
         price: 12
       },
       {
         title: "Okra Masala",
-        description: "Fresh okra cooked with Indian spices",
+        description: "Crispy okra tossed with onions and Indian spices",
         emoji: "🥬",
-        bg: "bg-green-100 dark:bg-green-900/30",
+        bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
         price: 12,
         isNew: true
       },
       {
         title: "Bisi Bele Bath",
-        description: "Traditional Karnataka style rice dish",
+        description: "Traditional Karnataka style spicy rice with lentils and vegetables",
         emoji: "🍚",
-        bg: "bg-amber-100 dark:bg-amber-900/30",
+        bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
         price: 12
       }
     ]
@@ -65,9 +66,9 @@ const mealBoxes: MealBox[] = [
   {
     title: "Chicken Biryani",
     emoji: "🍗",
-    bg: "bg-amber-100 dark:bg-amber-900/30",
+    bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 10,
-    description: "Authentic Hyderabadi style biryani"
+    description: "Authentic Hyderabadi style long-grain basmati rice biryani"
   }
 ];
 
@@ -128,25 +129,30 @@ const Dashboard: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-12 max-w-7xl mx-auto px-4"
+            className="space-y-16 max-w-7xl mx-auto px-4"
           >
             {mealBoxes.map((mealBox) => (
-              <div key={mealBox.title} className="space-y-6">
+              <div key={mealBox.title} className="space-y-8">
                 {/* Category Header */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-center"
+                  className="text-center relative"
                 >
-                  <h2 className="text-2xl font-bold flex items-center justify-center gap-3">
-                    <span>{mealBox.emoji}</span>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
+                  </div>
+                  
+                  <h2 className="relative inline-flex items-center gap-3 bg-[#fdf6e3] dark:bg-gray-900 px-4 text-3xl font-bold">
+                    <span className="text-4xl">{mealBox.emoji}</span>
                     <span>{mealBox.title}</span>
-                    <span className="text-lg font-normal text-gray-500">
+                    <span className="text-xl font-normal text-gray-500 dark:text-gray-400">
                       (${mealBox.price})
                     </span>
                   </h2>
+                  
                   {mealBox.description && (
-                    <p className="text-gray-600 dark:text-gray-400 mt-2">
+                    <p className="text-gray-600 dark:text-gray-400 mt-4 text-lg">
                       {mealBox.description}
                     </p>
                   )}
@@ -171,17 +177,19 @@ const Dashboard: React.FC = () => {
                     ))}
                   </div>
                 ) : (
-                  <MealCard
-                    meal={mealBox}
-                    reviews={reviews[mealBox.title] || []}
-                    averageRating={getAverageRating(mealBox.title)}
-                    user={user}
-                    onSubmitReview={(comment, rating) => submitReview(mealBox.title, comment, rating)}
-                    onUpdateReview={(reviewId, comment, rating) => 
-                      updateReview(mealBox.title, reviewId, comment, rating)
-                    }
-                    onDeleteReview={(reviewId) => deleteReview(mealBox.title, reviewId)}
-                  />
+                  <div className="max-w-2xl mx-auto">
+                    <MealCard
+                      meal={mealBox}
+                      reviews={reviews[mealBox.title] || []}
+                      averageRating={getAverageRating(mealBox.title)}
+                      user={user}
+                      onSubmitReview={(comment, rating) => submitReview(mealBox.title, comment, rating)}
+                      onUpdateReview={(reviewId, comment, rating) => 
+                        updateReview(mealBox.title, reviewId, comment, rating)
+                      }
+                      onDeleteReview={(reviewId) => deleteReview(mealBox.title, reviewId)}
+                    />
+                  </div>
                 )}
               </div>
             ))}
