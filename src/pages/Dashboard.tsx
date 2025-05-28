@@ -102,10 +102,11 @@ const Dashboard: React.FC = () => {
           className="text-center mb-10"
         >
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Rate Your <span className="text-amber-600 dark:text-amber-500">Biryani Boyz</span> Experience
+            Welcome to <span className="text-amber-600 dark:text-amber-500">Biryani Boyz</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            We value your feedback! Share your thoughts on our delicious meals to help us serve you better.
+            Experience the authentic flavors of India with our carefully curated menu. Each dish is crafted with love, 
+            using traditional recipes and the finest ingredients to bring you a taste of home.
           </p>
           
           {offline && (
