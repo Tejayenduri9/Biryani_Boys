@@ -20,8 +20,7 @@ const mealBoxes: MealBox[] = [
         description: "Spicy Andhra style chicken curry with authentic spices and herbs",
         emoji: "🌶️",
         bg: "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20",
-        price: 12,
-        isNew: true
+        price: 12
       },
       {
         title: "Kadai Chicken",
@@ -51,8 +50,7 @@ const mealBoxes: MealBox[] = [
         description: "Crispy okra tossed with onions and Indian spices",
         emoji: "🥬",
         bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-        price: 12,
-        isNew: true
+        price: 12
       },
       {
         title: "Bisi Bele Bath",
@@ -68,7 +66,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 10,
-    description: "Authentic Hyderabadi style long-grain basmati rice biryani"
+    description: "Authentic Hyderabadi style biryani"
   }
 ];
 
