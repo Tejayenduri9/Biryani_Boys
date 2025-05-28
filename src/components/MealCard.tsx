@@ -39,11 +39,11 @@ const MealCard: React.FC<MealCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`rounded-2xl overflow-hidden shadow-lg ${meal.bg} relative group`}
+      className={`h-full rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow ${meal.bg} relative group`}
       layout="position"
     >
       {/* Main Content */}
-      <motion.div className="p-6" layout="position">
+      <motion.div className="p-6 h-full flex flex-col" layout="position">
         {/* Header Section */}
         <motion.div className="flex justify-between items-start mb-6" layout="position">
           {/* Price and New Tag */}
@@ -52,7 +52,7 @@ const MealCard: React.FC<MealCardProps> = ({
               <span className="text-amber-600 dark:text-amber-500 font-bold">$ {meal.price}</span>
             </div>
             {meal.isNew && (
-              <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
+              <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg animate-pulse">
                 NEW
               </div>
             )}
@@ -68,7 +68,7 @@ const MealCard: React.FC<MealCardProps> = ({
         </motion.div>
 
         {/* Title and Description */}
-        <motion.div className="text-center space-y-4 mb-6" layout="position">
+        <motion.div className="text-center space-y-4 mb-6 flex-grow" layout="position">
           <h2 className="text-2xl font-bold">
             {meal.title}
           </h2>

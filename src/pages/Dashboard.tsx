@@ -130,60 +130,70 @@ const Dashboard: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="space-y-8 sm:space-y-12 lg:space-y-16 max-w-7xl mx-auto"
+            className="space-y-16 max-w-7xl mx-auto"
           >
             {mealBoxes.map((mealBox) => (
-              <div key={mealBox.title} className="space-y-6 sm:space-y-8">
+              <div key={mealBox.title} className="space-y-8">
                 {/* Category Header */}
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-center relative px-4"
+                  className="relative"
                 >
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-full border-t border-gray-300 dark:border-gray-700"></div>
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t-2 border-gray-200 dark:border-gray-700"></div>
                   </div>
                   
-                  <h2 className="relative inline-flex flex-wrap items-center justify-center gap-2 sm:gap-3 bg-[#fdf6e3] dark:bg-gray-900 px-3 sm:px-4 text-xl sm:text-2xl md:text-3xl font-bold">
-                    <span className="text-2xl sm:text-3xl md:text-4xl">{mealBox.emoji}</span>
-                    <span>{mealBox.title}</span>
-                    {mealBox.isNew && (
-                      <span className="bg-green-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full font-medium">
-                        NEW
-                      </span>
+                  <div className="relative flex flex-col items-center">
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      className="bg-[#fdf6e3] dark:bg-gray-900 px-6 py-3 rounded-2xl shadow-lg border-2 border-amber-200 dark:border-amber-800"
+                    >
+                      <h2 className="flex items-center gap-3 text-2xl sm:text-3xl md:text-4xl font-bold">
+                        <span className="text-3xl sm:text-4xl md:text-5xl">{mealBox.emoji}</span>
+                        <span>{mealBox.title}</span>
+                        {mealBox.isNew && (
+                          <span className="bg-green-500 text-white text-xs sm:text-sm px-2 py-1 rounded-full font-medium animate-pulse">
+                            NEW
+                          </span>
+                        )}
+                      </h2>
+                    </motion.div>
+                    
+                    {mealBox.description && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-4 bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner"
+                      >
+                        {mealBox.description}
+                      </motion.p>
                     )}
-                    <span className="text-base sm:text-lg md:text-xl font-normal text-gray-500 dark:text-gray-400">
-                      (${mealBox.price})
-                    </span>
-                  </h2>
-                  
-                  {mealBox.description && (
-                    <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-400 mt-4">
-                      {mealBox.description}
-                    </p>
-                  )}
+                  </div>
                 </motion.div>
 
                 {/* Dishes Grid */}
                 {mealBox.dishes ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                     {mealBox.dishes.map((dish) => (
-                      <MealCard
-                        key={dish.title}
-                        meal={dish}
-                        reviews={reviews[dish.title] || []}
-                        averageRating={getAverageRating(dish.title)}
-                        user={user}
-                        onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
-                        onUpdateReview={(reviewId, comment, rating) => 
-                          updateReview(dish.title, reviewId, comment, rating)
-                        }
-                        onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
-                      />
+                      <div key={dish.title} className="h-full">
+                        <MealCard
+                          meal={dish}
+                          reviews={reviews[dish.title] || []}
+                          averageRating={getAverageRating(dish.title)}
+                          user={user}
+                          onSubmitReview={(comment, rating) => submitReview(dish.title, comment, rating)}
+                          onUpdateReview={(reviewId, comment, rating) => 
+                            updateReview(dish.title, reviewId, comment, rating)
+                          }
+                          onDeleteReview={(reviewId) => deleteReview(dish.title, reviewId)}
+                        />
+                      </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="max-w-2xl mx-auto px-4">
+                  <div className="max-w-2xl mx-auto">
                     <MealCard
                       meal={mealBox}
                       reviews={reviews[mealBox.title] || []}
