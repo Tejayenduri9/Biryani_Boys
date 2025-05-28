@@ -39,22 +39,16 @@ const MealCard: React.FC<MealCardProps> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className={`h-full rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow ${meal.bg} relative group`}
+      className={`rounded-2xl overflow-hidden shadow-lg ${meal.bg} relative group`}
+      layout
     >
       {/* Main Content */}
-      <div className="p-6 h-full flex flex-col">
+      <motion.div className="p-6" layout>
         {/* Header Section */}
-        <div className="flex justify-between items-start mb-6">
-          {/* Price and New Tag */}
-          <div className="flex items-center gap-2">
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-full px-4 py-2">
-              <span className="text-amber-600 dark:text-amber-500 font-bold">$ {meal.price}</span>
-            </div>
-            {meal.isNew && (
-              <div className="bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg animate-pulse">
-                NEW
-              </div>
-            )}
+        <motion.div className="flex justify-between items-start mb-6" layout>
+          {/* Price Tag */}
+          <div className="bg-white dark:bg-gray-800 shadow-lg rounded-full px-4 py-2">
+            <span className="text-amber-600 dark:text-amber-500 font-bold">$ {meal.price}</span>
           </div>
 
           {/* Rating */}
@@ -64,10 +58,10 @@ const MealCard: React.FC<MealCardProps> = ({
             <span className="text-gray-400">/</span>
             <span className="text-gray-400">5</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Title and Description */}
-        <div className="text-center space-y-4 mb-6 flex-grow">
+        <motion.div className="text-center space-y-4 mb-6" layout>
           <h2 className="text-2xl font-bold">
             {meal.title}
           </h2>
@@ -76,7 +70,7 @@ const MealCard: React.FC<MealCardProps> = ({
               {meal.description}
             </p>
           )}
-        </div>
+        </motion.div>
 
         {/* WhatsApp Order Button */}
         <motion.button
@@ -84,19 +78,21 @@ const MealCard: React.FC<MealCardProps> = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white rounded-full py-2.5 px-4 flex items-center justify-center gap-2 shadow-lg transition-colors mb-4"
+          layout
         >
           <img 
-            src="https://cdn.cdnlogo.com/logos/w/25/whatsapp-icon.svg"
+            src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
             alt="WhatsApp"
             className="w-5 h-5"
           />
           <span className="font-medium">Order on WhatsApp</span>
         </motion.button>
 
-        {/* Reviews Toggle Button */}
+        {/* Expand/Collapse Button */}
         <motion.button
           onClick={() => setIsExpanded(!isExpanded)}
           className="w-full flex items-center justify-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+          layout
         >
           <span className="font-medium">
             {isExpanded ? 'Hide Reviews' : `Show Reviews (${reviews.length})`}
@@ -109,19 +105,37 @@ const MealCard: React.FC<MealCardProps> = ({
             <ChevronDown size={20} />
           </motion.div>
         </motion.button>
-      </div>
+      </motion.div>
 
       {/* Reviews Section */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isExpanded && (
           <motion.div
+            key={`reviews-${meal.title}`}
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="border-t border-gray-200 dark:border-gray-700"
+            animate={{ 
+              height: 'auto', 
+              opacity: 1,
+              transition: {
+                height: { duration: 0.3 },
+                opacity: { duration: 0.2, delay: 0.1 }
+              }
+            }}
+            exit={{ 
+              height: 0, 
+              opacity: 0,
+              transition: {
+                height: { duration: 0.2 },
+                opacity: { duration: 0.1 }
+              }
+            }}
+            className="border-t border-gray-200 dark:border-gray-700 overflow-hidden"
+            layout
           >
-            <div className="p-6 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm space-y-6">
+            <motion.div 
+              className="p-6 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm space-y-6"
+              layout
+            >
               {/* Review Form */}
               {user && !hasUserReviewed && (
                 <motion.div
@@ -129,6 +143,7 @@ const MealCard: React.FC<MealCardProps> = ({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
                   className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-lg"
+                  layout
                 >
                   <h3 className="font-semibold text-lg mb-4">Share Your Experience</h3>
                   <ReviewForm onSubmit={onSubmitReview} />
@@ -136,19 +151,27 @@ const MealCard: React.FC<MealCardProps> = ({
               )}
 
               {/* Reviews List */}
-              <div className="space-y-4">
+              <motion.div className="space-y-4" layout>
                 <h3 className="font-semibold text-xl">
                   {reviews.length > 0 ? 'Recent Reviews' : 'No reviews yet'}
                 </h3>
 
-                <div className="space-y-4 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-amber-200 dark:scrollbar-thumb-amber-800 scrollbar-track-transparent">
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="space-y-4 max-h-[28rem] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-amber-200 dark:scrollbar-thumb-amber-800 scrollbar-track-transparent"
+                  layout
+                >
                   {reviews.length > 0 ? (
-                    reviews.map((review) => (
+                    reviews.map((review, index) => (
                       <motion.div 
                         key={review.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
                         className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-md transition-transform hover:scale-[1.02]"
+                        layout
                       >
                         <ReviewItem
                           review={review}
@@ -159,15 +182,21 @@ const MealCard: React.FC<MealCardProps> = ({
                       </motion.div>
                     ))
                   ) : (
-                    <div className="text-center py-8 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-amber-200 dark:border-amber-800">
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-center py-8 bg-white dark:bg-gray-900 rounded-xl border border-dashed border-amber-200 dark:border-amber-800"
+                      layout
+                    >
                       <p className="text-gray-500 dark:text-gray-400">
                         Be the first to share your thoughts!
                       </p>
-                    </div>
+                    </motion.div>
                   )}
-                </div>
-              </div>
-            </div>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
