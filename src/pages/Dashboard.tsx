@@ -8,7 +8,14 @@ import { MealBox } from '../types';
 import { WifiOff } from 'lucide-react';
 
 const mealBoxes: MealBox[] = [
-  { title: "Chicken Biryani", emoji: "🍗", bg: "bg-yellow-100 dark:bg-yellow-900/30" },
+  { title: "Chicken Biryani", emoji: "🍗", bg: "bg-amber-100 dark:bg-amber-900/30" },
+  { title: "Veg Meal Box", emoji: "🥬", bg: "bg-green-100 dark:bg-green-900/30" },
+  { title: "Non-Veg Meal Box", emoji: "🍖", bg: "bg-red-100 dark:bg-red-900/30" },
+  { title: "Kadai Paneer", emoji: "🧀", bg: "bg-yellow-100 dark:bg-yellow-900/30" },
+  { title: "Okra Masala", emoji: "🥬", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
+  { title: "Bisi Bele Bath", emoji: "🍚", bg: "bg-orange-100 dark:bg-orange-900/30" },
+  { title: "Andhra Chicken", emoji: "🌶️", bg: "bg-red-100 dark:bg-red-900/30" },
+  { title: "Kadai Chicken", emoji: "🍗", bg: "bg-amber-100 dark:bg-amber-900/30" },
 ];
 
 const Dashboard: React.FC = () => {
@@ -43,7 +50,7 @@ const Dashboard: React.FC = () => {
           className="text-center mb-10"
         >
           <h1 className="text-3xl md:text-4xl font-bold mb-3">
-            Rate Your <span className="text-amber-600 dark:text-amber-500">Food</span> Experience
+            Rate Your <span className="text-amber-600 dark:text-amber-500">Biryani Boyz</span> Experience
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             We value your feedback! Share your thoughts on our delicious meals to help us serve you better.
@@ -68,20 +75,22 @@ const Dashboard: React.FC = () => {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="max-w-md mx-auto"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto"
           >
-            <MealCard
-              key={mealBoxes[0].title}
-              meal={mealBoxes[0]}
-              reviews={reviews[mealBoxes[0].title] || []}
-              averageRating={getAverageRating(mealBoxes[0].title)}
-              user={user}
-              onSubmitReview={(comment, rating) => submitReview(mealBoxes[0].title, comment, rating)}
-              onUpdateReview={(reviewId, comment, rating) => 
-                updateReview(mealBoxes[0].title, reviewId, comment, rating)
-              }
-              onDeleteReview={(reviewId) => deleteReview(mealBoxes[0].title, reviewId)}
-            />
+            {mealBoxes.map((meal) => (
+              <MealCard
+                key={meal.title}
+                meal={meal}
+                reviews={reviews[meal.title] || []}
+                averageRating={getAverageRating(meal.title)}
+                user={user}
+                onSubmitReview={(comment, rating) => submitReview(meal.title, comment, rating)}
+                onUpdateReview={(reviewId, comment, rating) => 
+                  updateReview(meal.title, reviewId, comment, rating)
+                }
+                onDeleteReview={(reviewId) => deleteReview(meal.title, reviewId)}
+              />
+            ))}
           </motion.div>
         )}
       </div>
