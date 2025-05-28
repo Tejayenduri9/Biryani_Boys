@@ -18,7 +18,7 @@ const mealBoxes: MealBox[] = [
     dishes: [
       {
         title: "Andhra Chicken",
-        description: "Comes with Pulav, Channa Masala, Chapati. Spicy Andhra style chicken curry with authentic spices and herbs",
+        description: "Spicy Andhra style chicken curry with authentic spices and herbs",
         emoji: "🌶️",
         bg: "bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20",
         price: 12,
@@ -26,7 +26,7 @@ const mealBoxes: MealBox[] = [
       },
       {
         title: "Kadai Chicken",
-        description: "Comes with Pulav, Channa Masala, Chapati. Tender chicken cooked with bell peppers in a rich tomato gravy",
+        description: "Tender chicken cooked with bell peppers in a rich tomato gravy",
         emoji: "🍗",
         bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
         price: 12,
@@ -44,7 +44,7 @@ const mealBoxes: MealBox[] = [
     dishes: [
       {
         title: "Kadai Paneer",
-        description: "Comes with Pulav, Channa Masala, Chapati. Fresh cottage cheese with bell peppers in aromatic spices",
+        description: "Fresh cottage cheese with bell peppers in aromatic spices",
         emoji: "🧀",
         bg: "bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20",
         price: 12,
@@ -52,7 +52,7 @@ const mealBoxes: MealBox[] = [
       },
       {
         title: "Okra Masala",
-        description: "Comes with Pulav, Channa Masala, Chapati. Crispy okra tossed with onions and Indian spices",
+        description: "Crispy okra tossed with onions and Indian spices",
         emoji: "🥬",
         bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
         price: 12,
@@ -66,7 +66,7 @@ const mealBoxes: MealBox[] = [
     emoji: "🍚",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
     price: 12,
-    description: "Comes with Pulav, Channa Masala, Chapati. Traditional Karnataka style spicy rice with lentils and vegetables",
+    description: "Traditional Karnataka style spicy rice with lentils and vegetables",
     isNew: true,
     tags: ["Pre-Order Required"]
   },
@@ -74,18 +74,19 @@ const mealBoxes: MealBox[] = [
     title: "Chicken Biryani",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30",
-    description: "Comes with Pulav, Channa Masala, Chapati. Authentic Hyderabadi style biryani",
+    price: 10,
+    description: "Authentic Hyderabadi style biryani",
     dishes: [
       {
         title: "Regular Chicken Biryani",
-        description: "Comes with Pulav, Channa Masala, Chapati. Classic Hyderabadi biryani with tender chicken pieces",
+        description: "Classic Hyderabadi biryani with tender chicken pieces",
         emoji: "🍗",
         bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
         price: 10
       },
       {
         title: "Extra Meat Chicken Biryani",
-        description: "Comes with Pulav, Channa Masala, Chapati. Our signature biryani loaded with extra chicken pieces",
+        description: "Our signature biryani loaded with extra chicken pieces",
         emoji: "🍖",
         bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
         price: 12,
@@ -166,10 +167,10 @@ const Dashboard: React.FC = () => {
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative flex flex-col items-center text-center"
+                  className="relative flex flex-col items-center text-center space-y-4"
                 >
                   <motion.div
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.02 }}
                     onClick={() => mealBox.dishes && handleMealClick(mealBox.title)}
                     className={`bg-gradient-to-r from-amber-500/10 via-amber-500/20 to-amber-500/10 dark:from-amber-500/20 dark:via-amber-500/30 dark:to-amber-500/20 px-4 sm:px-8 py-4 rounded-2xl shadow-lg backdrop-blur-sm w-full sm:w-auto ${mealBox.dishes ? 'cursor-pointer' : ''}`}
                   >
@@ -191,6 +192,15 @@ const Dashboard: React.FC = () => {
                       )}
                     </h2>
                   </motion.div>
+
+                  {/* Description */}
+                  <motion.p 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto bg-white/50 dark:bg-gray-800/50 px-4 py-2 rounded-full shadow-inner"
+                  >
+                    {mealBox.description}
+                  </motion.p>
                 </motion.div>
 
                 {/* Dishes Grid */}
