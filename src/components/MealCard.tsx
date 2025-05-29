@@ -39,9 +39,8 @@ const MealCard: React.FC<MealCardProps> = ({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       className={`rounded-2xl overflow-hidden shadow-lg ${meal.bg} relative group`}
-      layout
     >
-      {/* Image */}
+      {/* Image Container */}
       <div className="relative h-48 overflow-hidden">
         <motion.img
           src={meal.image}
@@ -64,26 +63,35 @@ const MealCard: React.FC<MealCardProps> = ({
           <span className="text-gray-400">/</span>
           <span className="text-gray-400">5</span>
         </div>
+
+        {/* New Tag */}
+        {meal.isNew && (
+          <div className="absolute bottom-4 right-4">
+            <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+              NEW
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Content */}
       <div className="p-6 space-y-4">
-        {/* Title and Tags */}
+        {/* Title and Description */}
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-bold">
             {meal.title}
           </h2>
-          {meal.isNew && (
-            <span className="inline-block bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium animate-pulse">
-              NEW
-            </span>
+          {meal.description && (
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
+              {meal.description}
+            </p>
           )}
           {meal.tags && meal.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 justify-center">
+            <div className="flex flex-wrap gap-2 justify-center mt-2">
               {meal.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-block bg-white/70 dark:bg-gray-800/70 text-xs px-2 py-1 rounded-full font-medium text-gray-700 dark:text-gray-300"
+                  className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-xs px-2 py-1 rounded-full font-medium"
                 >
                   {tag}
                 </span>
@@ -91,13 +99,6 @@ const MealCard: React.FC<MealCardProps> = ({
             </div>
           )}
         </div>
-        
-        {/* Description */}
-        {meal.description && (
-          <p className="text-gray-600 dark:text-gray-400 text-sm text-center">
-            {meal.description}
-          </p>
-        )}
 
         {/* Action Buttons */}
         <div className="flex gap-2">
