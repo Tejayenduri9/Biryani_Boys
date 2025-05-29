@@ -75,9 +75,9 @@ const MealCard: React.FC<MealCardProps> = ({
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-4">
+      <div className="p-6">
         {/* Title and Description */}
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 mb-6">
           <h2 className="text-2xl font-bold">
             {meal.title}
           </h2>
@@ -130,7 +130,7 @@ const MealCard: React.FC<MealCardProps> = ({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="space-y-4"
+              className="space-y-4 mt-6"
             >
               {/* Review Form */}
               {user && !hasUserReviewed && (

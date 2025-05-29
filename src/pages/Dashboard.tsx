@@ -7,7 +7,7 @@ import { useReviews } from '../hooks/useReviews';
 import { useAuth } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
 import { MealBox } from '../types';
-import { WifiOff, Search, ShoppingBag } from 'lucide-react';
+import { WifiOff, Search } from 'lucide-react';
 
 const mealBoxes: MealBox[] = [
   // Biryani Section
@@ -117,7 +117,7 @@ const Dashboard: React.FC = () => {
             className="text-center mb-8"
           >
             <h1 className="text-2xl sm:text-3xl font-bold mb-3">
-              Welcome to <span className="text-amber-600 dark:text-amber-500">Biryani Boyz</span>
+              Welcome to Biryani Boyz
             </h1>
             <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Experience the authentic flavors of India with our carefully curated menu.
