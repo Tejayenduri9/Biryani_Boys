@@ -17,8 +17,6 @@ interface MealCardProps {
   onDeleteReview: (reviewId: string) => Promise<boolean | undefined>;
 }
 
-type Tab = 'details' | 'reviews';
-
 const MealCard: React.FC<MealCardProps> = ({
   meal,
   reviews,
@@ -28,7 +26,7 @@ const MealCard: React.FC<MealCardProps> = ({
   onUpdateReview,
   onDeleteReview
 }) => {
-  const [activeTab, setActiveTab] = useState<Tab>('details');
+  const [activeTab, setActiveTab] = useState<'details' | 'reviews'>('details');
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const hasUserReviewed = user && reviews.some(r => r.user.uid === user.uid);
   const { addItem } = useCart();
@@ -77,7 +75,7 @@ const MealCard: React.FC<MealCardProps> = ({
       {/* Content */}
       <div className="p-6">
         {/* Title and Description */}
-        <div className="text-center space-y-2 mb-6">
+        <div className="text-center space-y-2 mb-4">
           <h2 className="text-2xl font-bold">
             {meal.title}
           </h2>

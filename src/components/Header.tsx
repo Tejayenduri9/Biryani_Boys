@@ -17,27 +17,9 @@ const Header: React.FC<{ onCartClick: () => void }> = ({ onCartClick }) => {
       transition={{ duration: 0.5 }}
       className="py-4 px-4 sm:px-6 flex justify-between items-center bg-white dark:bg-gray-800 shadow-sm"
     >
-      <div className="flex items-center gap-3 ml-14 md:ml-0">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative group cursor-pointer"
-          onClick={() => window.location.href = '/dashboard'}
-        >
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-600 to-amber-500 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden relative border-2 border-amber-600 dark:border-amber-500 bg-white">
-            <img 
-              src="/logo.jpg"
-              alt="Biryani"
-              className="w-full h-full object-cover animate-slowZoom ml-1"
-            />
-          </div>
-        </motion.div>
+      <div className="flex items-center gap-3">
         <motion.div 
           className="text-lg sm:text-xl font-bold whitespace-nowrap cursor-pointer"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
           onClick={() => window.location.href = '/dashboard'}
         >
           Biryani <span className="text-amber-600 dark:text-amber-500">Boyz</span>

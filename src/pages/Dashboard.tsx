@@ -117,13 +117,6 @@ const Dashboard: React.FC = () => {
               transition={{ duration: 0.6 }}
               className="text-center mb-8"
             >
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
-                Welcome to Biryani Boyz
-              </h1>
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Experience the authentic flavors of India with our carefully curated menu.
-              </p>
-              
               {offline && (
                 <div className="mt-4 flex items-center justify-center gap-2 text-amber-600 dark:text-amber-500">
                   <WifiOff className="w-4 h-4" />
