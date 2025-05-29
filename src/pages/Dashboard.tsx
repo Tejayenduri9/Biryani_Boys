@@ -120,7 +120,7 @@ const Dashboard: React.FC = () => {
               {offline && (
                 <div className="mt-4 flex items-center justify-center gap-2 text-amber-600 dark:text-amber-500">
                   <WifiOff className="w-4 h-4" />
-                  <span className="text-xs sm:text-sm">You're offline. Changes will sync when you're back online.</span>
+                  <span className="text-xs sm:text-sm">You're offline. Changes will sync when you\'re back online.</span>
                 </div>
               )}
 
