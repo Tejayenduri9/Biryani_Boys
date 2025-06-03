@@ -17,17 +17,27 @@ const textVariants = {
   }
 };
 
-const AnimatedText: React.FC<{ text: string }> = ({ text }) => {
+const AnimatedText: React.FC<{ text: string; delay?: number }> = ({ text, delay = 0 }) => {
   return (
-    <motion.span
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      variants={textVariants}
-      className="bg-gradient-to-r from-amber-500 to-amber-600 text-transparent bg-clip-text"
-    >
-      {text}
-    </motion.span>
+    <motion.div className="inline-block overflow-hidden">
+      {text.split('').map((char, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: delay + index * 0.05,
+            type: "spring",
+            damping: 12,
+            stiffness: 100
+          }}
+          className="inline-block"
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.div>
   );
 };
 
@@ -92,16 +102,16 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
             {/* Content */}
             <div className="absolute inset-0 flex flex-col justify-end p-8 transform transition-transform duration-300 group-hover:translate-y-[-10px]">
               <motion.h3 
-                className="text-3xl font-bold text-white mb-2"
+                className="text-3xl font-playfair font-bold text-white mb-2"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                {card.category}
+                <AnimatedText text={card.category} delay={0.3} />
               </motion.h3>
               {card.description && (
                 <motion.p 
-                  className="text-white/90 text-sm"
+                  className="text-white/90 text-sm font-poppins"
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
@@ -110,7 +120,7 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                 </motion.p>
               )}
               <motion.p 
-                className="text-amber-400 text-sm mt-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="text-amber-400 text-sm mt-4 font-poppins font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
@@ -137,10 +147,18 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                   key={index}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ 
+                    delay: index * 0.1,
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 10
+                  }}
                   className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
-                  <h4 className="font-semibold text-2xl text-white">{item}</h4>
+                  <AnimatedText 
+                    text={item} 
+                    delay={index * 0.1 + 0.2}
+                  />
                 </motion.div>
               ))}
             </motion.div>
