@@ -63,17 +63,20 @@ const menuCards = [
   }
 ];
 
-const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
-
+const FlipCard: React.FC<{ 
+  card: typeof menuCards[0]; 
+  isActive: boolean;
+  onFlip: () => void;
+}> = ({ card, isActive, onFlip }) => {
   return (
-    <div 
+    <motion.div 
       className="w-full h-[400px] perspective-1000 cursor-pointer"
-      onClick={() => setIsFlipped(!isFlipped)}
+      onClick={onFlip}
+      layout
     >
       <motion.div
         className="relative w-full h-full preserve-3d transition-all duration-500"
-        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        animate={{ rotateY: isActive ? 180 : 0 }}
       >
         {/* Front */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
@@ -91,7 +94,12 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
             </div>
 
             <div className="absolute inset-0 flex flex-col justify-end p-8">
-              <motion.div className="transform transition-transform duration-300 group-hover:translate-y-[-10px]">
+              <motion.div 
+                className="transform transition-transform duration-300 group-hover:translate-y-[-10px]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
                 <LetterReveal 
                   text={card.category}
                   delay={0.3}
@@ -123,10 +131,13 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
         {/* Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
           <motion.div 
-            className="w-full h-full rounded-2xl p-8 shadow-xl bg-gradient-to-br from-amber-500 to-amber-600 flex flex-col items-center justify-center"
+            className="w-full h-full rounded-2xl p-8 shadow-xl bg-gradient-to-br from-amber-500 to-amber-600"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
             <motion.div 
-              className="space-y-6 w-full"
+              className="space-y-6 w-full h-full flex flex-col justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -142,12 +153,12 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                     stiffness: 100,
                     damping: 10
                   }}
-                  className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg transform hover:scale-105 transition-transform duration-300"
+                  className="text-center py-4 px-6 bg-white rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
                   <LetterReveal 
                     text={item}
                     delay={index * 0.1 + 0.2}
-                    className="text-2xl font-dancing text-white tracking-wider"
+                    className="text-2xl font-dancing text-gray-900 tracking-wider"
                   />
                 </motion.div>
               ))}
@@ -155,12 +166,13 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
           </motion.div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 };
 
 const LandingPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState(false);
+  const [activeCard, setActiveCard] = useState<number | null>(null);
   const { user } = useAuth();
   const { reviews: allReviews, loading } = useReviews(menuCards);
 
@@ -278,9 +290,17 @@ const LandingPage: React.FC = () => {
 
       <section className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            <LetterReveal text="Our Menu" />
-          </h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <LetterReveal 
+              text="Our Menu"
+              className="text-4xl font-bold inline-block"
+            />
+          </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {menuCards.map((card, index) => (
@@ -291,7 +311,11 @@ const LandingPage: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
               >
-                <FlipCard card={card} />
+                <FlipCard 
+                  card={card} 
+                  isActive={activeCard === index}
+                  onFlip={() => setActiveCard(activeCard === index ? null : index)}
+                />
               </motion.div>
             ))}
           </div>
