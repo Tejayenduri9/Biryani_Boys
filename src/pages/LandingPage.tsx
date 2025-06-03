@@ -5,6 +5,32 @@ import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 
+const textVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
+const AnimatedText: React.FC<{ text: string }> = ({ text }) => {
+  return (
+    <motion.span
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={textVariants}
+      className="bg-gradient-to-r from-amber-500 to-amber-600 text-transparent bg-clip-text"
+    >
+      {text}
+    </motion.span>
+  );
+};
+
 const menuCards = [
   {
     category: "Biryani Special",
