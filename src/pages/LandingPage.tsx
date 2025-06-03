@@ -173,20 +173,16 @@ const FlipCard: React.FC<{
 const MenuSection: React.FC = () => {
   return (
     <div className="relative py-20">
-      {/* Decorative Elements */}
-      <div className="absolute left-0 top-0 w-1/3">
-        <img 
-          src="https://images.pexels.com/photos/6025811/pexels-photo-6025811.jpeg"
-          alt="Decorative leaf"
-          className="w-full opacity-20"
-        />
-      </div>
-      <div className="absolute right-0 top-0 w-1/3 transform rotate-180">
-        <img 
-          src="https://images.pexels.com/photos/6025811/pexels-photo-6025811.jpeg"
-          alt="Decorative leaf"
-          className="w-full opacity-20"
-        />
+      {/* Spices Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <img 
+            src="https://images.pexels.com/photos/4226896/pexels-photo-4226896.jpeg"
+            alt="Indian Spices"
+            className="w-full h-full object-cover opacity-10"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-gray-900 dark:to-gray-900" />
+        </div>
       </div>
 
       <div className="relative max-w-6xl mx-auto text-center px-4">
@@ -202,39 +198,33 @@ const MenuSection: React.FC = () => {
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
               transition={{ type: "spring", stiffness: 100 }}
-              className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center"
+              className="w-20 h-20 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center"
             >
-              <Utensils className="w-8 h-8 text-amber-600" />
+              <img 
+                src="https://images.pexels.com/photos/4226805/pexels-photo-4226805.jpeg"
+                alt="Spices"
+                className="w-12 h-12 object-cover rounded-full"
+              />
             </motion.div>
           </div>
 
-          <div className="space-y-2">
-            <motion.p
+          <div className="space-y-4">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-lg text-amber-600 font-medium"
+              className="flex flex-col items-center"
             >
-              A place where
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl font-playfair font-bold"
-            >
-              <span className="text-amber-500">food</span> and <span className="text-amber-500">people</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="text-lg text-gray-600 dark:text-gray-400"
-            >
-              come together to create a memorable experience.
-            </motion.p>
+              <span className="text-5xl md:text-6xl font-dancing text-amber-600">
+                Discover
+              </span>
+              <h2 className="text-4xl md:text-5xl font-playfair font-bold mt-2">
+                Our Flavorful Menu
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl">
+                Each dish is crafted with authentic Indian spices, bringing you the true taste of tradition
+              </p>
+            </motion.div>
           </div>
 
           <motion.div
@@ -244,16 +234,6 @@ const MenuSection: React.FC = () => {
             transition={{ delay: 0.4 }}
             className="w-24 h-1 bg-amber-500 mx-auto"
           />
-
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="text-5xl md:text-6xl font-dancing text-amber-600 mt-8"
-          >
-            Our Menu
-          </motion.h3>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
