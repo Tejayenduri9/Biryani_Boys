@@ -131,7 +131,7 @@ const FlipCard: React.FC<{
         {/* Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
           <motion.div 
-            className="w-full h-full rounded-2xl p-8 shadow-xl bg-gradient-to-br from-amber-500 to-amber-600"
+            className="w-full h-full rounded-2xl p-8 shadow-xl bg-white dark:bg-gray-800"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -153,12 +153,12 @@ const FlipCard: React.FC<{
                     stiffness: 100,
                     damping: 10
                   }}
-                  className="text-center py-4 px-6 bg-white rounded-lg transform hover:scale-105 transition-transform duration-300"
+                  className="text-center py-4 px-6 bg-amber-50 dark:bg-amber-900/20 rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
                   <LetterReveal 
                     text={item}
                     delay={index * 0.1 + 0.2}
-                    className="text-2xl font-dancing text-gray-900 tracking-wider"
+                    className="text-2xl font-dancing text-gray-900 dark:text-white tracking-wider"
                   />
                 </motion.div>
               ))}
@@ -171,6 +171,12 @@ const FlipCard: React.FC<{
 };
 
 const MenuSection: React.FC = () => {
+  const [activeCard, setActiveCard] = useState<number | null>(null);
+
+  const handleCardFlip = (index: number) => {
+    setActiveCard(activeCard === index ? null : index);
+  };
+
   return (
     <div className="relative py-20">
       {/* Spices Background */}
@@ -247,8 +253,8 @@ const MenuSection: React.FC = () => {
             >
               <FlipCard 
                 card={card} 
-                isActive={false}
-                onFlip={() => {}}
+                isActive={activeCard === index}
+                onFlip={() => handleCardFlip(index)}
               />
             </motion.div>
           ))}
@@ -260,7 +266,6 @@ const MenuSection: React.FC = () => {
 
 const LandingPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState(false);
-  const [activeCard, setActiveCard] = useState<number | null>(null);
   const { user } = useAuth();
   const { reviews: allReviews, loading } = useReviews(menuCards);
 
