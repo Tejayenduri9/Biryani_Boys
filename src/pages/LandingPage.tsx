@@ -8,45 +8,30 @@ const menuCards = [
   {
     category: "Biryani Special",
     description: "Served with Raita, Salan, and Onions",
-    items: [
-      {
-        title: "Chicken Biryani",
-        price: "$10.00",
-        image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
-      },
-      {
-        title: "Extra Meat Chicken Biryani",
-        price: "$12.00",
-        image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
-      }
-    ]
+    bgColor: "from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30",
+    items: ["Chicken Biryani", "Extra Meat Chicken Biryani"],
+    image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
   },
   {
     category: "Veg Meal Box",
     description: "Served with Pulav, Channa Masala, and Chapati",
-    items: [
-      {
-        title: "Kadai Paneer",
-        price: "$12.00",
-        image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
-      },
-      {
-        title: "Okra Masala",
-        price: "$12.00",
-        image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
-      }
-    ]
+    bgColor: "from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30",
+    items: ["Kadai Paneer", "Okra Masala"],
+    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
+  },
+  {
+    category: "Non-Veg Meal Box",
+    description: "Served with Pulav, Channa Masala, and Chapati",
+    bgColor: "from-red-100 to-rose-100 dark:from-red-900/30 dark:to-rose-900/30",
+    items: ["Andhra Chicken", "Kadai Chicken"],
+    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
   },
   {
     category: "Others",
     description: "Traditional South Indian Specialties",
-    items: [
-      {
-        title: "Bisi Bele Bath",
-        price: "$12.00",
-        image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
-      }
-    ]
+    bgColor: "from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30",
+    items: ["Bisi Bele Bath"],
+    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
   }
 ];
 
@@ -79,7 +64,7 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
 
   return (
     <div 
-      className="w-full h-[400px] perspective-1000 cursor-pointer"
+      className="w-full h-[400px] perspective-1000 cursor-pointer group"
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
@@ -88,43 +73,89 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
       >
         {/* Front */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
-          <div className="w-full h-full bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center">
-            <h3 className="text-3xl font-bold mb-4">{card.category}</h3>
-            <div className="w-24 h-24 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center mb-4">
+          <motion.div 
+            className={`w-full h-full rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center bg-gradient-to-br ${card.bgColor}`}
+            whileHover={{ scale: 1.02 }}
+          >
+            <motion.h3 
+              className="text-3xl font-bold mb-4"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {card.category}
+            </motion.h3>
+            <motion.div 
+              className="w-24 h-24 rounded-full overflow-hidden mb-4 ring-4 ring-white dark:ring-gray-800 shadow-lg"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.4 }}
+            >
               <img
-                src={card.items[0].image}
+                src={card.image}
                 alt={card.category}
-                className="w-full h-full object-cover rounded-full"
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">{card.description}</p>
-            <p className="mt-4 text-sm text-amber-600 dark:text-amber-500">Click to see menu items</p>
-          </div>
+            </motion.div>
+            <motion.p 
+              className="text-gray-700 dark:text-gray-300"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              {card.description}
+            </motion.p>
+            <motion.p 
+              className="mt-4 text-sm text-amber-600 dark:text-amber-500 font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
+              Click to see menu items
+            </motion.p>
+          </motion.div>
         </div>
 
         {/* Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
-          <div className="w-full h-full bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-xl">
-            <h3 className="text-2xl font-bold mb-4 text-center">{card.category} Menu</h3>
-            <div className="space-y-4">
+          <motion.div 
+            className={`w-full h-full rounded-2xl p-6 shadow-xl bg-gradient-to-br ${card.bgColor} flex flex-col items-center justify-center`}
+            whileHover={{ scale: 1.02 }}
+          >
+            <motion.h3 
+              className="text-2xl font-bold mb-6 text-center"
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+            >
+              {card.category}
+            </motion.h3>
+            <motion.div 
+              className="space-y-4 w-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
               {card.items.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-16 h-16 rounded-lg object-cover"
-                  />
-                  <div>
-                    <h4 className="font-semibold">{item.title}</h4>
-                    <p className="text-amber-600 dark:text-amber-500">{item.price}</p>
-                  </div>
-                </div>
+                <motion.div
+                  key={index}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: index * 0.2 + 0.4 }}
+                  className="text-center py-3 px-6 rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md"
+                >
+                  <h4 className="font-semibold text-lg">{item}</h4>
+                </motion.div>
               ))}
-            </div>
-            <p className="mt-4 text-sm text-center text-amber-600 dark:text-amber-500">
+            </motion.div>
+            <motion.p 
+              className="mt-6 text-sm text-center text-amber-600 dark:text-amber-500 font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+            >
               Click to flip back
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
       </motion.div>
     </div>
