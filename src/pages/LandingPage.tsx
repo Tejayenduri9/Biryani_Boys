@@ -6,18 +6,6 @@ import SignIn from '../components/SignIn';
 
 const menuCards = [
   {
-    category: "Starters Veg & Non-Veg",
-    items: [
-      "Mokkajonna Vada",
-      "Veg Lollipop",
-      "Paneer Pepper Fry",
-      "Chicken 65",
-      "Andhra Apollo Fish",
-      "Garala Prawn Vepudu"
-    ],
-    bgColor: "bg-amber-400"
-  },
-  {
     category: "Biryani Special",
     description: "Served with Raita, Salan, and Onions",
     items: ["Chicken Biryani", "Extra Meat Chicken Biryani"],
@@ -33,6 +21,11 @@ const menuCards = [
     category: "Non-Veg Meal Box",
     description: "Served with Pulav, Channa Masala, and Chapati",
     items: ["Andhra Chicken", "Kadai Chicken"],
+    bgColor: "bg-amber-400"
+  },
+  {
+    category: "Others",
+    items: ["Bisi Bele Bath"],
     bgColor: "bg-amber-400"
   }
 ];
