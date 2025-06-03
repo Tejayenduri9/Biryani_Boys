@@ -7,7 +7,7 @@ import SignIn from '../components/SignIn';
 const menuCards = [
   {
     category: "Biryani Special",
-    description: "Served with Raita, Salan, and Onions",
+    description: "Served with Raita",
     items: ["Chicken Biryani", "Extra Meat Chicken Biryani"],
     bgColor: "bg-amber-400",
     image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
