@@ -10,21 +10,24 @@ const menuShowcase = [
     price: "$10.00",
     image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg",
     rating: 4.9,
-    category: "Signature Dish"
+    category: "Signature Dish",
+    description: "Fragrant basmati rice cooked with tender chicken pieces and aromatic spices"
   },
   {
     title: "Kadai Paneer",
     price: "$12.00",
     image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg",
     rating: 4.8,
-    category: "Vegetarian Special"
+    category: "Vegetarian Special",
+    description: "Cottage cheese cubes cooked with bell peppers in a spicy tomato gravy"
   },
   {
     title: "Andhra Chicken",
     price: "$12.00",
     image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg",
     rating: 4.7,
-    category: "Chef's Special"
+    category: "Chef's Special",
+    description: "Spicy Andhra-style chicken curry with authentic coastal flavors"
   }
 ];
 
@@ -52,17 +55,66 @@ const reviews = [
   }
 ];
 
+const FlipCard: React.FC<{ item: typeof menuShowcase[0] }> = ({ item }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <motion.div
+      className="relative w-full h-96 cursor-pointer perspective-1000"
+      onClick={() => setIsFlipped(!isFlipped)}
+      initial={false}
+    >
+      <motion.div
+        className="w-full h-full relative preserve-3d transition-transform duration-500"
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+      >
+        {/* Front */}
+        <div className="absolute inset-0 w-full h-full backface-hidden">
+          <div className="relative w-full h-full bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-xl">
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-2/3 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+              <span className="text-amber-400 text-sm font-medium mb-2 block">
+                {item.category}
+              </span>
+              <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
+              <div className="flex items-center justify-between">
+                <span className="text-xl font-bold text-amber-400">{item.price}</span>
+                <div className="flex items-center gap-1">
+                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                  <span>{item.rating}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Back */}
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
+          <div className="w-full h-full bg-amber-600 dark:bg-amber-700 rounded-2xl p-6 flex flex-col justify-center items-center text-white">
+            <h3 className="text-2xl font-bold mb-4 text-center">{item.title}</h3>
+            <p className="text-lg text-center mb-6">{item.description}</p>
+            <div className="text-center">
+              <p className="text-2xl font-bold mb-2">{item.price}</p>
+              <div className="flex items-center justify-center gap-1">
+                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                <span className="text-lg">{item.rating}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 const LandingPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
   const { user } = useAuth();
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % menuShowcase.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
 
   const handleOrderOnline = () => {
     if (user) {
@@ -122,46 +174,27 @@ const LandingPage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Menu Showcase */}
-          <div className="max-w-4xl mx-auto mb-12">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-xl"
-              >
-                <div className="flex items-center gap-6">
-                  <motion.img
-                    src={menuShowcase[activeIndex].image}
-                    alt={menuShowcase[activeIndex].title}
-                    className="w-32 h-32 rounded-xl object-cover"
-                    whileHover={{ scale: 1.05 }}
-                  />
-                  <div className="text-left">
-                    <span className="text-amber-400 text-sm font-medium">
-                      {menuShowcase[activeIndex].category}
-                    </span>
-                    <h3 className="text-2xl font-bold mb-2">
-                      {menuShowcase[activeIndex].title}
-                    </h3>
-                    <div className="flex items-center gap-4">
-                      <span className="text-xl font-bold text-amber-400">
-                        {menuShowcase[activeIndex].price}
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                        <span className="text-sm">
-                          {menuShowcase[activeIndex].rating}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+          {/* Menu Cards */}
+          <div className="max-w-6xl mx-auto mb-12">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-3xl font-bold mb-8"
+            >
+              Our Signature Dishes
+            </motion.h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+              {menuShowcase.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.2 }}
+                >
+                  <FlipCard item={item} />
+                </motion.div>
+              ))}
+            </div>
           </div>
 
           {/* CTA Buttons */}
