@@ -6,32 +6,34 @@ import SignIn from '../components/SignIn';
 
 const menuCards = [
   {
+    category: "Starters Veg & Non-Veg",
+    items: [
+      "Mokkajonna Vada",
+      "Veg Lollipop",
+      "Paneer Pepper Fry",
+      "Chicken 65",
+      "Andhra Apollo Fish",
+      "Garala Prawn Vepudu"
+    ],
+    bgColor: "bg-amber-400"
+  },
+  {
     category: "Biryani Special",
     description: "Served with Raita, Salan, and Onions",
-    bgColor: "from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30",
     items: ["Chicken Biryani", "Extra Meat Chicken Biryani"],
-    image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
+    bgColor: "bg-amber-400"
   },
   {
     category: "Veg Meal Box",
     description: "Served with Pulav, Channa Masala, and Chapati",
-    bgColor: "from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30",
     items: ["Kadai Paneer", "Okra Masala"],
-    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
+    bgColor: "bg-amber-400"
   },
   {
     category: "Non-Veg Meal Box",
     description: "Served with Pulav, Channa Masala, and Chapati",
-    bgColor: "from-red-100 to-rose-100 dark:from-red-900/30 dark:to-rose-900/30",
     items: ["Andhra Chicken", "Kadai Chicken"],
-    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
-  },
-  {
-    category: "Others",
-    description: "Traditional South Indian Specialties",
-    bgColor: "from-purple-100 to-indigo-100 dark:from-purple-900/30 dark:to-indigo-900/30",
-    items: ["Bisi Bele Bath"],
-    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
+    bgColor: "bg-amber-400"
   }
 ];
 
@@ -64,7 +66,7 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
 
   return (
     <div 
-      className="w-full h-[400px] perspective-1000 cursor-pointer group"
+      className="w-full h-[400px] perspective-1000 cursor-pointer"
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <motion.div
@@ -74,39 +76,29 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
         {/* Front */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <motion.div 
-            className={`w-full h-full rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center bg-gradient-to-br ${card.bgColor}`}
+            className={`w-full h-full rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center ${card.bgColor}`}
             whileHover={{ scale: 1.02 }}
           >
             <motion.h3 
-              className="text-3xl font-bold mb-4"
+              className="text-3xl font-bold mb-4 text-white"
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
               {card.category}
             </motion.h3>
-            <motion.div 
-              className="w-24 h-24 rounded-full overflow-hidden mb-4 ring-4 ring-white dark:ring-gray-800 shadow-lg"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              <img
-                src={card.image}
-                alt={card.category}
-                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-              />
-            </motion.div>
+            {card.description && (
+              <motion.p 
+                className="text-white/90"
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                {card.description}
+              </motion.p>
+            )}
             <motion.p 
-              className="text-gray-700 dark:text-gray-300"
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              {card.description}
-            </motion.p>
-            <motion.p 
-              className="mt-4 text-sm text-amber-600 dark:text-amber-500 font-medium"
+              className="mt-4 text-sm text-white font-medium"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8 }}
@@ -119,16 +111,8 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
         {/* Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
           <motion.div 
-            className={`w-full h-full rounded-2xl p-6 shadow-xl bg-gradient-to-br ${card.bgColor} flex flex-col items-center justify-center`}
-            whileHover={{ scale: 1.02 }}
+            className={`w-full h-full rounded-2xl p-6 shadow-xl ${card.bgColor} flex flex-col items-center justify-center`}
           >
-            <motion.h3 
-              className="text-2xl font-bold mb-6 text-center"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-            >
-              {card.category}
-            </motion.h3>
             <motion.div 
               className="space-y-4 w-full"
               initial={{ opacity: 0 }}
@@ -140,21 +124,13 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                   key={index}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.2 + 0.4 }}
-                  className="text-center py-3 px-6 rounded-lg bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md"
+                  transition={{ delay: index * 0.1 }}
+                  className="text-center py-2 px-4"
                 >
-                  <h4 className="font-semibold text-lg">{item}</h4>
+                  <h4 className="font-semibold text-xl text-white">{item}</h4>
                 </motion.div>
               ))}
             </motion.div>
-            <motion.p 
-              className="mt-6 text-sm text-center text-amber-600 dark:text-amber-500 font-medium"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              Click to flip back
-            </motion.p>
           </motion.div>
         </div>
       </motion.div>
@@ -243,12 +219,12 @@ const LandingPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl font-bold text-center mb-16"
+            className="text-4xl font-bold text-center mb-16 animate-float"
           >
             Our Menu
           </motion.h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {menuCards.map((card, index) => (
               <motion.div
                 key={index}
