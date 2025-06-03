@@ -187,7 +187,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="relative min-h-screen flex items-center justify-center">
+      <section className="relative min-h-screen flex items-center justify-center">
         <div className="absolute inset-0">
           <img
             src="https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
@@ -259,164 +259,165 @@ const LandingPage: React.FC = () => {
             </motion.div>
           </motion.div>
         </div>
+      </section>
 
-        {/* Menu Cards Section */}
-        <div className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
-          <div className="max-w-6xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold text-center mb-16"
-            >
-              Our <span className="text-amber-500">Menu</span>
-            </motion.h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {menuCards.map((card, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                >
-                  <FlipCard card={card} />
-                </motion.div>
-              ))}
-            </div>
+      {/* Menu Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            Our <span className="text-amber-500">Menu</span>
+          </motion.h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {menuCards.map((card, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+              >
+                <FlipCard card={card} />
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Reviews Section */}
-        <div className="py-20 px-4 bg-white dark:bg-gray-800 relative">
-          <div className="max-w-6xl mx-auto">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-4xl font-bold text-center mb-16"
-            >
-              What Our <span className="text-amber-500">Customers</span> Say
-            </motion.h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {reviews.map((review, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl"
-                >
-                  <div className="flex items-center gap-4 mb-6">
-                    <img
-                      src={review.image}
-                      alt={review.name}
-                      className="w-16 h-16 rounded-full object-cover ring-2 ring-amber-500"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-lg">{review.name}</h3>
-                      <div className="flex gap-1">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-4 h-4 text-amber-500 fill-amber-500"
-                          />
-                        ))}
-                      </div>
+      {/* Reviews Section */}
+      <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-bold text-center mb-16"
+          >
+            What Our <span className="text-amber-500">Customers</span> Say
+          </motion.h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {reviews.map((review, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <img
+                    src={review.image}
+                    alt={review.name}
+                    className="w-16 h-16 rounded-full object-cover ring-2 ring-amber-500"
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg">{review.name}</h3>
+                    <div className="flex gap-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          className="w-4 h-4 text-amber-500 fill-amber-500"
+                        />
+                      ))}
                     </div>
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4 italic">
-                    "{review.text}"
-                  </p>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {review.date}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+                <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4 italic">
+                  "{review.text}"
+                </p>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {review.date}
+                </span>
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 px-4 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
-          
-          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-            {/* Contact Info */}
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
-              <motion.a
-                href="tel:+15185287832"
-                className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                <Phone className="w-5 h-5" />
-                <span>+1 (518) 528-7832</span>
-              </motion.a>
-              <motion.a
-                href="mailto:info@biryaniboyz.com"
-                className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                <Mail className="w-5 h-5" />
-                <span>biryaniboyz99@gmail.com</span>
-              </motion.a>
-            </div>
+      {/* Footer */}
+      <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 px-4 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
+        
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+          {/* Contact Info */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
+            <motion.a
+              href="tel:+15185287832"
+              className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
+              whileHover={{ x: 5 }}
+            >
+              <Phone className="w-5 h-5" />
+              <span>+1 (518) 528-7832</span>
+            </motion.a>
+            <motion.a
+              href="mailto:info@biryaniboyz.com"
+              className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
+              whileHover={{ x: 5 }}
+            >
+              <Mail className="w-5 h-5" />
+              <span>biryaniboyz99@gmail.com</span>
+            </motion.a>
+          </div>
 
-            {/* Hours */}
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold mb-6">Hours</h3>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 text-gray-300">
-                  <Clock className="w-5 h-5 text-amber-500" />
-                  <div>
-                    <p className="font-medium">Thursday & Friday</p>
-                    <p>10:00 AM - 4:00 PM</p>
-                  </div>
+          {/* Hours */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold mb-6">Hours</h3>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-gray-300">
+                <Clock className="w-5 h-5 text-amber-500" />
+                <div>
+                  <p className="font-medium">Thursday & Friday</p>
+                  <p>10:00 AM - 4:00 PM</p>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Social Links */}
-            <div className="space-y-6">
-              <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
-              <div className="flex gap-4">
-                <motion.a
-                  href="https://instagram.com/biryaniboyz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
-                >
-                  <Instagram className="w-6 h-6" />
-                </motion.a>
-                <motion.a
-                  href="https://facebook.com/biryaniboyz"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ y: -5, scale: 1.1 }}
-                  className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
-                >
-                  <Facebook className="w-6 h-6" />
-                </motion.a>
-              </div>
+          {/* Social Links */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
+            <div className="flex gap-4">
+              <motion.a
+                href="https://instagram.com/biryaniboyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5, scale: 1.1 }}
+                className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
+              >
+                <Instagram className="w-6 h-6" />
+              </motion.a>
+              <motion.a
+                href="https://facebook.com/biryaniboyz"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5, scale: 1.1 }}
+                className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
+              >
+                <Facebook className="w-6 h-6" />
+              </motion.a>
             </div>
           </div>
+        </div>
 
-          <div className="mt-16 text-center text-gray-400 relative">
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-            >
-              © 2025 Biryani Boyz. All rights reserved.
-            </motion.p>
-          </div>
-        </footer>
-      </div>
+        <div className="mt-16 text-center text-gray-400 relative">
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-sm"
+          >
+            © 2025 Biryani Boyz. All rights reserved.
+          </motion.p>
+        </div>
+      </footer>
     </div>
   );
 };
