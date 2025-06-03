@@ -9,24 +9,28 @@ const menuCards = [
     category: "Biryani Special",
     description: "Served with Raita, Salan, and Onions",
     items: ["Chicken Biryani", "Extra Meat Chicken Biryani"],
-    bgColor: "bg-amber-400"
+    bgColor: "bg-amber-400",
+    image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
   },
   {
     category: "Veg Meal Box",
     description: "Served with Pulav, Channa Masala, and Chapati",
     items: ["Kadai Paneer", "Okra Masala"],
-    bgColor: "bg-amber-400"
+    bgColor: "bg-amber-400",
+    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
   },
   {
     category: "Non-Veg Meal Box",
     description: "Served with Pulav, Channa Masala, and Chapati",
     items: ["Andhra Chicken", "Kadai Chicken"],
-    bgColor: "bg-amber-400"
+    bgColor: "bg-amber-400",
+    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
   },
   {
     category: "Others",
     items: ["Bisi Bele Bath"],
-    bgColor: "bg-amber-400"
+    bgColor: "bg-amber-400",
+    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
   }
 ];
 
@@ -69,45 +73,58 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
         {/* Front */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <motion.div 
-            className={`w-full h-full rounded-2xl p-6 shadow-xl flex flex-col items-center justify-center text-center ${card.bgColor}`}
+            className="w-full h-full rounded-2xl overflow-hidden shadow-xl relative"
             whileHover={{ scale: 1.02 }}
           >
-            <motion.h3 
-              className="text-3xl font-bold mb-4 text-white"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              {card.category}
-            </motion.h3>
-            {card.description && (
-              <motion.p 
-                className="text-white/90"
-                initial={{ y: -20, opacity: 0 }}
+            {/* Background Image */}
+            <div className="absolute inset-0">
+              <img 
+                src={card.image} 
+                alt={card.category}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            </div>
+
+            {/* Content */}
+            <div className="absolute inset-0 flex flex-col justify-end p-8">
+              <motion.h3 
+                className="text-3xl font-bold text-white mb-2"
+                initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 0.2 }}
               >
-                {card.description}
+                {card.category}
+              </motion.h3>
+              {card.description && (
+                <motion.p 
+                  className="text-white/90 text-sm"
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  {card.description}
+                </motion.p>
+              )}
+              <motion.p 
+                className="text-amber-400 text-sm mt-4 font-medium"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Click to see menu items
               </motion.p>
-            )}
-            <motion.p 
-              className="mt-4 text-sm text-white font-medium"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
-            >
-              Click to see menu items
-            </motion.p>
+            </div>
           </motion.div>
         </div>
 
         {/* Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
           <motion.div 
-            className={`w-full h-full rounded-2xl p-6 shadow-xl ${card.bgColor} flex flex-col items-center justify-center`}
+            className="w-full h-full rounded-2xl p-8 shadow-xl bg-gradient-to-br from-amber-500 to-amber-600 flex flex-col items-center justify-center"
           >
             <motion.div 
-              className="space-y-4 w-full"
+              className="space-y-6 w-full"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -118,9 +135,9 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  className="text-center py-2 px-4"
+                  className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg"
                 >
-                  <h4 className="font-semibold text-xl text-white">{item}</h4>
+                  <h4 className="font-semibold text-2xl text-white">{item}</h4>
                 </motion.div>
               ))}
             </motion.div>
