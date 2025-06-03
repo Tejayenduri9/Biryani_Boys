@@ -1,3 +1,10 @@
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Utensils } from 'lucide-react';
+import { FlipCard } from '../components/FlipCard';
+import { SequentialText } from '../components/SequentialText';
+import { menuCards } from '../data/menuCards';
+
 const MenuSection: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
@@ -114,4 +121,4 @@ const MenuSection: React.FC = () => {
   );
 };
 
-export default MenuSection
+export default MenuSection;
