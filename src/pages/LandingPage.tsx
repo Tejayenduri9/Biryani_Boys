@@ -260,20 +260,6 @@ const LandingPage: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: [0, 10, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-center"
-        >
-          <div className="w-6 h-10 border-2 border-white rounded-full p-1">
-            <div className="w-1.5 h-3 bg-white rounded-full mx-auto animate-bounce" />
-          </div>
-          <p className="mt-2 text-sm font-medium">Scroll to explore</p>
-        </motion.div>
-      </div>
-
       {/* Menu Cards Section */}
       <div className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
         <div className="max-w-6xl mx-auto">
