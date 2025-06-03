@@ -362,17 +362,6 @@ const LandingPage: React.FC = () => {
           {/* Contact Info */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
-            <div className="space-y-4">
-              <motion.a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
-                whileHover={{ x: 5 }}
-              >
-                <MapPin className="w-5 h-5" />
-                <span>123 Spice Street, Foodville, NY 12345</span>
-              </motion.a>
               <motion.a
                 href="tel:+15185287832"
                 className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
@@ -387,7 +376,7 @@ const LandingPage: React.FC = () => {
                 whileHover={{ x: 5 }}
               >
                 <Mail className="w-5 h-5" />
-                <span>info@biryaniboyz.com</span>
+                <span>biryaniboyz99@gmail.com</span>
               </motion.a>
             </div>
           </div>
