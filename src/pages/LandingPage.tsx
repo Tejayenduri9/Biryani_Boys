@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 
 const menuCards = [
@@ -31,30 +32,6 @@ const menuCards = [
     items: ["Bisi Bele Bath"],
     bgColor: "bg-amber-400",
     image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
-  }
-];
-
-const reviews = [
-  {
-    name: "John D.",
-    rating: 5,
-    text: "Best biryani in town! The flavors are authentic and the portion size is generous.",
-    date: "2 days ago",
-    image: "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg"
-  },
-  {
-    name: "Sarah M.",
-    rating: 5,
-    text: "Amazing food and great service. The Andhra Chicken is a must-try!",
-    date: "1 week ago",
-    image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg"
-  },
-  {
-    name: "Mike R.",
-    rating: 5,
-    text: "Finally found authentic Indian cuisine. The Bisi Bele Bath is outstanding!",
-    date: "2 weeks ago",
-    image: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg"
   }
 ];
 
@@ -151,6 +128,13 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
 const LandingPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const { user } = useAuth();
+  const { reviews: allReviews, loading } = useReviews(menuCards);
+
+  const fiveStarReviews = Object.values(allReviews)
+    .flat()
+    .filter(review => review?.rating === 5)
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 3);
 
   const handleOrderOnline = () => {
     if (user) {
@@ -163,6 +147,49 @@ const LandingPage: React.FC = () => {
   if (showSignIn) {
     return <SignIn />;
   }
+
+  const titleVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
+  const AnimatedText = ({ text }: { text: string }) => (
+    <motion.div
+      variants={titleVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="inline-flex"
+    >
+      {text.split("").map((char, index) => (
+        <motion.span
+          key={index}
+          variants={letterVariants}
+          className={char === " " ? "mr-2" : ""}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.div>
+  );
 
   const textVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -179,14 +206,12 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
-      {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center">
         <div className="absolute inset-0">
           <img
@@ -197,7 +222,6 @@ const LandingPage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
         </div>
 
-        {/* Content */}
         <div className="relative z-10 text-center text-white px-4">
           <motion.div
             initial="hidden"
@@ -261,17 +285,11 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Menu Section */}
       <section className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
         <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl font-bold text-center mb-16"
-          >
-            Our <span className="text-amber-500">Menu</span>
-          </motion.h2>
+          <h2 className="text-4xl font-bold text-center mb-16">
+            <AnimatedText text="Our Menu" />
+          </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {menuCards.map((card, index) => (
@@ -289,7 +307,6 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Reviews Section */}
       <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
         <div className="max-w-6xl mx-auto">
           <motion.h2
@@ -302,51 +319,61 @@ const LandingPage: React.FC = () => {
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.map((review, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl"
-              >
-                <div className="flex items-center gap-4 mb-6">
-                  <img
-                    src={review.image}
-                    alt={review.name}
-                    className="w-16 h-16 rounded-full object-cover ring-2 ring-amber-500"
-                  />
-                  <div>
-                    <h3 className="font-semibold text-lg">{review.name}</h3>
-                    <div className="flex gap-1">
-                      {Array.from({ length: 5 }).map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-4 h-4 text-amber-500 fill-amber-500"
-                        />
-                      ))}
+            {loading ? (
+              <div className="col-span-3 flex justify-center items-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
+              </div>
+            ) : fiveStarReviews.length > 0 ? (
+              fiveStarReviews.map((review, index) => (
+                <motion.div
+                  key={review.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2 }}
+                  className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl"
+                >
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold ring-2 ring-amber-500">
+                      {review.user.name.charAt(0)}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-lg">{review.user.name}</h3>
+                      <div className="flex gap-1">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            className="w-4 h-4 text-amber-500 fill-amber-500"
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4 italic">
-                  "{review.text}"
-                </p>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {review.date}
-                </span>
-              </motion.div>
-            ))}
+                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4 italic">
+                    "{review.comment}"
+                  </p>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {review.timestamp?.toDate().toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
+                  </span>
+                </motion.div>
+              ))
+            ) : (
+              <div className="col-span-3 text-center text-gray-500 dark:text-gray-400 py-10">
+                No reviews yet. Be the first to share your experience!
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
         
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-          {/* Contact Info */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
             <motion.a
@@ -367,7 +394,6 @@ const LandingPage: React.FC = () => {
             </motion.a>
           </div>
 
-          {/* Hours */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold mb-6">Hours</h3>
             <div className="space-y-4">
@@ -381,7 +407,6 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Social Links */}
           <div className="space-y-6">
             <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
             <div className="flex gap-4">
