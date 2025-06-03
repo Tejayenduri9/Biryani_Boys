@@ -5,18 +5,19 @@ import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 
-const LetterReveal: React.FC<{ text: string; delay?: number; className?: string }> = ({ 
+const AnimatedWord: React.FC<{ text: string; delay?: number; className?: string }> = ({ 
   text, 
   delay = 0,
-  className = ""
+  className = "" 
 }) => {
   return (
-    <span className={`inline-block ${className}`}>
+    <motion.span className={`inline-block ${className}`}>
       {text.split('').map((char, index) => (
         <motion.span
           key={index}
           initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{
             duration: 0.5,
             delay: delay + index * 0.05,
@@ -29,7 +30,7 @@ const LetterReveal: React.FC<{ text: string; delay?: number; className?: string 
           {char === ' ' ? '\u00A0' : char}
         </motion.span>
       ))}
-    </span>
+    </motion.span>
   );
 };
 
@@ -64,7 +65,7 @@ const menuCards = [
 ];
 
 const FlipCard: React.FC<{ 
-  card: typeof menuCards[0]; 
+  card: typeof menuCards[0];
   isActive: boolean;
   onFlip: () => void;
 }> = ({ card, isActive, onFlip }) => {
@@ -100,7 +101,7 @@ const FlipCard: React.FC<{
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <LetterReveal 
+                <AnimatedWord 
                   text={card.category}
                   delay={0.3}
                   className="text-3xl font-dancing text-white mb-2 tracking-wider"
@@ -155,7 +156,7 @@ const FlipCard: React.FC<{
                   }}
                   className="text-center py-4 px-6 bg-white rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
-                  <LetterReveal 
+                  <AnimatedWord 
                     text={item}
                     delay={index * 0.1 + 0.2}
                     className="text-2xl font-dancing text-gray-900 tracking-wider"
@@ -171,89 +172,67 @@ const FlipCard: React.FC<{
 };
 
 const MenuSection: React.FC = () => {
-  return (
-    <div className="relative py-20">
-      {/* Decorative Elements */}
-      <div className="absolute left-0 top-0 w-1/3">
-        <img 
-          src="https://images.pexels.com/photos/6025811/pexels-photo-6025811.jpeg"
-          alt="Decorative leaf"
-          className="w-full opacity-20"
-        />
-      </div>
-      <div className="absolute right-0 top-0 w-1/3 transform rotate-180">
-        <img 
-          src="https://images.pexels.com/photos/6025811/pexels-photo-6025811.jpeg"
-          alt="Decorative leaf"
-          className="w-full opacity-20"
-        />
-      </div>
+  const [activeCard, setActiveCard] = useState<number | null>(null);
 
-      <div className="relative max-w-6xl mx-auto text-center px-4">
+  return (
+    <div className="relative py-20 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900">
+      <div className="max-w-6xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-16 space-y-6"
+          className="text-center mb-16 space-y-8"
         >
-          <div className="flex justify-center mb-4">
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ type: "spring", stiffness: 100 }}
-              className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center"
-            >
-              <Utensils className="w-8 h-8 text-amber-600" />
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            viewport={{ once: true }}
+            className="w-20 h-20 mx-auto bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center"
+          >
+            <Utensils className="w-10 h-10 text-amber-600" />
+          </motion.div>
 
-          <div className="space-y-2">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-lg text-amber-600 font-medium"
-            >
-              A place where
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="text-4xl md:text-5xl font-playfair font-bold"
-            >
-              <span className="text-amber-500">food</span> and <span className="text-amber-500">people</span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-              className="text-lg text-gray-600 dark:text-gray-400"
-            >
-              come together to create a memorable experience.
-            </motion.p>
+          <div className="space-y-4">
+            <AnimatedWord
+              text="A place where"
+              className="block text-lg text-amber-600"
+            />
+            <div className="text-4xl md:text-5xl font-playfair space-x-4">
+              <AnimatedWord
+                text="food"
+                delay={0.3}
+                className="text-amber-500"
+              />
+              <AnimatedWord
+                text="and"
+                delay={0.6}
+              />
+              <AnimatedWord
+                text="people"
+                delay={0.9}
+                className="text-amber-500"
+              />
+            </div>
+            <AnimatedWord
+              text="come together to create a memorable experience."
+              delay={1.2}
+              className="block text-lg text-gray-600 dark:text-gray-400"
+            />
           </div>
 
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 1.5 }}
             className="w-24 h-1 bg-amber-500 mx-auto"
           />
 
-          <motion.h3
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-            className="text-5xl md:text-6xl font-dancing text-amber-600 mt-8"
-          >
-            Our Menu
-          </motion.h3>
+          <AnimatedWord
+            text="Our Menu"
+            delay={1.8}
+            className="block text-6xl font-dancing text-amber-600"
+          />
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -266,9 +245,15 @@ const MenuSection: React.FC = () => {
               transition={{ delay: index * 0.2 }}
             >
               <FlipCard 
-                card={card} 
-                isActive={false}
-                onFlip={() => {}}
+                card={card}
+                isActive={activeCard === index}
+                onFlip={() => {
+                  if (activeCard === index) {
+                    setActiveCard(null);
+                  } else {
+                    setActiveCard(index);
+                  }
+                }}
               />
             </motion.div>
           ))}
@@ -353,14 +338,14 @@ const LandingPage: React.FC = () => {
             
             <div className="space-y-4">
               <h1 className="text-6xl md:text-7xl font-bold">
-                <LetterReveal text="Biryani" className="mr-4" />
-                <LetterReveal 
+                <AnimatedWord text="Biryani" className="mr-4" />
+                <AnimatedWord 
                   text="Boyz"
                   delay={0.5}
                   className="bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
                 />
               </h1>
-              <LetterReveal 
+              <AnimatedWord 
                 text="Experience Authentic Indian Flavors"
                 className="text-xl md:text-2xl text-gray-300"
                 delay={1}
