@@ -16,6 +16,10 @@ export default {
           '50%': { transform: 'translateX(0.5rem) scale(1.02)' },
         },
       },
+      fontFamily: {
+        'playfair': ['Playfair Display', 'serif'],
+        'poppins': ['Poppins', 'sans-serif'],
+      },
     },
   },
   darkMode: 'class',
