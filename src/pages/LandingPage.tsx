@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail, Utensils } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -171,6 +171,87 @@ const FlipCard: React.FC<{
   );
 };
 
+const SequentialText: React.FC = () => {
+  const [showFood, setShowFood] = useState(true);
+  const [showPeople, setShowPeople] = useState(false);
+
+  useEffect(() => {
+    const sequence = async () => {
+      setShowFood(true);
+      setShowPeople(false);
+      
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setShowFood(false);
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setShowPeople(true);
+      
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setShowPeople(false);
+      
+      await new Promise(resolve => setTimeout(resolve, 500));
+      sequence();
+    };
+
+    sequence();
+    return () => {
+      setShowFood(false);
+      setShowPeople(false);
+    };
+  }, []);
+
+  return (
+    <div className="text-4xl md:text-5xl font-playfair min-h-[80px] flex items-center justify-center">
+      <AnimatePresence mode="wait">
+        {showFood && (
+          <motion.div
+            key="food"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="absolute"
+          >
+            {Array.from("food").map((letter, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="inline-block text-amber-500"
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </motion.div>
+        )}
+        {showPeople && (
+          <motion.div
+            key="people"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="absolute"
+          >
+            {Array.from("people").map((letter, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="inline-block text-amber-500"
+              >
+                {letter}
+              </motion.span>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 const MenuSection: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
@@ -193,46 +274,60 @@ const MenuSection: React.FC = () => {
           </motion.div>
 
           <div className="space-y-4">
-            <AnimatedWord
-              text="A place where"
-              className="block text-lg text-amber-600"
-            />
-            <div className="text-4xl md:text-5xl font-playfair space-x-4">
-              <AnimatedWord
-                text="food"
-                delay={0.3}
-                className="text-amber-500"
-              />
-              <AnimatedWord
-                text="and"
-                delay={0.6}
-              />
-              <AnimatedWord
-                text="people"
-                delay={0.9}
-                className="text-amber-500"
-              />
-            </div>
-            <AnimatedWord
-              text="come together to create a memorable experience."
-              delay={1.2}
-              className="block text-lg text-gray-600 dark:text-gray-400"
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-lg text-amber-600"
+            >
+              A place where
+            </motion.div>
+            
+            <SequentialText />
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-lg text-gray-600 dark:text-gray-400"
+            >
+              come together to create a memorable experience.
+            </motion.div>
           </div>
 
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 1.5 }}
+            transition={{ delay: 0.5 }}
             className="w-24 h-1 bg-amber-500 mx-auto"
           />
 
-          <AnimatedWord
-            text="Our Menu"
-            delay={1.8}
-            className="block text-6xl font-dancing text-amber-600"
-          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ 
+              type: "spring",
+              stiffness: 100,
+              damping: 10,
+              delay: 0.7
+            }}
+            className="text-6xl font-dancing text-amber-600"
+          >
+            {Array.from("Our Menu").map((letter, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8 + index * 0.1 }}
+                className="inline-block"
+              >
+                {letter === " " ? "\u00A0" : letter}
+              </motion.span>
+            ))}
+          </motion.div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
