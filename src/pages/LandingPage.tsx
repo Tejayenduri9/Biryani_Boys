@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail } from 'lucide-react';
+import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail, Utensils } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
@@ -170,6 +170,114 @@ const FlipCard: React.FC<{
   );
 };
 
+const MenuSection: React.FC = () => {
+  return (
+    <div className="relative py-20">
+      {/* Decorative Elements */}
+      <div className="absolute left-0 top-0 w-1/3">
+        <img 
+          src="https://images.pexels.com/photos/6025811/pexels-photo-6025811.jpeg"
+          alt="Decorative leaf"
+          className="w-full opacity-20"
+        />
+      </div>
+      <div className="absolute right-0 top-0 w-1/3 transform rotate-180">
+        <img 
+          src="https://images.pexels.com/photos/6025811/pexels-photo-6025811.jpeg"
+          alt="Decorative leaf"
+          className="w-full opacity-20"
+        />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto text-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16 space-y-6"
+        >
+          <div className="flex justify-center mb-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 100 }}
+              className="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center"
+            >
+              <Utensils className="w-8 h-8 text-amber-600" />
+            </motion.div>
+          </div>
+
+          <div className="space-y-2">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-lg text-amber-600 font-medium"
+            >
+              A place where
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-4xl md:text-5xl font-playfair font-bold"
+            >
+              <span className="text-amber-500">food</span> and <span className="text-amber-500">people</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-lg text-gray-600 dark:text-gray-400"
+            >
+              come together to create a memorable experience.
+            </motion.p>
+          </div>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="w-24 h-1 bg-amber-500 mx-auto"
+          />
+
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+            className="text-5xl md:text-6xl font-dancing text-amber-600 mt-8"
+          >
+            Our Menu
+          </motion.h3>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {menuCards.map((card, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <FlipCard 
+                card={card} 
+                isActive={false}
+                onFlip={() => {}}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const LandingPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
@@ -288,39 +396,7 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <LetterReveal 
-              text="Our Menu"
-              className="text-4xl font-bold inline-block"
-            />
-          </motion.div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {menuCards.map((card, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <FlipCard 
-                  card={card} 
-                  isActive={activeCard === index}
-                  onFlip={() => setActiveCard(activeCard === index ? null : index)}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <MenuSection />
 
       <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
         <div className="max-w-6xl mx-auto">
