@@ -1,25 +1,17 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 
-const textVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
-};
-
-const AnimatedText: React.FC<{ text: string; delay?: number }> = ({ text, delay = 0 }) => {
+const LetterReveal: React.FC<{ text: string; delay?: number; className?: string }> = ({ 
+  text, 
+  delay = 0,
+  className = ""
+}) => {
   return (
-    <motion.div className="inline-block overflow-hidden">
+    <span className={`inline-block ${className}`}>
       {text.split('').map((char, index) => (
         <motion.span
           key={index}
@@ -34,10 +26,10 @@ const AnimatedText: React.FC<{ text: string; delay?: number }> = ({ text, delay 
           }}
           className="inline-block"
         >
-          {char}
+          {char === ' ' ? '\u00A0' : char}
         </motion.span>
       ))}
-    </motion.div>
+    </span>
   );
 };
 
@@ -89,7 +81,6 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
             className="w-full h-full rounded-2xl overflow-hidden shadow-xl relative group"
             whileHover={{ scale: 1.02 }}
           >
-            {/* Background Image */}
             <div className="absolute inset-0">
               <img 
                 src={card.image} 
@@ -99,34 +90,32 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
             </div>
 
-            {/* Content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 transform transition-transform duration-300 group-hover:translate-y-[-10px]">
-              <motion.h3 
-                className="text-3xl font-playfair font-bold text-white mb-2"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-              >
-                <AnimatedText text={card.category} delay={0.3} />
-              </motion.h3>
-              {card.description && (
+            <div className="absolute inset-0 flex flex-col justify-end p-8">
+              <motion.div className="transform transition-transform duration-300 group-hover:translate-y-[-10px]">
+                <LetterReveal 
+                  text={card.category}
+                  delay={0.3}
+                  className="text-3xl font-dancing text-white mb-2 tracking-wider"
+                />
+                {card.description && (
+                  <motion.p 
+                    className="text-white/90 text-sm font-poppins"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {card.description}
+                  </motion.p>
+                )}
                 <motion.p 
-                  className="text-white/90 text-sm font-poppins"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
+                  className="text-amber-400 text-sm mt-4 font-poppins font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  {card.description}
+                  Click to see menu items →
                 </motion.p>
-              )}
-              <motion.p 
-                className="text-amber-400 text-sm mt-4 font-poppins font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                Click to see menu items →
-              </motion.p>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -155,9 +144,10 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                   }}
                   className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
-                  <AnimatedText 
-                    text={item} 
+                  <LetterReveal 
+                    text={item}
                     delay={index * 0.1 + 0.2}
+                    className="text-2xl font-dancing text-white tracking-wider"
                   />
                 </motion.div>
               ))}
@@ -191,44 +181,6 @@ const LandingPage: React.FC = () => {
   if (showSignIn) {
     return <SignIn />;
   }
-
-  const titleContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const titleWord = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100
-      }
-    }
-  };
-
-  const titleSpan = {
-    hidden: { opacity: 0, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-        delay: 0.5
-      }
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
@@ -279,35 +231,26 @@ const LandingPage: React.FC = () => {
               />
             </motion.div>
             
-            <motion.div
-              variants={titleContainer}
-              className="space-y-4"
-            >
-              <motion.h1 className="text-6xl md:text-7xl font-bold flex flex-wrap justify-center gap-4">
-                <motion.span
-                  variants={titleWord}
-                  className="inline-block"
-                >
-                  Biryani
-                </motion.span>
-                <motion.span
-                  variants={titleSpan}
-                  className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
-                >
-                  Boyz
-                </motion.span>
-              </motion.h1>
-              <motion.p 
-                variants={titleWord}
+            <div className="space-y-4">
+              <h1 className="text-6xl md:text-7xl font-bold">
+                <LetterReveal text="Biryani" className="mr-4" />
+                <LetterReveal 
+                  text="Boyz"
+                  delay={0.5}
+                  className="bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
+                />
+              </h1>
+              <LetterReveal 
+                text="Experience Authentic Indian Flavors"
                 className="text-xl md:text-2xl text-gray-300"
-              >
-                Experience Authentic Indian Flavors
-              </motion.p>
-            </motion.div>
+                delay={1}
+              />
+            </div>
 
             <motion.div 
-              custom={3}
-              variants={textVariants}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
               className="flex flex-col sm:flex-row gap-6 justify-center"
             >
               <motion.button
@@ -336,7 +279,7 @@ const LandingPage: React.FC = () => {
       <section className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-16">
-            <AnimatedText text="Our Menu" />
+            <LetterReveal text="Our Menu" />
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
