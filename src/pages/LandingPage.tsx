@@ -113,3 +113,5 @@ const MenuSection: React.FC = () => {
     </div>
   );
 };
+
+export default MenuSection
