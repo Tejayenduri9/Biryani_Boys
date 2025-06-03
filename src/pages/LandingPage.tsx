@@ -50,7 +50,7 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
         {/* Front */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <motion.div 
-            className="w-full h-full rounded-2xl overflow-hidden shadow-xl relative"
+            className="w-full h-full rounded-2xl overflow-hidden shadow-xl relative group"
             whileHover={{ scale: 1.02 }}
           >
             {/* Background Image */}
@@ -58,13 +58,13 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
               <img 
                 src={card.image} 
                 alt={card.category}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
             </div>
 
             {/* Content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8">
+            <div className="absolute inset-0 flex flex-col justify-end p-8 transform transition-transform duration-300 group-hover:translate-y-[-10px]">
               <motion.h3 
                 className="text-3xl font-bold text-white mb-2"
                 initial={{ y: 20, opacity: 0 }}
@@ -84,12 +84,12 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                 </motion.p>
               )}
               <motion.p 
-                className="text-amber-400 text-sm mt-4 font-medium"
+                className="text-amber-400 text-sm mt-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
               >
-                Click to see menu items
+                Click to see menu items →
               </motion.p>
             </div>
           </motion.div>
@@ -112,7 +112,7 @@ const FlipCard: React.FC<{ card: typeof menuCards[0] }> = ({ card }) => {
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg"
+                  className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
                   <h4 className="font-semibold text-2xl text-white">{item}</h4>
                 </motion.div>
@@ -177,13 +177,13 @@ const LandingPage: React.FC = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="inline-flex"
+      className="inline-flex overflow-hidden"
     >
       {text.split("").map((char, index) => (
         <motion.span
           key={index}
           variants={letterVariants}
-          className={char === " " ? "mr-2" : ""}
+          className={`inline-block ${char === " " ? "mr-2" : ""} text-gradient`}
         >
           {char}
         </motion.span>
@@ -207,9 +207,9 @@ const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2 animate-pulse" />
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
       </div>
 
       <section className="relative min-h-screen flex items-center justify-center">
@@ -238,7 +238,7 @@ const LandingPage: React.FC = () => {
               <img
                 src="/logo.jpg"
                 alt="Biryani Boyz Logo"
-                className="w-full h-full object-cover translate-x-1"
+                className="w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
               />
             </motion.div>
             
@@ -248,7 +248,7 @@ const LandingPage: React.FC = () => {
                 variants={textVariants}
                 className="text-6xl md:text-7xl font-bold"
               >
-                Biryani <span className="text-amber-500">Boyz</span>
+                Biryani <span className="text-gradient">Boyz</span>
               </motion.h1>
               <motion.p 
                 custom={2}
@@ -268,17 +268,19 @@ const LandingPage: React.FC = () => {
                 onClick={handleOrderOnline}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:from-amber-600 hover:to-amber-700 transition-all"
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:from-amber-600 hover:to-amber-700 transition-all relative overflow-hidden group"
               >
-                Order Online
+                <span className="relative z-10">Order Online</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </motion.button>
               <motion.a
                 href="tel:+15185287832"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-amber-600 px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-gray-100 transition-all"
+                className="bg-white text-amber-600 px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-gray-100 transition-all relative overflow-hidden group"
               >
-                Call to Order
+                <span className="relative z-10">Call to Order</span>
+                <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
               </motion.a>
             </motion.div>
           </motion.div>
@@ -315,7 +317,7 @@ const LandingPage: React.FC = () => {
             viewport={{ once: true }}
             className="text-4xl font-bold text-center mb-16"
           >
-            What Our <span className="text-amber-500">Customers</span> Say
+            What Our <span className="text-gradient">Customers</span> Say
           </motion.h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -331,10 +333,10 @@ const LandingPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.2 }}
-                  className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl"
+                  className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl transform hover:scale-105 transition-transform duration-300"
                 >
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold ring-2 ring-amber-500">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold ring-2 ring-amber-500 transform hover:rotate-12 transition-transform duration-300">
                       {review.user.name.charAt(0)}
                     </div>
                     <div>
