@@ -1,33 +1,35 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail, Utensils } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 
-const textVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut"
-    }
-  }
-};
-
-const AnimatedText: React.FC<{ text: string }> = ({ text }) => {
+const LetterReveal: React.FC<{ text: string; delay?: number; className?: string }> = ({ 
+  text, 
+  delay = 0,
+  className = ""
+}) => {
   return (
-    <motion.span
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      variants={textVariants}
-      className="bg-gradient-to-r from-amber-500 to-amber-600 text-transparent bg-clip-text"
-    >
-      {text}
-    </motion.span>
+    <span className={`inline-block ${className}`}>
+      {text.split('').map((char, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.5,
+            delay: delay + index * 0.05,
+            type: "spring",
+            damping: 12,
+            stiffness: 100
+          }}
+          className="inline-block"
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </motion.span>
+      ))}
+    </span>
   );
 };
 
@@ -62,14 +64,15 @@ const menuCards = [
 ];
 
 const FlipCard: React.FC<{ 
-  card: typeof menuCards[0];
+  card: typeof menuCards[0]; 
   isActive: boolean;
   onFlip: () => void;
 }> = ({ card, isActive, onFlip }) => {
   return (
-    <div 
+    <motion.div 
       className="w-full h-[400px] perspective-1000 cursor-pointer"
       onClick={onFlip}
+      layout
     >
       <motion.div
         className="relative w-full h-full preserve-3d transition-all duration-500"
@@ -81,7 +84,6 @@ const FlipCard: React.FC<{
             className="w-full h-full rounded-2xl overflow-hidden shadow-xl relative group"
             whileHover={{ scale: 1.02 }}
           >
-            {/* Background Image */}
             <div className="absolute inset-0">
               <img 
                 src={card.image} 
@@ -91,34 +93,37 @@ const FlipCard: React.FC<{
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300" />
             </div>
 
-            {/* Content */}
-            <div className="absolute inset-0 flex flex-col justify-end p-8 transform transition-transform duration-300 group-hover:translate-y-[-10px]">
-              <motion.h3 
-                className="text-3xl font-bold text-white mb-2"
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
+            <div className="absolute inset-0 flex flex-col justify-end p-8">
+              <motion.div 
+                className="transform transition-transform duration-300 group-hover:translate-y-[-10px]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                {card.category}
-              </motion.h3>
-              {card.description && (
+                <LetterReveal 
+                  text={card.category}
+                  delay={0.3}
+                  className="text-3xl font-dancing text-white mb-2 tracking-wider"
+                />
+                {card.description && (
+                  <motion.p 
+                    className="text-white/90 text-sm font-poppins"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    {card.description}
+                  </motion.p>
+                )}
                 <motion.p 
-                  className="text-white/90 text-sm"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
+                  className="text-amber-400 text-sm mt-4 font-poppins font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  {card.description}
+                  Click to see menu items →
                 </motion.p>
-              )}
-              <motion.p 
-                className="text-amber-400 text-sm mt-4 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                Click to see menu items →
-              </motion.p>
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -126,10 +131,13 @@ const FlipCard: React.FC<{
         {/* Back */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
           <motion.div 
-            className="w-full h-full rounded-2xl p-8 shadow-xl bg-gradient-to-br from-amber-500 to-amber-600 flex flex-col items-center justify-center"
+            className="w-full h-full rounded-2xl p-8 shadow-xl bg-gradient-to-br from-amber-500 to-amber-600"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
             <motion.div 
-              className="space-y-6 w-full"
+              className="space-y-6 w-full h-full flex flex-col justify-center"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -139,16 +147,113 @@ const FlipCard: React.FC<{
                   key={index}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="text-center py-4 px-6 bg-white/10 backdrop-blur-sm rounded-lg transform hover:scale-105 transition-transform duration-300"
+                  transition={{ 
+                    delay: index * 0.1,
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 10
+                  }}
+                  className="text-center py-4 px-6 bg-white rounded-lg transform hover:scale-105 transition-transform duration-300"
                 >
-                  <h4 className="font-semibold text-2xl text-white">{item}</h4>
+                  <LetterReveal 
+                    text={item}
+                    delay={index * 0.1 + 0.2}
+                    className="text-2xl font-dancing text-gray-900 tracking-wider"
+                  />
                 </motion.div>
               ))}
             </motion.div>
           </motion.div>
         </div>
       </motion.div>
+    </motion.div>
+  );
+};
+
+const MenuSection: React.FC = () => {
+  return (
+    <div className="relative py-20">
+      {/* Spices Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <img 
+            src="https://images.pexels.com/photos/4226896/pexels-photo-4226896.jpeg"
+            alt="Indian Spices"
+            className="w-full h-full object-cover opacity-10"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-gray-900 dark:to-gray-900" />
+        </div>
+      </div>
+
+      <div className="relative max-w-6xl mx-auto text-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-16 space-y-6"
+        >
+          <div className="flex justify-center mb-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", stiffness: 100 }}
+              className="w-20 h-20 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center"
+            >
+              <img 
+                src="https://images.pexels.com/photos/4226805/pexels-photo-4226805.jpeg"
+                alt="Spices"
+                className="w-12 h-12 object-cover rounded-full"
+              />
+            </motion.div>
+          </div>
+
+          <div className="space-y-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex flex-col items-center"
+            >
+              <span className="text-5xl md:text-6xl font-dancing text-amber-600">
+                Discover
+              </span>
+              <h2 className="text-4xl md:text-5xl font-playfair font-bold mt-2">
+                Our Flavorful Menu
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-2xl">
+                Each dish is crafted with authentic Indian spices, bringing you the true taste of tradition
+              </p>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className="w-24 h-1 bg-amber-500 mx-auto"
+          />
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {menuCards.map((card, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+            >
+              <FlipCard 
+                card={card} 
+                isActive={false}
+                onFlip={() => {}}
+              />
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -176,44 +281,6 @@ const LandingPage: React.FC = () => {
   if (showSignIn) {
     return <SignIn />;
   }
-
-  const titleContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const titleWord = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100
-      }
-    }
-  };
-
-  const titleSpan = {
-    hidden: { opacity: 0, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        damping: 12,
-        stiffness: 100,
-        delay: 0.5
-      }
-    }
-  };
 
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
@@ -264,35 +331,26 @@ const LandingPage: React.FC = () => {
               />
             </motion.div>
             
-            <motion.div
-              variants={titleContainer}
-              className="space-y-4"
-            >
-              <motion.h1 className="text-6xl md:text-7xl font-bold flex flex-wrap justify-center gap-4">
-                <motion.span
-                  variants={titleWord}
-                  className="inline-block"
-                >
-                  Biryani
-                </motion.span>
-                <motion.span
-                  variants={titleSpan}
-                  className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
-                >
-                  Boyz
-                </motion.span>
-              </motion.h1>
-              <motion.p 
-                variants={titleWord}
+            <div className="space-y-4">
+              <h1 className="text-6xl md:text-7xl font-bold">
+                <LetterReveal text="Biryani" className="mr-4" />
+                <LetterReveal 
+                  text="Boyz"
+                  delay={0.5}
+                  className="bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
+                />
+              </h1>
+              <LetterReveal 
+                text="Experience Authentic Indian Flavors"
                 className="text-xl md:text-2xl text-gray-300"
-              >
-                Experience Authentic Indian Flavors
-              </motion.p>
-            </motion.div>
+                delay={1}
+              />
+            </div>
 
             <motion.div 
-              custom={3}
-              variants={textVariants}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.5 }}
               className="flex flex-col sm:flex-row gap-6 justify-center"
             >
               <motion.button
@@ -318,31 +376,7 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-b from-amber-50 to-white dark:from-gray-800 dark:to-gray-900 relative">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            <AnimatedText text="Our Menu" />
-          </h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {menuCards.map((card, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-              >
-                <FlipCard 
-                  card={card} 
-                  isActive={activeCard === index}
-                  onFlip={() => setActiveCard(activeCard === index ? null : index)}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <MenuSection />
 
       <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
         <div className="max-w-6xl mx-auto">
