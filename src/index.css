@@ -48,3 +48,17 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.letter-reveal {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: revealLetter 0.5s forwards;
+}
+
+@keyframes revealLetter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

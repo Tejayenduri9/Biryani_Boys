@@ -7,6 +7,7 @@ import '@fontsource/playfair-display/700.css';
 import '@fontsource/poppins/400.css';
 import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/600.css';
+import '@fontsource/dancing-script/700.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
