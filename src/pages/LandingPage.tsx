@@ -1,14 +1,31 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Facebook, Instagram, Clock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Facebook, Instagram, Clock, Star, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import SignIn from '../components/SignIn';
 
-const images = [
-  "https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg",
-  "https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg",
-  "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg",
-  "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg",
+const menuShowcase = [
+  {
+    title: "Chicken Biryani",
+    price: "$10.00",
+    image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg",
+    rating: 4.9,
+    category: "Signature Dish"
+  },
+  {
+    title: "Kadai Paneer",
+    price: "$12.00",
+    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg",
+    rating: 4.8,
+    category: "Vegetarian Special"
+  },
+  {
+    title: "Andhra Chicken",
+    price: "$12.00",
+    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg",
+    rating: 4.7,
+    category: "Chef's Special"
+  }
 ];
 
 const reviews = [
@@ -36,14 +53,14 @@ const reviews = [
 ];
 
 const LandingPage: React.FC = () => {
-  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
-  const [showSignIn, setShowSignIn] = React.useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { user } = useAuth();
 
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
+      setActiveIndex((prev) => (prev + 1) % menuShowcase.length);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
 
@@ -62,72 +79,116 @@ const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="relative h-screen">
-        {/* Background Video/Image */}
-        <div className="absolute inset-0">
-          {images.map((image, index) => (
-            <motion.div
-              key={image}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: index === currentImageIndex ? 1 : 0 }}
-              transition={{ duration: 1 }}
-              className="absolute inset-0"
-            >
-              <img
-                src={image}
-                alt={`Food ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          ))}
-          <div className="absolute inset-0 bg-black/60" />
-        </div>
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/40 z-10" />
+        
+        {/* Background Animation */}
+        <motion.div 
+          initial={{ scale: 1.2 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 20, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute inset-0"
+        >
+          <img
+            src="https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
+            alt="Background"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
 
         {/* Content */}
-        <div className="relative h-full flex flex-col items-center justify-center text-white px-4">
+        <div className="relative z-20 text-white text-center px-4">
           <motion.div
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="mb-8"
           >
-            <div className="mb-8">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="w-40 h-40 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white"
-              >
-                <img
-                  src="/logo.jpg"
-                  alt="Biryani Boyz Logo"
-                  className="w-full h-full object-cover translate-x-1"
-                />
-              </motion.div>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-4">
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="w-40 h-40 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white mb-6"
+            >
+              <img
+                src="/logo.jpg"
+                alt="Biryani Boyz Logo"
+                className="w-full h-full object-cover translate-x-1"
+              />
+            </motion.div>
+            <h1 className="text-6xl md:text-7xl font-bold mb-4">
               Biryani <span className="text-amber-500">Boyz</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-200">
+            <p className="text-xl md:text-2xl text-gray-200">
               Experience Authentic Indian Flavors
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <motion.button
-                onClick={handleOrderOnline}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-amber-500 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-amber-600 transition-colors"
-              >
-                Order Online
-              </motion.button>
-              <motion.a
-                href="tel:+15185287832"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-amber-600 px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-gray-100 transition-colors"
-              >
-                Call to Order
-              </motion.a>
-            </div>
           </motion.div>
+
+          {/* Menu Showcase */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.5 }}
+                className="bg-white/10 backdrop-blur-md rounded-2xl p-6 shadow-xl"
+              >
+                <div className="flex items-center gap-6">
+                  <motion.img
+                    src={menuShowcase[activeIndex].image}
+                    alt={menuShowcase[activeIndex].title}
+                    className="w-32 h-32 rounded-xl object-cover"
+                    whileHover={{ scale: 1.05 }}
+                  />
+                  <div className="text-left">
+                    <span className="text-amber-400 text-sm font-medium">
+                      {menuShowcase[activeIndex].category}
+                    </span>
+                    <h3 className="text-2xl font-bold mb-2">
+                      {menuShowcase[activeIndex].title}
+                    </h3>
+                    <div className="flex items-center gap-4">
+                      <span className="text-xl font-bold text-amber-400">
+                        {menuShowcase[activeIndex].price}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+                        <span className="text-sm">
+                          {menuShowcase[activeIndex].rating}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <motion.button
+              onClick={handleOrderOnline}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group bg-amber-500 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-amber-600 transition-colors flex items-center justify-center gap-2"
+            >
+              Order Online
+              <motion.span
+                animate={{ x: [0, 5, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              >
+                <ArrowRight className="w-6 h-6" />
+              </motion.span>
+            </motion.button>
+            <motion.a
+              href="tel:+15185287832"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white text-amber-600 px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-gray-100 transition-colors"
+            >
+              Call to Order
+            </motion.a>
+          </div>
         </div>
 
         {/* Scroll Indicator */}
@@ -154,7 +215,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Reviews Section */}
-      <div className="py-20 px-4 bg-white dark:bg-gray-800">
+      <div className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -173,7 +234,7 @@ const LandingPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
-                className="bg-[#fdf6e3] dark:bg-gray-900 p-8 rounded-xl shadow-xl"
+                className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl"
               >
                 <div className="flex items-center gap-4 mb-6">
                   <img
@@ -185,7 +246,10 @@ const LandingPage: React.FC = () => {
                     <h3 className="font-semibold text-lg">{review.name}</h3>
                     <div className="flex gap-1">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <span key={i} className="text-yellow-500">★</span>
+                        <Star
+                          key={i}
+                          className="w-4 h-4 text-yellow-400 fill-yellow-400"
+                        />
                       ))}
                     </div>
                   </div>
@@ -203,7 +267,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-100 dark:bg-gray-900 py-12 px-4">
+      <footer className="bg-gray-100 dark:bg-gray-800 py-12 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Social Links */}
           <div className="text-center md:text-left">
@@ -241,6 +305,10 @@ const LandingPage: React.FC = () => {
               <p className="font-medium">Lunch: 10:00 AM - 4:00 PM</p>
             </div>
           </div>
+        </div>
+
+        <div className="text-center mt-8 text-sm text-gray-600 dark:text-gray-400">
+          <p>© 2025 Biryani Boyz. All rights reserved.</p>
         </div>
       </footer>
     </div>
