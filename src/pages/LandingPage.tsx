@@ -148,60 +148,42 @@ const LandingPage: React.FC = () => {
     return <SignIn />;
   }
 
-  const titleVariants = {
+  const titleContainer = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.08,
+        delayChildren: 0.3
       }
     }
   };
 
-  const letterVariants = {
+  const titleWord = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 10
+        damping: 12,
+        stiffness: 100
       }
     }
   };
 
-  const AnimatedText = ({ text }: { text: string }) => (
-    <motion.div
-      variants={titleVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      className="inline-flex overflow-hidden"
-    >
-      {text.split("").map((char, index) => (
-        <motion.span
-          key={index}
-          variants={letterVariants}
-          className={`inline-block ${char === " " ? "mr-2" : ""} text-gradient`}
-        >
-          {char}
-        </motion.span>
-      ))}
-    </motion.div>
-  );
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
+  const titleSpan = {
+    hidden: { opacity: 0, scale: 0 },
+    visible: {
       opacity: 1,
-      y: 0,
+      scale: 1,
       transition: {
-        delay: i * 0.1,
-        duration: 0.5,
-        ease: "easeOut"
+        type: "spring",
+        damping: 12,
+        stiffness: 100,
+        delay: 0.5
       }
-    })
+    }
   };
 
   return (
@@ -229,9 +211,8 @@ const LandingPage: React.FC = () => {
             className="space-y-8"
           >
             <motion.div
-              custom={0}
-              variants={textVariants}
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
               className="w-40 h-40 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500 to-amber-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
@@ -240,24 +221,45 @@ const LandingPage: React.FC = () => {
                 alt="Biryani Boyz Logo"
                 className="w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
               />
+              <motion.div
+                className="absolute inset-0 border-4 border-amber-500 rounded-full"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [1, 0.5, 1]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
             </motion.div>
             
-            <div className="space-y-4">
-              <motion.h1 
-                custom={1}
-                variants={textVariants}
-                className="text-6xl md:text-7xl font-bold"
-              >
-                Biryani <span className="text-gradient">Boyz</span>
+            <motion.div
+              variants={titleContainer}
+              className="space-y-4"
+            >
+              <motion.h1 className="text-6xl md:text-7xl font-bold flex flex-wrap justify-center gap-4">
+                <motion.span
+                  variants={titleWord}
+                  className="inline-block"
+                >
+                  Biryani
+                </motion.span>
+                <motion.span
+                  variants={titleSpan}
+                  className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
+                >
+                  Boyz
+                </motion.span>
               </motion.h1>
               <motion.p 
-                custom={2}
-                variants={textVariants}
+                variants={titleWord}
                 className="text-xl md:text-2xl text-gray-300"
               >
                 Experience Authentic Indian Flavors
               </motion.p>
-            </div>
+            </motion.div>
 
             <motion.div 
               custom={3}
