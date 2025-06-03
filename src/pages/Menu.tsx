@@ -1,6 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Layout from '../components/Layout';
+import { useCart } from '../context/CartContext';
+import { ShoppingBag } from 'lucide-react';
 
 interface MenuItem {
   title: string;
@@ -69,79 +71,153 @@ const menuItems: MenuItem[] = [
 ];
 
 const Menu: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const { addItem } = useCart();
+  
   const categories = {
+    all: "All Items",
     biryani: "Biryani Special",
     veg: "Veg Meal Box",
     "non-veg": "Non-Veg Meal Box",
     others: "Others"
   };
 
+  const filteredItems = selectedCategory === 'all' 
+    ? menuItems 
+    : menuItems.filter(item => item.category === selectedCategory);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
   return (
     <Layout>
-      <div className="py-8 px-4 sm:px-6 lg:px-8">
-        <motion.h1 
+      <div className="py-8 px-4 sm:px-6 lg:px-8 min-h-screen bg-gradient-to-b from-amber-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl font-bold text-center mb-8"
+          className="text-center mb-12"
         >
-          Our Menu
-        </motion.h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Our <span className="text-amber-600 dark:text-amber-500">Menu</span>
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            Discover our authentic Indian dishes, carefully crafted to bring you the best flavors
+          </p>
+        </motion.div>
 
-        <div className="space-y-12">
-          {Object.entries(categories).map(([key, title]) => {
-            const categoryItems = menuItems.filter(item => item.category === key);
-            if (categoryItems.length === 0) return null;
-            
-            return (
-              <div key={key} className="space-y-6">
-                <motion.h2 
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="text-2xl font-semibold"
-                >
-                  {title}
-                </motion.h2>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {categoryItems.map((item) => (
-                    <motion.div
-                      key={item.title}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg"
-                    >
-                      <div className="relative h-48">
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg">
-                          <span className="text-amber-600 dark:text-amber-500 font-bold">
-                            ${item.price}
-                          </span>
-                        </div>
-                        {item.isNew && (
-                          <span className="absolute top-4 left-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-                            NEW
-                          </span>
-                        )}
-                      </div>
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                        {item.description && (
-                          <p className="text-gray-600 dark:text-gray-400 text-sm">
-                            {item.description}
-                          </p>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
+        {/* Category Navigation */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-wrap justify-center gap-4 mb-12"
+        >
+          {Object.entries(categories).map(([key, label]) => (
+            <motion.button
+              key={key}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSelectedCategory(key)}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                selectedCategory === key
+                  ? 'bg-amber-600 text-white shadow-lg'
+                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-amber-50 dark:hover:bg-amber-900/20'
+              }`}
+            >
+              {label}
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Menu Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <AnimatePresence mode="wait">
+            {filteredItems.map((item) => (
+              <motion.div
+                key={item.title}
+                variants={itemVariants}
+                layout
+                className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg transform hover:scale-[1.02] transition-transform duration-300"
+              >
+                <div className="relative h-56 overflow-hidden group">
+                  <motion.img
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.6 }}
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  {/* Price Tag */}
+                  <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-4 py-2 shadow-lg">
+                    <span className="text-amber-600 dark:text-amber-500 font-bold">
+                      ${item.price}
+                    </span>
+                  </div>
+
+                  {/* New Badge */}
+                  {item.isNew && (
+                    <div className="absolute top-4 left-4">
+                      <motion.span
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium"
+                      >
+                        NEW
+                      </motion.span>
+                    </div>
+                  )}
+
+                  {/* Add to Cart Button */}
+                  <motion.button
+                    initial={{ opacity: 0, y: 20 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-amber-600 text-white px-6 py-2 rounded-full flex items-center gap-2 transform transition-all duration-300"
+                    onClick={() => addItem(item.title, item.price)}
+                  >
+                    <ShoppingBag size={16} />
+                    Add to Cart
+                  </motion.button>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                  {item.description && (
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </Layout>
   );
