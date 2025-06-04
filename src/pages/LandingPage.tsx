@@ -4,6 +4,7 @@ import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail, Utensils } from 
 import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
+import TraditionalMealSection from '../components/TraditionalMealSection';
 
 const AnimatedWord = ({ text, delay = 0, className = "" }) => {
   return (
@@ -498,39 +499,8 @@ const LandingPage = () => {
       </section>
 
       <MenuSection />
-      {/* Traditional Meal Section */}
-      <section
-        className="traditional-section relative min-h-[500px] flex items-center justify-center bg-center bg-cover"
-        style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg')"
-        }}
-      >
-        <div className="zigzag-edge zigzag-top" />
-        <div className="zigzag-edge zigzag-bottom" />
+      <TraditionalMealSection />
 
-        {/* Dark overlay */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 bg-black/60 z-0"
-        />
-
-        {/* Centered Text */}
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          viewport={{ once: true }}
-          className="relative z-30 w-full px-6 max-w-4xl text-center"
-        >
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-cormorant font-bold text-white leading-snug tracking-wide">
-            EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL<br className="hidden sm:block" />
-            SERVED ON A MEAL BOX
-          </h2>
-        </motion.div>
-      </section>
 
 
       {/* Reviews Section */}
@@ -639,7 +609,7 @@ const LandingPage = () => {
             <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
             <div className="flex gap-4">
               <motion.a
-                href="https://instagram.com/biryaniboyz"
+                href=""
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -5, scale: 1.1 }}
@@ -648,7 +618,7 @@ const LandingPage = () => {
                 <Instagram className="w-6 h-6" />
               </motion.a>
               <motion.a
-                href="https://facebook.com/biryaniboyz"
+                href=""
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -5, scale: 1.1 }}

@@ -53,7 +53,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
       `• ${item.title} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})`
     ).join('\n');
 
-    const message = `🛍️ *New Order*\n\n*Customer Name:* ${customerName}\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n_Note: Our team will review your order and confirm shortly._`;
+    const message = `🛍️ *New Order*\n\n*Customer Name:* ${customerName}\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n`;
 
     // Save delivery info
     setDeliveryInfo({ 
@@ -221,9 +221,6 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
                   <span className="font-medium">Total</span>
                   <span className="text-xl font-bold">${total.toFixed(2)}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 text-center">
-                  Our team will review your order and confirm shortly
-                </p>
                 <button
                   onClick={handleWhatsAppOrder}
                   className="w-full bg-[#25D366] hover:bg-[#22c55e] text-white py-3 rounded-lg flex items-center justify-center gap-2 font-medium"
