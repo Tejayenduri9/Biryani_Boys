@@ -29,15 +29,26 @@
     transform: rotateY(180deg);
   }
 
-  .zigzag-border {
-    --mask: 
-      linear-gradient(45deg, transparent 75%, #fff 0) 0 50%,
-      linear-gradient(-45deg, transparent 75%, #fff 0) 0 50%;
+  .zigzag-border-top {
+    --mask: linear-gradient(45deg, #000 25%, transparent 25%) 0 0,
+           linear-gradient(-45deg, #000 25%, transparent 25%) 0 0;
     -webkit-mask: var(--mask);
     mask: var(--mask);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    mask-size: 30px 30px;
+    -webkit-mask-size: 32px 32px;
+    mask-size: 32px 32px;
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
+  }
+
+  .zigzag-border-bottom {
+    --mask: linear-gradient(225deg, #000 25%, transparent 25%) 0 0,
+           linear-gradient(135deg, #000 25%, transparent 25%) 0 0;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+    -webkit-mask-size: 32px 32px;
+    mask-size: 32px 32px;
+    -webkit-mask-composite: source-over;
+    mask-composite: add;
   }
 }
 
