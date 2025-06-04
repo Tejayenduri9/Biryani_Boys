@@ -480,27 +480,22 @@ const LandingPage = () => {
       <MenuSection />
 
       {/* Traditional Meal Section */}
-      <section className="relative h-screen">
-        <div className="fixed inset-0 w-full h-full" style={{ zIndex: -1 }}>
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0">
           <img
             src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG"
             alt="Traditional Meal"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-full max-w-7xl mx-auto px-4">
-            <div className="relative bg-black/60 py-20 zigzag-pattern">
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-4xl md:text-6xl lg:text-7xl font-cormorant font-bold text-white text-center leading-tight tracking-wider px-4"
-              >
+        <div className="relative z-10 w-full">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="zigzag-border bg-black/80 py-16 md:py-24">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-cormorant font-bold text-white text-center px-4 leading-tight tracking-wider">
                 EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
-              </motion.h2>
+              </h2>
             </div>
           </div>
         </div>
