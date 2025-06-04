@@ -480,23 +480,21 @@ const LandingPage = () => {
       <MenuSection />
 
       {/* Traditional Meal Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG"
+            src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg"
             alt="Traditional Meal"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 bg-black/60" />
         </div>
 
-        <div className="relative z-10 w-full">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="zigzag-border bg-black/80 py-16 md:py-24">
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-cormorant font-bold text-white text-center px-4 leading-tight tracking-wider">
-                EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
-              </h2>
-            </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4">
+          <div className="zigzag-pattern">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-cormorant font-bold text-white text-center tracking-wider leading-tight">
+              EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
+            </h2>
           </div>
         </div>
       </section>
