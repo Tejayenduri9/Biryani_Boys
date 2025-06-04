@@ -28,39 +28,6 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
-
-  .zigzag-pattern {
-    position: relative;
-    padding: 2rem;
-    background: rgba(0, 0, 0, 0.8);
-  }
-
-  .zigzag-pattern::before,
-  .zigzag-pattern::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 20px;
-    background-repeat: repeat-x;
-    background-size: 40px 20px;
-  }
-
-  .zigzag-pattern::before {
-    top: 0;
-    background-image: 
-      linear-gradient(45deg, transparent 33.333%, #000 33.333%, #000 66.667%, transparent 66.667%),
-      linear-gradient(-45deg, transparent 33.333%, #000 33.333%, #000 66.667%, transparent 66.667%);
-    background-position: 0 -10px;
-  }
-
-  .zigzag-pattern::after {
-    bottom: 0;
-    background-image: 
-      linear-gradient(45deg, #000 33.333%, transparent 33.333%, transparent 66.667%, #000 66.667%),
-      linear-gradient(-45deg, #000 33.333%, transparent 33.333%, transparent 66.667%, #000 66.667%);
-    background-position: 0 10px;
-  }
 }
 
 @keyframes float {
@@ -94,4 +61,43 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.traditional-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.traditional-section::before,
+.traditional-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background-size: 30px 30px;
+  z-index: 10;
+}
+
+.traditional-section::before {
+  top: 0;
+  background-image: linear-gradient(45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%),
+                    linear-gradient(-45deg, transparent 33.333%, #fff 33.333%, #fff 66.667%, transparent 66.667%);
+}
+
+.traditional-section::after {
+  bottom: 0;
+  background-image: linear-gradient(45deg, #fff 33.333%, transparent 33.333%, transparent 66.667%, #fff 66.667%),
+                    linear-gradient(-45deg, #fff 33.333%, transparent 33.333%, transparent 66.667%, #fff 66.667%);
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 1s ease-out;
+}
+
+.reveal-on-scroll.active {
+  opacity: 1;
+  transform: translateY(0);
 }
