@@ -104,7 +104,7 @@ const FlipCard: React.FC<{
                 <AnimatedWord 
                   text={card.category}
                   delay={0.3}
-                  className="text-3xl font-dancing text-white mb-2 tracking-wider"
+                  className="text-3xl font-cormorant text-white mb-2 tracking-wider"
                 />
                 {card.description && (
                   <motion.p 
@@ -159,7 +159,7 @@ const FlipCard: React.FC<{
                   <AnimatedWord 
                     text={item}
                     delay={index * 0.1 + 0.2}
-                    className="text-2xl font-dancing text-gray-900 tracking-wider"
+                    className="text-2xl font-cormorant text-gray-900 tracking-wider"
                   />
                 </motion.div>
               ))}
@@ -201,7 +201,7 @@ const SequentialText: React.FC = () => {
   }, []);
 
   return (
-    <div className="text-4xl md:text-5xl font-playfair min-h-[80px] flex items-center justify-center">
+    <div className="text-4xl md:text-5xl font-cormorant min-h-[80px] flex items-center justify-center">
       <AnimatePresence mode="wait">
         {showFood && (
           <motion.div
@@ -313,7 +313,7 @@ const MenuSection: React.FC = () => {
               damping: 10,
               delay: 0.7
             }}
-            className="text-6xl font-dancing text-amber-600"
+            className="text-6xl font-cormorant text-amber-600"
           >
             {Array.from("Our Menu").map((letter, index) => (
               <motion.span
@@ -480,28 +480,6 @@ const LandingPage: React.FC = () => {
                 <span className="relative z-10">Call to Order</span>
                 <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
               </motion.a>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 1.4 }}
-              className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
-            >
-              <motion.div
-                animate={{ y: [0, 10, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="font-montserrat text-white text-sm flex flex-col items-center gap-2"
-              >
-                <span>Scroll to explore</span>
-                <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-                  <motion.div
-                    animate={{ y: [0, 15, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-2 h-2 bg-white rounded-full mt-2"
-                  />
-                </div>
-              </motion.div>
             </motion.div>
           </motion.div>
         </div>
