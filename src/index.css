@@ -28,6 +28,17 @@
   .rotate-y-180 {
     transform: rotateY(180deg);
   }
+
+  .zigzag-border {
+    --mask: 
+      linear-gradient(45deg, transparent 75%, #fff 0) 0 50%,
+      linear-gradient(-45deg, transparent 75%, #fff 0) 0 50%;
+    -webkit-mask: var(--mask);
+    mask: var(--mask);
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+    mask-size: 30px 30px;
+  }
 }
 
 @keyframes float {
