@@ -356,6 +356,26 @@ const LandingPage = () => {
   const { user } = useAuth();
   const { reviews: allReviews, loading } = useReviews(menuCards);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const reveals = document.querySelectorAll('.reveal-on-scroll');
+      reveals.forEach(element => {
+        const windowHeight = window.innerHeight;
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('active');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const fiveStarReviews = Object.values(allReviews)
     .flat()
     .filter(review => review?.rating === 5)
@@ -480,23 +500,32 @@ const LandingPage = () => {
       <MenuSection />
 
       {/* Traditional Meal Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="traditional-section relative min-h-screen flex items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="absolute inset-0"
+        >
           <img
             src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg"
             alt="Traditional Meal"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-black/60" />
-        </div>
+        </motion.div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4">
-          <div className="zigzag-pattern">
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-cormorant font-bold text-white text-center tracking-wider leading-tight">
-              EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
-            </h2>
-          </div>
-        </div>
+        <motion.div
+          initial={{ y: 100, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          viewport={{ once: true }}
+          className="relative z-10 max-w-7xl mx-auto px-4 reveal-on-scroll"
+        >
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-cormorant font-bold text-white text-center tracking-wider leading-tight">
+            EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
+          </h2>
+        </motion.div>
       </section>
 
       {/* Reviews Section */}
@@ -642,3 +671,5 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+export default LandingPage
