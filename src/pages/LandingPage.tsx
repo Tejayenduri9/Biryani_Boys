@@ -479,38 +479,31 @@ const LandingPage = () => {
 
       <MenuSection />
 
-      {/* Traditional Meal Section with Parallax */}
-      <section className="relative overflow-hidden">
-        {/* Top zigzag border */}
-        <div className="h-16 bg-white dark:bg-gray-800 zigzag-border-top" />
-        
-        <div className="relative h-[60vh]">
-          <div className="fixed inset-0" style={{ zIndex: -1 }}>
-            <img
-              src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG"
-              alt="Traditional Meal"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/60" />
-          </div>
-
-          <div className="absolute inset-0 flex items-center justify-center px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="max-w-5xl mx-auto text-center"
-            >
-              <h2 className="text-3xl md:text-5xl lg:text-6xl font-cormorant font-bold text-white leading-tight tracking-wider px-8 py-6 rounded-lg">
-                EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
-              </h2>
-            </motion.div>
-          </div>
+      {/* Traditional Meal Section */}
+      <section className="relative h-screen">
+        <div className="fixed inset-0 w-full h-full" style={{ zIndex: -1 }}>
+          <img
+            src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG"
+            alt="Traditional Meal"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40" />
         </div>
 
-        {/* Bottom zigzag border */}
-        <div className="h-16 bg-white dark:bg-gray-800 zigzag-border-bottom" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-full max-w-7xl mx-auto px-4">
+            <div className="relative bg-black/60 py-20 zigzag-pattern">
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-4xl md:text-6xl lg:text-7xl font-cormorant font-bold text-white text-center leading-tight tracking-wider px-4"
+              >
+                EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
+              </motion.h2>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Reviews Section */}
