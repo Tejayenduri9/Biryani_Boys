@@ -500,7 +500,7 @@ const LandingPage = () => {
       <MenuSection />
       {/* Traditional Meal Section */}
       <section
-        className="traditional-section relative min-h-[500px] flex items-center justify-center bg-fixed bg-center bg-cover"
+        className="traditional-section relative min-h-[500px] flex items-center justify-center bg-center bg-cover"
         style={{
           backgroundImage:
             "url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg')"
