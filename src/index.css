@@ -29,30 +29,37 @@
     transform: rotateY(180deg);
   }
 
-  .zigzag-border {
+  .zigzag-pattern {
     position: relative;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.8);
   }
 
-  .zigzag-border::before,
-  .zigzag-border::after {
+  .zigzag-pattern::before,
+  .zigzag-pattern::after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
-    height: 32px;
-    background-size: 32px 32px;
-    background-image: linear-gradient(45deg, transparent 50%, #000 50%),
-                     linear-gradient(-45deg, transparent 50%, #000 50%);
+    height: 20px;
+    background-repeat: repeat-x;
+    background-size: 40px 20px;
   }
 
-  .zigzag-border::before {
-    top: -32px;
-    background-position: 0 -16px;
+  .zigzag-pattern::before {
+    top: 0;
+    background-image: 
+      linear-gradient(45deg, transparent 33.333%, #000 33.333%, #000 66.667%, transparent 66.667%),
+      linear-gradient(-45deg, transparent 33.333%, #000 33.333%, #000 66.667%, transparent 66.667%);
+    background-position: 0 -10px;
   }
 
-  .zigzag-border::after {
-    bottom: -32px;
-    background-position: 0 16px;
+  .zigzag-pattern::after {
+    bottom: 0;
+    background-image: 
+      linear-gradient(45deg, #000 33.333%, transparent 33.333%, transparent 66.667%, #000 66.667%),
+      linear-gradient(-45deg, #000 33.333%, transparent 33.333%, transparent 66.667%, #000 66.667%);
+    background-position: 0 10px;
   }
 }
 
