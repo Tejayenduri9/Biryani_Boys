@@ -481,41 +481,36 @@ const LandingPage = () => {
 
       {/* Traditional Meal Section with Parallax */}
       <section className="relative overflow-hidden">
-        <div className="zigzag-border relative">
-          <div className="h-[60vh] relative">
-            <div className="absolute inset-0">
-              <img
-                src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG"
-                alt="Traditional Meal"
-                className="w-full h-full object-cover"
-                style={{ 
-                  transform: 'scale(1.1)',
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  zIndex: -1
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/50" />
-            </div>
+        {/* Top zigzag border */}
+        <div className="h-16 bg-white dark:bg-gray-800 zigzag-border-top" />
+        
+        <div className="relative h-[60vh]">
+          <div className="fixed inset-0" style={{ zIndex: -1 }}>
+            <img
+              src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG"
+              alt="Traditional Meal"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/60" />
+          </div>
 
-            <div className="absolute inset-0 flex items-center justify-center px-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="max-w-5xl mx-auto text-center"
-              >
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-cormorant font-bold text-white leading-tight tracking-wider px-4 py-6 bg-black/30 backdrop-blur-sm rounded-lg">
-                  EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
-                </h2>
-              </motion.div>
-            </div>
+          <div className="absolute inset-0 flex items-center justify-center px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-5xl mx-auto text-center"
+            >
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-cormorant font-bold text-white leading-tight tracking-wider px-8 py-6 rounded-lg">
+                EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
+              </h2>
+            </motion.div>
           </div>
         </div>
+
+        {/* Bottom zigzag border */}
+        <div className="h-16 bg-white dark:bg-gray-800 zigzag-border-bottom" />
       </section>
 
       {/* Reviews Section */}
