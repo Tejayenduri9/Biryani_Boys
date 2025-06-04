@@ -384,12 +384,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2 animate-pulse" />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 animate-pulse" />
-      </div>
-
+      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center">
         <div className="absolute inset-0">
           <img
@@ -400,16 +395,22 @@ const LandingPage: React.FC = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
         </div>
 
-        <div className="relative z-10 text-center text-white px-4">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
           <motion.div
             initial="hidden"
             animate="visible"
-            className="space-y-8"
+            className="space-y-12"
           >
             <motion.div
-              whileHover={{ scale: 1.05, rotate: 5 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              className="w-40 h-40 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                duration: 1.5
+              }}
+              className="w-48 h-48 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-amber-500 to-amber-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
               <img
@@ -431,46 +432,76 @@ const LandingPage: React.FC = () => {
               />
             </motion.div>
             
-            <div className="space-y-4">
-              <h1 className="text-6xl md:text-7xl font-bold">
-                <AnimatedWord text="Biryani" className="mr-4" />
-                <AnimatedWord 
-                  text="Boyz"
-                  delay={0.5}
-                  className="bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
-                />
-              </h1>
-              <AnimatedWord 
-                text="Experience Authentic Indian Flavors"
-                className="text-xl md:text-2xl text-gray-300"
-                delay={1}
-              />
+            <div className="space-y-6">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                className="text-7xl md:text-8xl font-bold text-white"
+              >
+                <span className="inline-block mr-4">Biryani</span>
+                <span className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">
+                  Boyz
+                </span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="text-2xl md:text-3xl text-gray-300 font-light max-w-3xl mx-auto"
+              >
+                Experience the authentic flavors of India, crafted with passion and served with love
+              </motion.p>
             </div>
 
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.5 }}
-              className="flex flex-col sm:flex-row gap-6 justify-center"
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="flex flex-col sm:flex-row gap-6 justify-center items-center"
             >
               <motion.button
                 onClick={handleOrderOnline}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:from-amber-600 hover:to-amber-700 transition-all relative overflow-hidden group"
+                className="group relative overflow-hidden rounded-full bg-amber-500 px-8 py-4 text-xl font-bold text-white shadow-xl transition-transform duration-200"
               >
                 <span className="relative z-10">Order Online</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
               </motion.button>
+
               <motion.a
                 href="tel:+15185287832"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-amber-600 px-8 py-4 rounded-lg text-xl font-bold shadow-lg hover:bg-gray-100 transition-all relative overflow-hidden group"
+                className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-xl font-bold text-amber-600 shadow-xl transition-transform duration-200"
               >
                 <span className="relative z-10">Call to Order</span>
-                <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+                <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
               </motion.a>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.4 }}
+              className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+            >
+              <motion.div
+                animate={{ y: [0, 10, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="text-white text-sm flex flex-col items-center gap-2"
+              >
+                <span>Scroll to explore</span>
+                <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+                  <motion.div
+                    animate={{ y: [0, 15, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-2 h-2 bg-white rounded-full mt-2"
+                  />
+                </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>
@@ -478,6 +509,7 @@ const LandingPage: React.FC = () => {
 
       <MenuSection />
 
+      {/* Reviews Section */}
       <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
         <div className="max-w-6xl mx-auto">
           <motion.h2
@@ -541,6 +573,7 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Footer */}
       <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
         
