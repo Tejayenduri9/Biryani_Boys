@@ -1,9 +1,29 @@
-import React from 'react';
-import { useScroll, useTransform, motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const TraditionalMealSection: React.FC = () => {
   const { scrollY } = useScroll();
+  const [fallbackY, setFallbackY] = useState(0);
+
+  // Fallback scroll tracking for mobile
+  useEffect(() => {
+    const handleScroll = () => {
+      setFallbackY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Motion value with fallback for mobile
   const yMobile = useTransform(scrollY, [0, 300], [0, -40]);
+
+  // Debug log
+  useEffect(() => {
+    const unsubscribe = scrollY.onChange((v) => {
+      console.log('Framer scrollY:', v);
+    });
+    return () => unsubscribe();
+  }, [scrollY]);
 
   return (
     <section
@@ -23,7 +43,7 @@ const TraditionalMealSection: React.FC = () => {
           backgroundImage: "url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          y: yMobile as any  // 👈 Cast to `any` to avoid type error
+          transform: `translateY(${fallbackY > 0 ? -Math.min(fallbackY / 7.5, 40) : 0}px)`
         }}
       />
 
