@@ -498,35 +498,40 @@ const LandingPage = () => {
       </section>
 
       <MenuSection />
-
       {/* Traditional Meal Section */}
-      <section className="traditional-section relative min-h-screen flex items-center justify-center">
+      <section
+        className="traditional-section relative min-h-[500px] flex items-center justify-center bg-fixed bg-center bg-cover"
+        style={{
+          backgroundImage:
+            "url('https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg')"
+        }}
+      >
+        <div className="zigzag-edge zigzag-top" />
+        <div className="zigzag-edge zigzag-bottom" />
+
+        {/* Dark overlay */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="absolute inset-0"
-        >
-          <img
-            src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg"
-            alt="Traditional Meal"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/60" />
-        </motion.div>
+          className="absolute inset-0 bg-black/60 z-0"
+        />
 
+        {/* Centered Text */}
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
           viewport={{ once: true }}
-          className="relative z-10 max-w-7xl mx-auto px-4 reveal-on-scroll"
+          className="relative z-30 w-full px-6 max-w-4xl text-center"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-cormorant font-bold text-white text-center tracking-wider leading-tight">
-            EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
+          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-cormorant font-bold text-white leading-snug tracking-wide">
+            EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL<br className="hidden sm:block" />
+            SERVED ON A MEAL BOX
           </h2>
         </motion.div>
       </section>
+
 
       {/* Reviews Section */}
       <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
@@ -671,4 +676,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
