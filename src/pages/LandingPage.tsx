@@ -5,11 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 
-const AnimatedWord: React.FC<{ text: string; delay?: number; className?: string }> = ({ 
-  text, 
-  delay = 0,
-  className = "" 
-}) => {
+const AnimatedWord = ({ text, delay = 0, className = "" }) => {
   return (
     <motion.span className={`inline-block ${className}`}>
       {text.split('').map((char, index) => (
@@ -64,11 +60,7 @@ const menuCards = [
   }
 ];
 
-const FlipCard: React.FC<{ 
-  card: typeof menuCards[0];
-  isActive: boolean;
-  onFlip: () => void;
-}> = ({ card, isActive, onFlip }) => {
+const FlipCard = ({ card, isActive, onFlip }) => {
   return (
     <motion.div 
       className="w-full h-[400px] perspective-1000 cursor-pointer"
@@ -171,7 +163,7 @@ const FlipCard: React.FC<{
   );
 };
 
-const SequentialText: React.FC = () => {
+const SequentialText = () => {
   const [showFood, setShowFood] = useState(true);
   const [showPeople, setShowPeople] = useState(false);
 
@@ -252,7 +244,7 @@ const SequentialText: React.FC = () => {
   );
 };
 
-const MenuSection: React.FC = () => {
+const MenuSection = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
@@ -358,7 +350,7 @@ const MenuSection: React.FC = () => {
   );
 };
 
-const LandingPage: React.FC = () => {
+const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const { user } = useAuth();
@@ -486,6 +478,31 @@ const LandingPage: React.FC = () => {
       </section>
 
       <MenuSection />
+
+      {/* New Traditional Meal Section */}
+      <section className="relative py-32">
+        <div className="absolute inset-0">
+          <img
+            src="https://a-us.storyblok.com/f/1004486/0f0921cf4b/dsc_0294.JPG?w=570&h=368&fit=crop&crop=entropy&auto=compress%2Cformat"
+            alt="Traditional Meal"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+        </div>
+        
+        <div className="relative z-10 max-w-6xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-cormorant font-bold text-white leading-tight">
+              EXPERIENCE THE AUTHENTIC QUALITY OF A TRADITIONAL MEAL SERVED ON A MEAL BOX
+            </h2>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Reviews Section */}
       <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
