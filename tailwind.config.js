@@ -17,9 +17,9 @@ export default {
         },
       },
       fontFamily: {
-        'playfair': ['Playfair Display', 'serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'cormorant': ['Cormorant', 'serif'],
         'poppins': ['Poppins', 'sans-serif'],
-        'dancing': ['Dancing Script', 'cursive'],
       },
     },
   },
