@@ -437,7 +437,7 @@ const LandingPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="text-7xl md:text-8xl font-bold text-white"
+                className="font-cormorant text-7xl md:text-8xl font-bold text-white tracking-tight"
               >
                 <span className="inline-block mr-4">Biryani</span>
                 <span className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">
@@ -449,13 +449,13 @@ const LandingPage: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="text-2xl md:text-3xl text-gray-300 font-light max-w-3xl mx-auto"
+                className="font-montserrat text-2xl md:text-3xl text-gray-300 font-light max-w-3xl mx-auto tracking-wide"
               >
                 Experience the authentic flavors of India, crafted with passion and served with love
               </motion.p>
             </div>
 
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.1 }}
@@ -465,7 +465,7 @@ const LandingPage: React.FC = () => {
                 onClick={handleOrderOnline}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative overflow-hidden rounded-full bg-amber-500 px-8 py-4 text-xl font-bold text-white shadow-xl transition-transform duration-200"
+                className="font-montserrat group relative overflow-hidden rounded-full bg-amber-500 px-8 py-4 text-xl font-medium text-white shadow-xl transition-transform duration-200"
               >
                 <span className="relative z-10">Order Online</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
@@ -475,7 +475,7 @@ const LandingPage: React.FC = () => {
                 href="tel:+15185287832"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative overflow-hidden rounded-full bg-white px-8 py-4 text-xl font-bold text-amber-600 shadow-xl transition-transform duration-200"
+                className="font-montserrat group relative overflow-hidden rounded-full bg-white px-8 py-4 text-xl font-medium text-amber-600 shadow-xl transition-transform duration-200"
               >
                 <span className="relative z-10">Call to Order</span>
                 <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
@@ -491,7 +491,7 @@ const LandingPage: React.FC = () => {
               <motion.div
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="text-white text-sm flex flex-col items-center gap-2"
+                className="font-montserrat text-white text-sm flex flex-col items-center gap-2"
               >
                 <span>Scroll to explore</span>
                 <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
