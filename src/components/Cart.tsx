@@ -61,7 +61,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose }) => {
       `• ${item.title} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})`
     ).join('\n');
 
-    const message = `🛍️ *New Order*\n\n*Customer Name:* ${customerName}\n\n*Order For:* ${selectedDay.label} (${selectedDay.date})\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n`;
+    const message = `🛍️ *New Order*\n\n*Customer Name:* ${customerName}\n\n*Order For:* ${selectedDay!.label} (${selectedDay!.date})\n\n*Items:*\n${orderDetails}\n\n*Total: $${total.toFixed(2)}*\n\n*Delivery Details:*\n📍 Address: ${address}\n📞 Phone: ${phone}${instructions ? `\n📝 Instructions: ${instructions}` : ''}\n\n`;
 
     setDeliveryInfo({ customerName, address, instructions, phone });
     window.location.href = `https://wa.me/15185287832?text=${encodeURIComponent(message)}`;
