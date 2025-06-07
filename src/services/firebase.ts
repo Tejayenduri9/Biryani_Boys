@@ -34,7 +34,6 @@ let db;
 try {
   db = initializeFirestore(app, {
     experimentalForceLongPolling: true,
-    useFetchStreams: false,
     cacheSizeBytes: CACHE_SIZE_UNLIMITED,
   });
 } catch (e: any) {

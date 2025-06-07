@@ -37,10 +37,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       {/* Sidebar */}
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      
-      {/* Main Content */}
+
+      {/* Main Content + Header together */}
       <div className="md:pl-64 transition-all duration-300">
-        <Header onCartClick={() => setIsCartOpen(true)} />
+        <div className="sticky top-0 z-50 bg-[#fdf6e3] dark:bg-gray-900 shadow">
+          <Header onCartClick={() => setIsCartOpen(true)} />
+        </div>
         <main className="p-4">{children}</main>
       </div>
 

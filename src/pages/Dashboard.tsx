@@ -293,8 +293,7 @@ const Dashboard: React.FC = () => {
                 const targetDay = day.includes('Friday') ? 5 : 6;
                 return (
                   <div key={i} className="flex justify-center items-center gap-2">
-                    🛍️ Orders open for <span className="font-semibold">{formatDate(targetDay)}</span> —
-                    <CountdownTimer targetTime={getCutoffDate(targetDay)} />
+                    🛍️ Orders open for <span className="font-semibold">{formatDate(targetDay)}</span> 
                   </div>
                 );
               })}
