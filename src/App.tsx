@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { SidebarProvider } from './components/SidebarContext'; // ✅ Import sidebar context
 import { useAuth } from './context/AuthContext';
 import Dashboard from './pages/Dashboard';
 import Menu from './pages/Menu';
@@ -23,14 +24,16 @@ function AppContent() {
   }
 
   return (
-    <CartProvider>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/" element={<Navigate to="/dashboard\" replace />} />
-        <Route path="*" element={<Navigate to="/dashboard\" replace />} />
-      </Routes>
-    </CartProvider>
+    <SidebarProvider> {/* ✅ Wrap here */}
+      <CartProvider>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Routes>
+      </CartProvider>
+    </SidebarProvider>
   );
 }
 

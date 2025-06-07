@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import MealCard from '../components/MealCard';
 import Cart from '../components/Cart';
@@ -7,98 +8,184 @@ import { useReviews } from '../hooks/useReviews';
 import { useAuth } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
 import { MealBox } from '../types';
-import { WifiOff, Search, ShoppingBag } from 'lucide-react';
+import { WifiOff, Search } from 'lucide-react';
+import { useSidebar } from '../components/SidebarContext';
 
 const mealBoxes: MealBox[] = [
-  // Biryani Section
-  {
-    title: "Chicken Biryani",
-    description: "Classic Hyderabadi style biryani",
-    emoji: "🍗",
-    bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-    price: 10,
-    category: "biryani",
-    image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
-  },
-  {
-    title: "Extra Meat Chicken Biryani",
-    description: "Extra portion of meat! Must pre-order",
-    emoji: "🍖",
-    bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-    price: 12,
-    category: "biryani",
-    tags: ["Pre-Order Required"],
-    image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
-  },
-  // Veg Meal Box Section
-  {
-    title: "Kadai Paneer",
-    description: "Cottage cheese in rich gravy served with Pulav, Channa Masala, and Chapati",
-    emoji: "🧀",
-    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-    price: 12,
-    category: "veg",
-    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
-  },
-  {
-    title: "Okra Masala",
-    description: "Fresh okra in aromatic spices served with Pulav, Channa Masala, and Chapati",
-    emoji: "🥬",
-    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-    price: 12,
-    category: "veg",
-    isNew: true,
-    image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
-  },
-  // Others Section
-  {
-    title: "Bisi Bele Bath",
-    description: "Traditional Karnataka style rice dish",
-    emoji: "🍚",
-    bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
-    price: 12,
-    category: "others",
-    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
-  },
-  // Non-Veg Meal Box Section
-  {
-    title: "Andhra Chicken",
-    description: "Spicy Andhra style chicken served with Pulav, Channa Masala, and Chapati",
-    emoji: "🌶️",
-    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
-    price: 12,
-    category: "non-veg",
-    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
-  },
-  {
-    title: "Kadai Chicken",
-    description: "Chicken in aromatic kadai gravy served with Pulav, Channa Masala, and Chapati",
-    emoji: "🍗",
-    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
-    price: 12,
-    category: "non-veg",
-    image: "https://myfoodstory.com/wp-content/uploads/2021/09/kadai-chicken-1.jpg"
-  }
+ // Biryani Section
+ {
+   title: "Chicken Biryani",
+   description: "Classic Hyderabadi style biryani",
+   emoji: "🍗",
+   bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+   price: 10,
+   category: "biryani",
+   image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
+ },
+ {
+   title: "Extra Meat Chicken Biryani",
+   description: "Extra portion of meat! Must pre-order",
+   emoji: "🍖",
+   bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+   price: 12,
+   category: "biryani",
+   tags: ["Pre-Order Required"],
+   image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
+ },
+ // Veg Meal Box Section
+ {
+   title: "Kadai Paneer",
+   description: "Cottage cheese in rich gravy served with Pulav, Channa Masala, and Chapati",
+   emoji: "🧀",
+   bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+   price: 12,
+   category: "veg",
+   image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
+ },
+ {
+   title: "Okra Masala",
+   description: "Fresh okra in aromatic spices served with Pulav, Channa Masala, and Chapati",
+   emoji: "🥬",
+   bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+   price: 12,
+   category: "veg",
+   isNew: true,
+   image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
+ },
+ // Others Section
+ {
+   title: "Bisi Bele Bath",
+   description: "Traditional Karnataka style rice dish",
+   emoji: "🍚",
+   bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
+   price: 12,
+   category: "others",
+   image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
+ },
+ // Non-Veg Meal Box Section
+ {
+   title: "Andhra Chicken",
+   description: "Spicy Andhra style chicken served with Pulav, Channa Masala, and Chapati",
+   emoji: "🌶️",
+   bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
+   price: 12,
+   category: "non-veg",
+   image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
+ },
+ {
+   title: "Kadai Chicken",
+   description: "Chicken in aromatic kadai gravy served with Pulav, Channa Masala, and Chapati",
+   emoji: "🍗",
+   bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
+   price: 12,
+   category: "non-veg",
+   image: "https://myfoodstory.com/wp-content/uploads/2021/09/kadai-chicken-1.jpg"
+ }
 ];
+
+const getOrderStatus = () => {
+  const now = new Date();
+  const day = now.getDay();
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const cutoffPassed = hour > 9 || (hour === 9 && minute >= 30);
+  let availableDays: string[] = [];
+
+  if (day === 5) {
+    availableDays = cutoffPassed ? ['Saturday'] : ['Friday', 'Saturday'];
+  } else if (day === 6) {
+    availableDays = cutoffPassed ? ['Next Friday', 'Next Saturday'] : ['Saturday'];
+  } else {
+    availableDays = ['Next Friday', 'Next Saturday'];
+  }
+
+  return availableDays;
+};
+
+const getCutoffDate = (targetDay: number) => {
+  const now = new Date();
+  const result = new Date(now);
+  const currentDay = now.getDay();
+  let daysUntil = (targetDay - currentDay + 7) % 7;
+
+  if (daysUntil === 0 && (now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() >= 30))) {
+    daysUntil = 7;
+  }
+
+  result.setDate(now.getDate() + daysUntil);
+  result.setHours(9, 30, 0, 0);
+  return result;
+};
+
+const formatDate = (dayNumber: number): string => {
+  const targetDate = getCutoffDate(dayNumber);
+  return targetDate.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+const CountdownTimer = ({ targetTime }: { targetTime: Date }) => {
+  const [timeLeft, setTimeLeft] = useState<string>('');
+
+  useEffect(() => {
+    const update = () => {
+      const now = new Date();
+      const diff = targetTime.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setTimeLeft('Cutoff reached');
+        return;
+      }
+
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+    };
+
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, [targetTime]);
+
+  return <p className="font-mono text-sm text-red-600">⏰ {timeLeft}</p>;
+};
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
-  
-  const { 
-    reviews, 
-    loading, 
-    submitReview, 
-    updateReview, 
-    deleteReview, 
+  const location = useLocation();
+  const isDashboard = location.pathname === '/dashboard';
+  const { isSidebarOpen } = useSidebar();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkSize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkSize();
+    window.addEventListener('resize', checkSize);
+    return () => window.removeEventListener('resize', checkSize);
+  }, []);
+
+  const {
+    reviews,
+    loading,
+    submitReview,
+    updateReview,
+    deleteReview,
     getAverageRating,
-    offline 
+    offline
   } = useReviews(mealBoxes);
+
+  const availableDays = getOrderStatus();
 
   const filteredMealBoxes = useMemo(() => {
     return mealBoxes.filter(mealBox => {
-      const matchesSearch = searchQuery === '' || 
+      const matchesSearch = searchQuery === '' ||
         mealBox.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         mealBox.description?.toLowerCase().includes(searchQuery.toLowerCase());
 
@@ -109,7 +196,7 @@ const Dashboard: React.FC = () => {
   return (
     <CartProvider>
       <Layout>
-        <div className="py-6">
+        <div className="py-6 pb-24">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -122,7 +209,7 @@ const Dashboard: React.FC = () => {
             <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               Experience the authentic flavors of India with our carefully curated menu.
             </p>
-            
+
             {offline && (
               <div className="mt-4 flex items-center justify-center gap-2 text-amber-600 dark:text-amber-500">
                 <WifiOff size={16} />
@@ -145,6 +232,24 @@ const Dashboard: React.FC = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               </div>
             </div>
+
+            {/* Order Status Display */}
+            <div className="mt-10 text-center">
+              <h2 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">Now Accepting Orders For:</h2>
+              <div className="flex flex-wrap justify-center gap-4">
+                {availableDays.map(day => {
+                  const targetDay = day.includes('Friday') ? 5 : 6;
+                  return (
+                    <div key={day} className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+                      <p className="font-medium text-gray-800 dark:text-gray-200">
+                        {formatDate(targetDay)}
+                      </p>
+                      <CountdownTimer targetTime={getCutoffDate(targetDay)} />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </motion.div>
 
           {loading ? (
@@ -152,7 +257,7 @@ const Dashboard: React.FC = () => {
               <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
             </div>
           ) : (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -165,7 +270,7 @@ const Dashboard: React.FC = () => {
                   averageRating={getAverageRating(meal.title)}
                   user={user}
                   onSubmitReview={(comment, rating) => submitReview(meal.title, comment, rating)}
-                  onUpdateReview={(reviewId, comment, rating) => 
+                  onUpdateReview={(reviewId, comment, rating) =>
                     updateReview(meal.title, reviewId, comment, rating)
                   }
                   onDeleteReview={(reviewId) => deleteReview(meal.title, reviewId)}
@@ -175,6 +280,26 @@ const Dashboard: React.FC = () => {
           )}
 
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+          {/* Sticky Footer Notification - Only when sidebar is closed and not on small screens */}
+          {isDashboard && (!isMobile || !isSidebarOpen) && availableDays.length > 0 && (
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
+              className="fixed bottom-0 left-0 right-0 md:ml-64 md:w-[calc(100%-16rem)] z-50 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 text-sm text-center py-2 shadow-md shadow-amber-300 dark:shadow-amber-800"
+            >
+              {availableDays.map((day, i) => {
+                const targetDay = day.includes('Friday') ? 5 : 6;
+                return (
+                  <div key={i} className="flex justify-center items-center gap-2">
+                    🛍️ Orders open for <span className="font-semibold">{formatDate(targetDay)}</span> —
+                    <CountdownTimer targetTime={getCutoffDate(targetDay)} />
+                  </div>
+                );
+              })}
+            </motion.div>
+          )}
         </div>
       </Layout>
     </CartProvider>

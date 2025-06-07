@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import {
-  getFirestore,
+  initializeFirestore,
   enableMultiTabIndexedDbPersistence,
   CACHE_SIZE_UNLIMITED,
 } from 'firebase/firestore';
@@ -21,17 +21,32 @@ const firebaseConfig = {
   measurementId: "G-GX6FKDY3ZR",
 };
 
-// ✅ Initialize Firebase
+// ✅ Initialize Firebase App
 const app = initializeApp(firebaseConfig);
 
 // ✅ Firebase Auth
 const auth = getAuth(app);
 auth.useDeviceLanguage();
 
-// ✅ Firestore
-const db = getFirestore(app);
+// ✅ Firestore Initialization with Fallback
+let db;
 
-// ✅ Enable IndexedDB persistence
+try {
+  db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+    useFetchStreams: false,
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+  });
+} catch (e: any) {
+  if (e.code === 'failed-precondition' || e.message?.includes('has already been called')) {
+    const { getFirestore } = await import('firebase/firestore');
+    db = getFirestore(app);
+  } else {
+    throw e;
+  }
+}
+
+// ✅ Enable IndexedDB Persistence
 enableMultiTabIndexedDbPersistence(db).catch((err) => {
   if (err.code === 'failed-precondition') {
     console.warn('Multiple tabs open, persistence enabled in first tab only');
@@ -40,13 +55,13 @@ enableMultiTabIndexedDbPersistence(db).catch((err) => {
   }
 });
 
-// ✅ Sign in with Google
+// ✅ Google Sign-In
 export const signInWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   provider.setCustomParameters({
     prompt: 'select_account',
   });
-  return signInWithPopup(auth, provider); // 🛠️ Fixed: Removed browserPopupRedirectResolver
+  return signInWithPopup(auth, provider);
 };
 
 export { auth, db };
