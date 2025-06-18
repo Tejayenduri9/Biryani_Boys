@@ -49,7 +49,7 @@ const FloatingOrderButton: React.FC = () => {
             onHoverEnd={() => setIsHovered(false)}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="relative group w-16 h-16 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-2xl hover:shadow-amber-500/40 transition-all duration-300 flex items-center justify-center"
+            className="relative group w-20 h-20 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-2xl hover:shadow-amber-500/40 transition-all duration-300 flex flex-col items-center justify-center"
           >
             {/* Cute glowing background effect */}
             <motion.div
@@ -101,8 +101,8 @@ const FloatingOrderButton: React.FC = () => {
                       key={i}
                       className="absolute w-1.5 h-1.5 bg-white rounded-full"
                       style={{
-                        top: `${50 + Math.sin(i * 60 * Math.PI / 180) * 35}%`,
-                        left: `${50 + Math.cos(i * 60 * Math.PI / 180) * 35}%`,
+                        top: `${50 + Math.sin(i * 60 * Math.PI / 180) * 40}%`,
+                        left: `${50 + Math.cos(i * 60 * Math.PI / 180) * 40}%`,
                       }}
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{
@@ -133,9 +133,23 @@ const FloatingOrderButton: React.FC = () => {
                 type: "spring",
                 stiffness: 300
               }}
-              className="relative z-10"
+              className="relative z-10 mb-1"
             >
-              <ShoppingBag className="w-7 h-7 text-white drop-shadow-lg" />
+              <ShoppingBag className="w-6 h-6 text-white drop-shadow-lg" />
+            </motion.div>
+
+            {/* "Order Now" text */}
+            <motion.div
+              animate={{
+                scale: isHovered ? [1, 1.1, 1] : 1
+              }}
+              transition={{
+                duration: 0.4,
+                type: "spring"
+              }}
+              className="relative z-10 text-white text-[10px] font-bold leading-tight text-center drop-shadow-lg"
+            >
+              Order<br />Now
             </motion.div>
 
             {/* Cute pulsing ring effect */}
