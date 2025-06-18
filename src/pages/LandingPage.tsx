@@ -576,74 +576,83 @@ const LandingPage = () => {
               
               {/* Title with Dramatic Directional Animations */}
               <div className="space-y-4 sm:space-y-6">
-                <div className="font-cormorant text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight flex flex-wrap justify-center items-center gap-2 sm:gap-4">
-                  {/* "Biryani" - Coming from LEFT */}
-                  <motion.span
-                    initial={{ x: -300, opacity: 0, rotateY: -90 }}
-                    animate={{ x: 0, opacity: 1, rotateY: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 12,
-                      duration: 1.2,
-                      delay: 0.8
-                    }}
-                    className="inline-block"
-                  >
-                    {Array.from("Biryani").map((letter, index) => (
-                      <motion.span
-                        key={index}
-                        initial={{ opacity: 0, y: 50, rotateX: -90 }}
-                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                        transition={{
-                          delay: 0.8 + index * 0.1,
-                          type: "spring",
-                          stiffness: 100,
-                          damping: 10
-                        }}
-                        className="inline-block"
-                        style={{
-                          textShadow: '0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3)'
-                        }}
-                      >
-                        {letter}
-                      </motion.span>
-                    ))}
-                  </motion.span>
+                <div className="font-cormorant text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight">
+                  <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+                    {/* "Biryani" - Coming from LEFT */}
+                    <motion.span
+                      initial={{ x: -300, opacity: 0, rotateY: -90 }}
+                      animate={{ x: 0, opacity: 1, rotateY: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 12,
+                        duration: 1.2,
+                        delay: 0.8
+                      }}
+                      className="inline-block"
+                    >
+                      {Array.from("Biryani").map((letter, index) => (
+                        <motion.span
+                          key={index}
+                          initial={{ opacity: 0, y: 50, rotateX: -90 }}
+                          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                          transition={{
+                            delay: 0.8 + index * 0.1,
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 10
+                          }}
+                          className="inline-block"
+                          style={{
+                            textShadow: '0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3)'
+                          }}
+                        >
+                          {letter}
+                        </motion.span>
+                      ))}
+                    </motion.span>
 
-                  {/* "Boyz" - Coming from RIGHT */}
-                  <motion.span
-                    initial={{ x: 300, opacity: 0, rotateY: 90 }}
-                    animate={{ x: 0, opacity: 1, rotateY: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 80,
-                      damping: 12,
-                      duration: 1.2,
-                      delay: 1.2
-                    }}
-                    className="inline-block bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-transparent bg-clip-text"
-                  >
-                    {Array.from("Boyz").map((letter, index) => (
-                      <motion.span
-                        key={index}
-                        initial={{ opacity: 0, y: 50, rotateX: 90 }}
-                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                        transition={{
-                          delay: 1.2 + index * 0.1,
-                          type: "spring",
-                          stiffness: 100,
-                          damping: 10
-                        }}
-                        className="inline-block"
-                        style={{
-                          filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.8))'
-                        }}
-                      >
-                        {letter}
-                      </motion.span>
-                    ))}
-                  </motion.span>
+                    {/* "Boyz" - Coming from RIGHT with ENHANCED VISIBILITY */}
+                    <motion.span
+                      initial={{ x: 300, opacity: 0, rotateY: 90 }}
+                      animate={{ x: 0, opacity: 1, rotateY: 0 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 80,
+                        damping: 12,
+                        duration: 1.2,
+                        delay: 1.2
+                      }}
+                      className="inline-block text-amber-400"
+                      style={{
+                        textShadow: '0 0 30px rgba(251, 191, 36, 1), 0 0 60px rgba(251, 191, 36, 0.8), 0 0 90px rgba(251, 191, 36, 0.6)',
+                        filter: 'drop-shadow(0 0 20px rgba(251, 191, 36, 1))',
+                        WebkitTextStroke: '2px rgba(251, 191, 36, 0.8)'
+                      }}
+                    >
+                      {Array.from("Boyz").map((letter, index) => (
+                        <motion.span
+                          key={index}
+                          initial={{ opacity: 0, y: 50, rotateX: 90 }}
+                          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                          transition={{
+                            delay: 1.2 + index * 0.1,
+                            type: "spring",
+                            stiffness: 100,
+                            damping: 10
+                          }}
+                          className="inline-block"
+                          style={{
+                            color: '#fbbf24',
+                            textShadow: '0 0 20px rgba(251, 191, 36, 1), 0 0 40px rgba(251, 191, 36, 0.8)',
+                            filter: 'drop-shadow(0 0 15px rgba(251, 191, 36, 1))'
+                          }}
+                        >
+                          {letter}
+                        </motion.span>
+                      ))}
+                    </motion.span>
+                  </div>
                 </div>
 
                 {/* Description with staggered animation */}
