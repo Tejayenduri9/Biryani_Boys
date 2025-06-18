@@ -6,6 +6,7 @@ import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 import TraditionalMealSection from '../components/TraditionalMealSection';
 import Navbar from '../components/NavBar';
+import FloatingOrderButton from '../components/FloatingOrderButton';
 
 interface AnimatedWordProps {
   text: string;
@@ -437,6 +438,9 @@ const LandingPage = () => {
     <div id="home" className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
       {/* Navbar */}
       <Navbar />
+      
+      {/* Floating Order Button */}
+      <FloatingOrderButton />
       
       <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
         {/* Floating Particles */}
