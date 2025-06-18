@@ -578,52 +578,11 @@ const LandingPage = () => {
                 </motion.p>
               </div>
 
-              {/* Action Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.1 }}
-                className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
-              >
-                <motion.button
-                  onClick={handleOrderOnline}
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="font-montserrat group relative overflow-hidden rounded-full bg-amber-500 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-medium text-white shadow-xl transition-all duration-300 w-full sm:w-auto"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Sparkles className="w-5 h-5" />
-                    Order Online
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
-                  
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                    animate={{ x: ['-100%', '100%'] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  />
-                </motion.button>
-
-                <motion.a
-                  href="tel:+15185287832"
-                  whileHover={{ scale: 1.05, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="font-montserrat group relative overflow-hidden rounded-full bg-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-medium text-amber-600 shadow-xl transition-all duration-300 w-full sm:w-auto"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Phone className="w-5 h-5" />
-                    Call to Order
-                  </span>
-                  <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
-                </motion.a>
-              </motion.div>
-
               {/* Scroll Indicator */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 2 }}
+                transition={{ delay: 1.5 }}
                 className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
               >
                 <motion.div
