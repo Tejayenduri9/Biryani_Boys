@@ -612,7 +612,7 @@ const LandingPage = () => {
                       ))}
                     </motion.span>
 
-                    {/* "Boyz" - Coming from RIGHT with ENHANCED VISIBILITY */}
+                    {/* "Boyz" - Coming from RIGHT with CLEAN STYLING */}
                     <motion.span
                       initial={{ x: 300, opacity: 0, rotateY: 90 }}
                       animate={{ x: 0, opacity: 1, rotateY: 0 }}
@@ -624,11 +624,6 @@ const LandingPage = () => {
                         delay: 1.2
                       }}
                       className="inline-block text-amber-400"
-                      style={{
-                        textShadow: '0 0 30px rgba(251, 191, 36, 1), 0 0 60px rgba(251, 191, 36, 0.8), 0 0 90px rgba(251, 191, 36, 0.6)',
-                        filter: 'drop-shadow(0 0 20px rgba(251, 191, 36, 1))',
-                        WebkitTextStroke: '2px rgba(251, 191, 36, 0.8)'
-                      }}
                     >
                       {Array.from("Boyz").map((letter, index) => (
                         <motion.span
@@ -642,11 +637,6 @@ const LandingPage = () => {
                             damping: 10
                           }}
                           className="inline-block"
-                          style={{
-                            color: '#fbbf24',
-                            textShadow: '0 0 20px rgba(251, 191, 36, 1), 0 0 40px rgba(251, 191, 36, 0.8)',
-                            filter: 'drop-shadow(0 0 15px rgba(251, 191, 36, 1))'
-                          }}
                         >
                           {letter}
                         </motion.span>
