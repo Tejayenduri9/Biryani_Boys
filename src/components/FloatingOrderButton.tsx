@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Sparkles } from 'lucide-react';
+import { ShoppingBag, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const FloatingOrderButton: React.FC = () => {
@@ -37,39 +37,74 @@ const FloatingOrderButton: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ x: 100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 100, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed right-4 top-1/2 transform -translate-y-1/2 z-[998]"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="fixed right-6 top-1/2 transform -translate-y-1/2 z-[998]"
         >
           <motion.button
             onClick={handleOrderOnline}
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="relative group bg-gradient-to-r from-amber-500 to-amber-600 text-white px-6 py-4 rounded-l-full shadow-2xl hover:shadow-amber-500/25 transition-all duration-300"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="relative group w-16 h-16 bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 rounded-full shadow-2xl hover:shadow-amber-500/40 transition-all duration-300 flex items-center justify-center"
           >
-            {/* Glowing background effect */}
+            {/* Cute glowing background effect */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-amber-400 to-amber-500 rounded-l-full opacity-0 group-hover:opacity-75 transition-opacity duration-300"
-              style={{ filter: 'blur(8px)' }}
+              className="absolute inset-0 bg-gradient-to-br from-pink-400 to-amber-400 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300"
+              style={{ filter: 'blur(12px)' }}
             />
             
-            {/* Sparkle effects */}
+            {/* Floating hearts on hover */}
             <AnimatePresence>
               {isHovered && (
                 <>
-                  {Array.from({ length: 4 }).map((_, i) => (
+                  {Array.from({ length: 3 }).map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-1 h-1 bg-white rounded-full"
+                      className="absolute"
                       initial={{ 
-                        x: Math.random() * 40 - 20,
-                        y: Math.random() * 40 - 20,
-                        scale: 0 
+                        x: 0,
+                        y: 0,
+                        scale: 0,
+                        opacity: 0
                       }}
+                      animate={{
+                        x: (Math.random() - 0.5) * 60,
+                        y: -40 - Math.random() * 20,
+                        scale: [0, 1, 0],
+                        opacity: [0, 1, 0]
+                      }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{
+                        duration: 1.5,
+                        delay: i * 0.2,
+                        repeat: Infinity,
+                        repeatDelay: 1
+                      }}
+                    >
+                      <Heart className="w-3 h-3 text-pink-300 fill-pink-300" />
+                    </motion.div>
+                  ))}
+                </>
+              )}
+            </AnimatePresence>
+
+            {/* Sparkle effects around the circle */}
+            <AnimatePresence>
+              {isHovered && (
+                <>
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1.5 h-1.5 bg-white rounded-full"
+                      style={{
+                        top: `${50 + Math.sin(i * 60 * Math.PI / 180) * 35}%`,
+                        left: `${50 + Math.cos(i * 60 * Math.PI / 180) * 35}%`,
+                      }}
+                      initial={{ scale: 0, opacity: 0 }}
                       animate={{
                         scale: [0, 1, 0],
                         opacity: [0, 1, 0]
@@ -77,8 +112,9 @@ const FloatingOrderButton: React.FC = () => {
                       exit={{ scale: 0, opacity: 0 }}
                       transition={{
                         duration: 1,
-                        delay: i * 0.2,
-                        repeat: Infinity
+                        delay: i * 0.1,
+                        repeat: Infinity,
+                        repeatDelay: 0.5
                       }}
                     />
                   ))}
@@ -86,33 +122,59 @@ const FloatingOrderButton: React.FC = () => {
               )}
             </AnimatePresence>
 
-            <div className="relative z-10 flex flex-col items-center gap-2">
-              <motion.div
-                animate={{ 
-                  rotate: isHovered ? [0, -10, 10, 0] : 0,
-                  scale: isHovered ? 1.1 : 1
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <ShoppingBag className="w-6 h-6" />
-              </motion.div>
-              
-              <motion.span
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-sm font-bold whitespace-nowrap writing-mode-vertical-rl text-orientation-mixed"
-                style={{ writingMode: 'vertical-rl', textOrientation: 'mixed' }}
-              >
-                Order Online
-              </motion.span>
-            </div>
-
-            {/* Pulsing ring effect */}
+            {/* Main icon with cute bounce */}
             <motion.div
-              className="absolute inset-0 border-2 border-white/30 rounded-l-full"
+              animate={{ 
+                rotate: isHovered ? [0, -15, 15, 0] : 0,
+                scale: isHovered ? [1, 1.2, 1] : 1
+              }}
+              transition={{ 
+                duration: 0.6,
+                type: "spring",
+                stiffness: 300
+              }}
+              className="relative z-10"
+            >
+              <ShoppingBag className="w-7 h-7 text-white drop-shadow-lg" />
+            </motion.div>
+
+            {/* Cute pulsing ring effect */}
+            <motion.div
+              className="absolute inset-0 border-3 border-white/40 rounded-full"
               animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.1, 0.3]
+                scale: [1, 1.3, 1],
+                opacity: [0.4, 0.1, 0.4]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+
+            {/* Secondary pulsing ring */}
+            <motion.div
+              className="absolute inset-0 border-2 border-amber-200/60 rounded-full"
+              animate={{
+                scale: [1, 1.5, 1],
+                opacity: [0.3, 0, 0.3]
+              }}
+              transition={{
+                duration: 2,
+                delay: 0.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+
+            {/* Cute gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-amber-600/20 to-transparent rounded-full" />
+            
+            {/* Shine effect */}
+            <motion.div
+              className="absolute top-2 left-2 w-3 h-3 bg-white/30 rounded-full"
+              animate={{
+                opacity: [0.3, 0.6, 0.3]
               }}
               transition={{
                 duration: 2,
@@ -121,23 +183,6 @@ const FloatingOrderButton: React.FC = () => {
               }}
             />
           </motion.button>
-
-          {/* Moving text indicator */}
-          <motion.div
-            initial={{ x: -20, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="absolute right-full top-1/2 transform -translate-y-1/2 mr-4"
-          >
-            <motion.div
-              animate={{ x: [-10, 0, -10] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white px-3 py-2 rounded-lg shadow-lg text-sm font-medium whitespace-nowrap"
-            >
-              🍽️ Ready to order?
-              <div className="absolute right-0 top-1/2 transform translate-x-1 -translate-y-1/2 w-0 h-0 border-l-4 border-l-white dark:border-l-gray-800 border-t-4 border-t-transparent border-b-4 border-b-transparent" />
-            </motion.div>
-          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
