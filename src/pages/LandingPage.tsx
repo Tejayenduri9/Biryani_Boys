@@ -491,113 +491,224 @@ const LandingPage = () => {
               animate="visible"
               className="space-y-8 sm:space-y-12"
             >
-              {/* Logo with Enhanced Effects */}
+              {/* Logo with Enhanced Effects - Coming from TOP */}
               <motion.div
-                initial={{ scale: 0, rotate: -180 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ 
+                initial={{ y: -200, opacity: 0, scale: 0.5, rotate: -180 }}
+                animate={{ y: 0, opacity: 1, scale: 1, rotate: 0 }}
+                transition={{
                   type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                  duration: 1.5
+                  stiffness: 100,
+                  damping: 15,
+                  duration: 1.5,
+                  delay: 0.2
                 }}
                 className="relative mx-auto"
               >
                 <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group">
                   {/* Glowing ring effect */}
                   <motion.div
-                    className="absolute -inset-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 opacity-75"
+                    className="absolute -inset-4 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 opacity-75"
                     animate={{
                       rotate: 360,
-                      scale: [1, 1.1, 1]
+                      scale: [1, 1.2, 1]
                     }}
                     transition={{
                       rotate: { duration: 8, repeat: Infinity, ease: "linear" },
-                      scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                      scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
                     }}
-                    style={{ filter: 'blur(8px)' }}
+                    style={{ filter: 'blur(12px)' }}
                   />
                   
-                  {/* Sparkle effects */}
-                  {Array.from({ length: 6 }).map((_, i) => (
+                  {/* Multiple sparkle rings */}
+                  {Array.from({ length: 12 }).map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute w-2 h-2 bg-amber-300 rounded-full"
+                      className="absolute w-3 h-3 bg-amber-300 rounded-full"
                       style={{
-                        top: `${20 + Math.sin(i * 60 * Math.PI / 180) * 40}%`,
-                        left: `${50 + Math.cos(i * 60 * Math.PI / 180) * 40}%`,
+                        top: `${50 + Math.sin(i * 30 * Math.PI / 180) * 45}%`,
+                        left: `${50 + Math.cos(i * 30 * Math.PI / 180) * 45}%`,
                       }}
                       animate={{
-                        scale: [0, 1, 0],
-                        opacity: [0, 1, 0]
+                        scale: [0, 1.5, 0],
+                        opacity: [0, 1, 0],
+                        rotate: 360
                       }}
                       transition={{
-                        duration: 2,
-                        delay: i * 0.3,
+                        duration: 3,
+                        delay: i * 0.2,
                         repeat: Infinity,
                         ease: "easeInOut"
                       }}
                     />
                   ))}
                   
-                  <img
+                  {/* Logo image with bounce effect */}
+                  <motion.img
                     src="/logo.jpg"
                     alt="Biryani Boyz Logo"
-                    className="relative z-10 w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
+                    className="relative z-10 w-full h-full object-cover translate-x-1"
+                    animate={{
+                      scale: [1, 1.05, 1],
+                      rotate: [0, 2, -2, 0]
+                    }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  
+                  {/* Magical shine effect */}
+                  <motion.div
+                    className="absolute top-2 left-2 w-4 h-4 bg-white/60 rounded-full"
+                    animate={{
+                      opacity: [0.3, 0.8, 0.3],
+                      scale: [1, 1.3, 1]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
                   />
                 </div>
               </motion.div>
               
-              {/* Title and Description */}
+              {/* Title with Dramatic Directional Animations */}
               <div className="space-y-4 sm:space-y-6">
-                <motion.h1 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.5 }}
-                  className="font-cormorant text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight"
-                >
-                  <span className="inline-block mr-2 sm:mr-4">Biryani</span>
-                  <motion.span 
-                    className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
-                    animate={{
-                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
-                    }}
+                <div className="font-cormorant text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white tracking-tight flex flex-wrap justify-center items-center gap-2 sm:gap-4">
+                  {/* "Biryani" - Coming from LEFT */}
+                  <motion.span
+                    initial={{ x: -300, opacity: 0, rotateY: -90 }}
+                    animate={{ x: 0, opacity: 1, rotateY: 0 }}
                     transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear"
+                      type: "spring",
+                      stiffness: 80,
+                      damping: 12,
+                      duration: 1.2,
+                      delay: 0.8
                     }}
+                    className="inline-block"
                   >
-                    Boyz
+                    {Array.from("Biryani").map((letter, index) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 50, rotateX: -90 }}
+                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                        transition={{
+                          delay: 0.8 + index * 0.1,
+                          type: "spring",
+                          stiffness: 100,
+                          damping: 10
+                        }}
+                        className="inline-block"
+                        style={{
+                          textShadow: '0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.3)'
+                        }}
+                      >
+                        {letter}
+                      </motion.span>
+                    ))}
                   </motion.span>
-                </motion.h1>
 
+                  {/* "Boyz" - Coming from RIGHT */}
+                  <motion.span
+                    initial={{ x: 300, opacity: 0, rotateY: 90 }}
+                    animate={{ x: 0, opacity: 1, rotateY: 0 }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 80,
+                      damping: 12,
+                      duration: 1.2,
+                      delay: 1.2
+                    }}
+                    className="inline-block bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-transparent bg-clip-text"
+                  >
+                    {Array.from("Boyz").map((letter, index) => (
+                      <motion.span
+                        key={index}
+                        initial={{ opacity: 0, y: 50, rotateX: 90 }}
+                        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                        transition={{
+                          delay: 1.2 + index * 0.1,
+                          type: "spring",
+                          stiffness: 100,
+                          damping: 10
+                        }}
+                        className="inline-block"
+                        style={{
+                          filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.8))'
+                        }}
+                      >
+                        {letter}
+                      </motion.span>
+                    ))}
+                  </motion.span>
+                </div>
+
+                {/* Description with staggered animation */}
                 <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.8 }}
+                  initial={{ opacity: 0, y: 30, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ 
+                    duration: 0.8, 
+                    delay: 1.8,
+                    type: "spring",
+                    stiffness: 100
+                  }}
                   className="font-montserrat text-base sm:text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto tracking-wide px-4"
                 >
-                  Experience the authentic flavors of India, crafted with passion and served with love
+                  {Array.from("Experience the authentic flavors of India, crafted with passion and served with love").map((char, index) => (
+                    <motion.span
+                      key={index}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.8 + index * 0.02 }}
+                      className="inline-block"
+                    >
+                      {char === ' ' ? '\u00A0' : char}
+                    </motion.span>
+                  ))}
                 </motion.p>
               </div>
 
-              {/* Scroll Indicator */}
+              {/* Scroll Indicator with enhanced animation */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.5 }}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 2.5, type: "spring", stiffness: 100 }}
                 className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
               >
                 <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center"
+                  animate={{ y: [0, 15, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center relative"
                 >
                   <motion.div
-                    animate={{ y: [0, 12, 0] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    animate={{ 
+                      y: [0, 16, 0],
+                      opacity: [0, 1, 0]
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
                     className="w-1 h-3 bg-white/70 rounded-full mt-2"
+                  />
+                  
+                  {/* Glowing effect */}
+                  <motion.div
+                    className="absolute inset-0 border-2 border-amber-400/50 rounded-full"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
                   />
                 </motion.div>
               </motion.div>
