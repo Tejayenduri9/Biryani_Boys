@@ -117,12 +117,12 @@ export const useReviews = (mealBoxes: MealBox[]) => {
     setError(null);
 
     // Create a temporary review with a special prefix
-    const newReview = {
+    const newReview: Review = {
       id: `temp_${Date.now()}`,
       comment,
       rating,
       user: {
-        name: user.displayName,
+        name: user.displayName ?? "",
         uid: user.uid,
       },
       timestamp: new Date(),

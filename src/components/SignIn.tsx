@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const SignIn: React.FC = () => {
   const { signInWithGoogle } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
     try {
       setIsSigningIn(true);
       await signInWithGoogle();
+      navigate('/dashboard');
     } catch (error: any) {
       console.error('Sign in error:', error);
       if (error.code === 'auth/popup-blocked') {

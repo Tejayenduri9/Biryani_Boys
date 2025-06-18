@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import Sidebar from '../components/Sidebar';
 import { Menu, User, LogOut, ShoppingBag } from 'lucide-react';
 
 const Header: React.FC<{ onCartClick: () => void }> = ({ onCartClick }) => {
   const { user, signOut } = useAuth();
   const { items } = useCart();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -23,12 +22,7 @@ const Header: React.FC<{ onCartClick: () => void }> = ({ onCartClick }) => {
         {/* Left section: Mobile Menu + Logo */}
         <div className="flex items-center gap-3">
           {/* Mobile Menu Icon (Hamburger) */}
-          <button
-            onClick={() => setIsSidebarOpen(true)}
-            className="md:hidden p-2 rounded-lg shadow bg-white dark:bg-gray-700"
-          >
-            <Menu className="w-6 h-6 text-amber-600 dark:text-amber-500" />
-          </button>
+          {/* Sidebar removed: Hamburger menu hidden on all screens */}
 
           {/* Logo */}
           <motion.div
@@ -101,8 +95,7 @@ const Header: React.FC<{ onCartClick: () => void }> = ({ onCartClick }) => {
         </div>
       </motion.header>
 
-      {/* Sidebar Drawer (Mobile only) */}
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+     
     </>
   );
 };

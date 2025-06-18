@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
-import { SidebarProvider } from './components/SidebarContext'; // ✅ Import sidebar context
-import { useAuth } from './context/AuthContext';
+import { SidebarProvider } from './components/SidebarContext';
 import Dashboard from './pages/Dashboard';
 import Menu from './pages/Menu';
 import LandingPage from './pages/LandingPage';
@@ -19,21 +18,46 @@ function AppContent() {
     );
   }
 
-  if (!user) {
-    return <LandingPage />;
-  }
-
   return (
-    <SidebarProvider> {/* ✅ Wrap here */}
-      <CartProvider>
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
-        </Routes>
-      </CartProvider>
-    </SidebarProvider>
+    <Routes>
+      {/* ✅ Public Routes (always accessible) */}
+      <Route
+        path="/"
+        element={
+          <CartProvider>
+            <LandingPage />
+          </CartProvider>
+        }
+      />
+      <Route
+        path="/menu"
+        element={
+          <CartProvider>
+            <Menu />
+          </CartProvider>
+        }
+      />
+
+      {/* ✅ Protected Dashboard Route */}
+      {user ? (
+        <Route
+          path="/dashboard/*"
+          element={
+            <SidebarProvider>
+              <CartProvider>
+                <Dashboard />
+              </CartProvider>
+            </SidebarProvider>
+          }
+        />
+      ) : (
+        // Optional: restrict access to dashboard
+        <Route path="/dashboard/*" element={<Navigate to="/" replace />} />
+      )}
+
+      {/* ✅ Catch-all route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 

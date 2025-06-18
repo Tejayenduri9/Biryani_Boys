@@ -3,6 +3,7 @@ import {
   initializeFirestore,
   enableMultiTabIndexedDbPersistence,
   CACHE_SIZE_UNLIMITED,
+  type Firestore,
 } from 'firebase/firestore';
 import {
   getAuth,
@@ -29,8 +30,7 @@ const auth = getAuth(app);
 auth.useDeviceLanguage();
 
 // ✅ Firestore Initialization with Fallback
-let db;
-
+let db: Firestore;
 try {
   db = initializeFirestore(app, {
     experimentalForceLongPolling: true,

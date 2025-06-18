@@ -5,8 +5,15 @@ import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
 import TraditionalMealSection from '../components/TraditionalMealSection';
+import Navbar from '../components/NavBar';
 
-const AnimatedWord = ({ text, delay = 0, className = "" }) => {
+interface AnimatedWordProps {
+  text: string;
+  delay?: number;
+  className?: string;
+}
+
+const AnimatedWord: React.FC<AnimatedWordProps> = ({ text, delay = 0, className = "" }) => {
   return (
     <motion.span className={`inline-block ${className}`}>
       {text.split('').map((char, index) => (
@@ -61,7 +68,8 @@ const menuCards = [
   }
 ];
 
-const FlipCard = ({ card, isActive, onFlip }) => {
+
+const FlipCard = ({ card, isActive, onFlip } : any) => {
   return (
     <motion.div 
       className="w-full h-[400px] perspective-1000 cursor-pointer"
@@ -136,7 +144,7 @@ const FlipCard = ({ card, isActive, onFlip }) => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              {card.items.map((item, index) => (
+              {card.items.map((item: string, index: number) => (
                 <motion.div
                   key={index}
                   initial={{ x: -20, opacity: 0 }}
@@ -355,7 +363,7 @@ const LandingPage = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [activeCard, setActiveCard] = useState<number | null>(null);
   const { user } = useAuth();
-  const { reviews: allReviews, loading } = useReviews(menuCards);
+  const { reviews: allReviews, loading } = useReviews([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -396,251 +404,255 @@ const LandingPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
-            alt="Background"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
-        </div>
+    <div id="home" className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
+        {/* ✅ Sticky, animated Header at the top */}
+       <Navbar />
+      <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
+        {/* Hero Section */}
+        <section id="hero" className="relative min-h-screen flex items-center justify-center">
+          <div className="absolute inset-0">
+            <img
+              src="https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
+              alt="Background"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
+          </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            className="space-y-12"
-          >
+          <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
             <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ 
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-                duration: 1.5
-              }}
-              className="w-48 h-48 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group"
+              initial="hidden"
+              animate="visible"
+              className="space-y-12"
             >
-              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500 to-amber-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-              <img
-                src="/logo.jpg"
-                alt="Biryani Boyz Logo"
-                className="w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
-              />
               <motion.div
-                className="absolute inset-0 border-4 border-amber-500 rounded-full"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [1, 0.5, 1]
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ 
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20,
+                  duration: 1.5
                 }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </motion.div>
-            
-            <div className="space-y-6">
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-                className="font-cormorant text-5xl md:text-6xl font-bold text-white tracking-tight"
+                className="w-48 h-48 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group"
               >
-                <span className="inline-block mr-4">Biryani</span>
-                <span className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">
-                  Boyz
-                </span>
-              </motion.h1>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className="font-montserrat text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto tracking-wide"
-              >
-                Experience the authentic flavors of India, crafted with passion and served with love
-              </motion.p>
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="flex flex-col sm:flex-row gap-6 justify-center items-center"
-            >
-              <motion.button
-                onClick={handleOrderOnline}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="font-montserrat group relative overflow-hidden rounded-full bg-amber-500 px-8 py-4 text-lg font-medium text-white shadow-xl transition-transform duration-200"
-              >
-                <span className="relative z-10">Order Online</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
-              </motion.button>
-
-              <motion.a
-                href="tel:+15185287832"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="font-montserrat group relative overflow-hidden rounded-full bg-white px-8 py-4 text-lg font-medium text-amber-600 shadow-xl transition-transform duration-200"
-              >
-                <span className="relative z-10">Call to Order</span>
-                <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
-              </motion.a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      <MenuSection />
-      <TraditionalMealSection />
-
-
-
-      {/* Reviews Section */}
-      <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl font-bold text-center mb-16"
-          >
-            What Our <span className="text-gradient">Customers</span> Say
-          </motion.h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {loading ? (
-              <div className="col-span-3 flex justify-center items-center py-20">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
-              </div>
-            ) : fiveStarReviews.length > 0 ? (
-              fiveStarReviews.map((review, index) => (
+                <div className="absolute inset-0 bg-gradient-to-tr from-amber-500 to-amber-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+                <img
+                  src="/logo.jpg"
+                  alt="Biryani Boyz Logo"
+                  className="w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
+                />
                 <motion.div
-                  key={review.id}
+                  className="absolute inset-0 border-4 border-amber-500 rounded-full"
+                  animate={{
+                    scale: [1, 1.1, 1],
+                    opacity: [1, 0.5, 1]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              </motion.div>
+              
+              <div className="space-y-6">
+                <motion.h1 
                   initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl transform hover:scale-105 transition-transform duration-300"
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.5 }}
+                  className="font-cormorant text-5xl md:text-6xl font-bold text-white tracking-tight"
                 >
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold ring-2 ring-amber-500 transform hover:rotate-12 transition-transform duration-300">
-                      {review.user.name.charAt(0)}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg">{review.user.name}</h3>
-                      <div className="flex gap-1">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-4 h-4 text-amber-500 fill-amber-500"
-                          />
-                        ))}
+                  <span className="inline-block mr-4">Biryani</span>
+                  <span className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">
+                    Boyz
+                  </span>
+                </motion.h1>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.8 }}
+                  className="font-montserrat text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto tracking-wide"
+                >
+                  Experience the authentic flavors of India, crafted with passion and served with love
+                </motion.p>
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.1 }}
+                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+              >
+                <motion.button
+                  onClick={handleOrderOnline}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="font-montserrat group relative overflow-hidden rounded-full bg-amber-500 px-8 py-4 text-lg font-medium text-white shadow-xl transition-transform duration-200"
+                >
+                  <span className="relative z-10">Order Online</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
+                </motion.button>
+
+                <motion.a
+                  href="tel:+15185287832"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="font-montserrat group relative overflow-hidden rounded-full bg-white px-8 py-4 text-lg font-medium text-amber-600 shadow-xl transition-transform duration-200"
+                >
+                  <span className="relative z-10">Call to Order</span>
+                  <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
+                </motion.a>
+              </motion.div>
+            </motion.div>
+          </div>
+        </section>
+
+        <MenuSection />
+        <TraditionalMealSection />
+
+
+
+        {/* Reviews Section */}
+        <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
+          <div className="max-w-6xl mx-auto">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl font-bold text-center mb-16"
+            >
+              What Our <span className="text-gradient">Customers</span> Say
+            </motion.h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {loading ? (
+                <div className="col-span-3 flex justify-center items-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
+                </div>
+              ) : fiveStarReviews.length > 0 ? (
+                fiveStarReviews.map((review, index) => (
+                  <motion.div
+                    key={review.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.2 }}
+                    className="bg-gradient-to-br from-amber-50 to-amber-100/50 dark:from-gray-900 dark:to-gray-800 p-8 rounded-xl shadow-xl transform hover:scale-105 transition-transform duration-300"
+                  >
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold ring-2 ring-amber-500 transform hover:rotate-12 transition-transform duration-300">
+                        {review.user.name.charAt(0)}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-lg">{review.user.name}</h3>
+                        <div className="flex gap-1">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className="w-4 h-4 text-amber-500 fill-amber-500"
+                            />
+                          ))}
+                        </div>
                       </div>
                     </div>
+                    <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4 italic">
+                      "{review.comment}"
+                    </p>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {review.timestamp?.toDate().toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </span>
+                  </motion.div>
+                ))
+              ) : (
+                <div className="col-span-3 text-center text-gray-500 dark:text-gray-400 py-10">
+                  No reviews yet. Be the first to share your experience!
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 px-4 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
+          
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 relative">
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
+              <motion.a
+                href="tel:+15185287832"
+                className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
+                whileHover={{ x: 5 }}
+              >
+                <Phone className="w-5 h-5" />
+                <span>+1 (518) 528-7832</span>
+              </motion.a>
+              <motion.a
+                href="mailto:info@biryaniboyz.com"
+                className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
+                whileHover={{ x: 5 }}
+              >
+                <Mail className="w-5 h-5" />
+                <span>biryaniboyz99@gmail.com</span>
+              </motion.a>
+            </div>
+
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold mb-6">Hours</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-gray-300">
+                  <Clock className="w-5 h-5 text-amber-500" />
+                  <div>
+                    <p className="font-medium">Thursday & Friday</p>
+                    <p>10:00 AM - 4:00 PM</p>
                   </div>
-                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-4 italic">
-                    "{review.comment}"
-                  </p>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {review.timestamp?.toDate().toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </span>
-                </motion.div>
-              ))
-            ) : (
-              <div className="col-span-3 text-center text-gray-500 dark:text-gray-400 py-10">
-                No reviews yet. Be the first to share your experience!
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gradient-to-b from-gray-900 to-black text-white py-16 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5" />
-        
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-6">Contact Us</h3>
-            <motion.a
-              href="tel:+15185287832"
-              className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
-              whileHover={{ x: 5 }}
-            >
-              <Phone className="w-5 h-5" />
-              <span>+1 (518) 528-7832</span>
-            </motion.a>
-            <motion.a
-              href="mailto:info@biryaniboyz.com"
-              className="flex items-center gap-3 text-gray-300 hover:text-amber-500 transition-colors"
-              whileHover={{ x: 5 }}
-            >
-              <Mail className="w-5 h-5" />
-              <span>biryaniboyz99@gmail.com</span>
-            </motion.a>
-          </div>
-
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-6">Hours</h3>
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-gray-300">
-                <Clock className="w-5 h-5 text-amber-500" />
-                <div>
-                  <p className="font-medium">Thursday & Friday</p>
-                  <p>10:00 AM - 4:00 PM</p>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-6">
-            <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
-            <div className="flex gap-4">
-              <motion.a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5, scale: 1.1 }}
-                className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
-              >
-                <Instagram className="w-6 h-6" />
-              </motion.a>
-              <motion.a
-                href=""
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ y: -5, scale: 1.1 }}
-                className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
-              >
-                <Facebook className="w-6 h-6" />
-              </motion.a>
+            <div className="space-y-6">
+              <h3 className="text-2xl font-bold mb-6">Follow Us</h3>
+              <div className="flex gap-4">
+                <motion.a
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -5, scale: 1.1 }}
+                  className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
+                >
+                  <Instagram className="w-6 h-6" />
+                </motion.a>
+                <motion.a
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ y: -5, scale: 1.1 }}
+                  className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white hover:from-amber-600 hover:to-amber-700 transition-colors"
+                >
+                  <Facebook className="w-6 h-6" />
+                </motion.a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-16 text-center text-gray-400 relative">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-sm"
-          >
-            © 2025 Biryani Boyz. All rights reserved.
-          </motion.p>
-        </div>
-      </footer>
+          <div className="mt-16 text-center text-gray-400 relative">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-sm"
+            >
+              © 2025 Biryani Boyz. All rights reserved.
+            </motion.p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+// Dashboard.tsx (final with updated countdown and date next to day)
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -9,7 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import { CartProvider } from '../context/CartContext';
 import { MealBox } from '../types';
 import { WifiOff, Search } from 'lucide-react';
-import { useSidebar } from '../components/SidebarContext';
+//import { useSidebar } from '../components/SidebarContext';
 
 const mealBoxes: MealBox[] = [
  // Biryani Section
@@ -89,14 +91,19 @@ const getOrderStatus = () => {
   const hour = now.getHours();
   const minute = now.getMinutes();
   const cutoffPassed = hour > 9 || (hour === 9 && minute >= 30);
-  let availableDays: string[] = [];
+
+  const availableDays: string[] = [];
 
   if (day === 5) {
-    availableDays = cutoffPassed ? ['Saturday'] : ['Friday', 'Saturday'];
+    if (!cutoffPassed) availableDays.push('Friday');
+    availableDays.push('Saturday');
   } else if (day === 6) {
-    availableDays = cutoffPassed ? ['Next Friday', 'Next Saturday'] : ['Saturday'];
+    if (!cutoffPassed) availableDays.push('Saturday');
+    else availableDays.push('Next Friday', 'Next Saturday');
+  } else if (day === 0) {
+    availableDays.push('Next Friday', 'Next Saturday');
   } else {
-    availableDays = ['Next Friday', 'Next Saturday'];
+    availableDays.push('Friday', 'Saturday');
   }
 
   return availableDays;
@@ -106,20 +113,20 @@ const getCutoffDate = (targetDay: number) => {
   const now = new Date();
   const result = new Date(now);
   const currentDay = now.getDay();
-  let daysUntil = (targetDay - currentDay + 7) % 7;
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+  const cutoffPassed = hour > 9 || (hour === 9 && minute >= 30);
 
-  if (daysUntil === 0 && (now.getHours() > 9 || (now.getHours() === 9 && now.getMinutes() >= 30))) {
-    daysUntil = 7;
-  }
+  let daysUntil = (targetDay - currentDay + 7) % 7;
+  if (daysUntil === 0 && cutoffPassed) daysUntil = 7;
 
   result.setDate(now.getDate() + daysUntil);
   result.setHours(9, 30, 0, 0);
   return result;
 };
 
-const formatDate = (dayNumber: number): string => {
-  const targetDate = getCutoffDate(dayNumber);
-  return targetDate.toLocaleDateString('en-US', {
+const formatDate = (targetTime: Date): string => {
+  return targetTime.toLocaleDateString('en-US', {
     weekday: 'long',
     month: 'short',
     day: 'numeric'
@@ -139,10 +146,14 @@ const CountdownTimer = ({ targetTime }: { targetTime: Date }) => {
         return;
       }
 
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / (3600 * 24));
+      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      const formatted = `${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s`;
+      setTimeLeft(formatted);
     };
 
     update();
@@ -159,7 +170,7 @@ const Dashboard: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
   const isDashboard = location.pathname === '/dashboard';
-  const { isSidebarOpen } = useSidebar();
+  //const { isSidebarOpen } = useSidebar();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -219,7 +230,6 @@ const Dashboard: React.FC = () => {
               </div>
             )}
 
-            {/* Search */}
             <div className="mt-6 max-w-md mx-auto">
               <div className="relative">
                 <input
@@ -233,22 +243,40 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Order Status Display */}
             <div className="mt-10 text-center">
               <h2 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">Now Accepting Orders For:</h2>
               <div className="flex flex-wrap justify-center gap-4">
-                {availableDays.map(day => {
-                  const targetDay = day.includes('Friday') ? 5 : 6;
+                {availableDays.map((day) => {
+                  const baseDay = day.includes('Friday') ? 5 : 6;
+                  const targetTime = getCutoffDate(baseDay);
+                  
                   return (
                     <div key={day} className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow border border-gray-200 dark:border-gray-700">
                       <p className="font-medium text-gray-800 dark:text-gray-200">
-                        {formatDate(targetDay)}
+                        {formatDate(targetTime)}
                       </p>
-                      <CountdownTimer targetTime={getCutoffDate(targetDay)} />
+                      <CountdownTimer targetTime={targetTime} />
                     </div>
                   );
                 })}
               </div>
+              <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0, scale: [1, 1.05, 1] }}
+                  transition={{
+                    opacity: { duration: 0.6 },
+                    y: { duration: 0.6 },
+                    scale: {
+                      delay: 0.8,
+                      duration: 1.5,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
+                    },
+                  }}
+                  className="text-sm font-semibold text-amber-600 dark:text-amber-400 mt-4"
+                >
+                  ⏳ Orders close automatically when the countdown ends. Don’t miss out!
+              </motion.p>
             </div>
           </motion.div>
 
@@ -280,27 +308,30 @@ const Dashboard: React.FC = () => {
           )}
 
           <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-
-          {/* Sticky Footer Notification - Only when sidebar is closed and not on small screens */}
-          {isDashboard && (!isMobile || !isSidebarOpen) && availableDays.length > 0 && (
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
-              className="fixed bottom-0 left-0 right-0 md:ml-64 md:w-[calc(100%-16rem)] z-50 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 text-sm text-center py-2 shadow-md shadow-amber-300 dark:shadow-amber-800"
-            >
-              {availableDays.map((day, i) => {
-                const targetDay = day.includes('Friday') ? 5 : 6;
-                return (
-                  <div key={i} className="flex justify-center items-center gap-2">
-                    🛍️ Orders open for <span className="font-semibold">{formatDate(targetDay)}</span> 
-                  </div>
-                );
-              })}
-            </motion.div>
-          )}
         </div>
-      </Layout>
+{isDashboard && availableDays.length > 0 && (
+  <motion.div
+    initial={{ y: 100, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
+    className="fixed bottom-0 left-0 right-0 w-full z-50 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 text-sm text-center py-2 shadow-md shadow-amber-300 dark:shadow-amber-800"
+  >
+    <div className="flex justify-center items-center gap-2 flex-wrap px-4">
+      🛍️ Orders open for
+      {availableDays.map((day, i) => {
+        const baseDay = day.includes('Friday') ? 5 : 6;
+        const targetTime = getCutoffDate(baseDay);
+        return (
+          <span key={i} className="font-semibold">
+            {i > 0 ? ' and ' : ' '}{formatDate(targetTime)}
+          </span>
+        );
+      })}
+    </div>
+  </motion.div>
+
+)}
+</Layout>
     </CartProvider>
   );
 };
