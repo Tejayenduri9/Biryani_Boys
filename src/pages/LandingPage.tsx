@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail, Utensils } from 'lucide-react';
+import { Facebook, Instagram, Clock, Star, MapPin, Phone, Mail, Utensils, Sparkles } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useReviews } from '../hooks/useReviews';
 import SignIn from '../components/SignIn';
@@ -38,6 +38,28 @@ const AnimatedWord: React.FC<AnimatedWordProps> = ({ text, delay = 0, className 
   );
 };
 
+const FloatingParticle = ({ delay = 0 }) => (
+  <motion.div
+    className="absolute w-2 h-2 bg-amber-400/30 rounded-full"
+    initial={{ 
+      x: Math.random() * window.innerWidth,
+      y: window.innerHeight + 50,
+      opacity: 0 
+    }}
+    animate={{
+      y: -50,
+      opacity: [0, 1, 0],
+      scale: [0, 1, 0]
+    }}
+    transition={{
+      duration: 8,
+      delay,
+      repeat: Infinity,
+      ease: "linear"
+    }}
+  />
+);
+
 const menuCards = [
   {
     category: "Biryani Special",
@@ -67,7 +89,6 @@ const menuCards = [
     image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
   }
 ];
-
 
 const FlipCard = ({ card, isActive, onFlip } : any) => {
   return (
@@ -202,7 +223,7 @@ const SequentialText = () => {
   }, []);
 
   return (
-    <div className="text-4xl md:text-5xl font-cormorant min-h-[80px] flex items-center justify-center">
+    <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-cormorant min-h-[60px] sm:min-h-[80px] flex items-center justify-center">
       <AnimatePresence mode="wait">
         {showFood && (
           <motion.div
@@ -314,7 +335,7 @@ const MenuSection = () => {
               damping: 10,
               delay: 0.7
             }}
-            className="text-6xl font-cormorant text-amber-600"
+            className="text-4xl sm:text-5xl md:text-6xl font-cormorant text-amber-600"
           >
             {Array.from("Our Menu").map((letter, index) => (
               <motion.span
@@ -379,10 +400,19 @@ const LandingPage = () => {
       });
     };
 
+    // Listen for custom sign-in event from navbar
+    const handleShowSignIn = () => {
+      setShowSignIn(true);
+    };
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('showSignIn', handleShowSignIn);
     handleScroll(); // Initial check
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('showSignIn', handleShowSignIn);
+    };
   }, []);
 
   const fiveStarReviews = Object.values(allReviews)
@@ -405,11 +435,17 @@ const LandingPage = () => {
 
   return (
     <div id="home" className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
-        {/* ✅ Sticky, animated Header at the top */}
-       <Navbar />
+      {/* Navbar */}
+      <Navbar />
+      
       <div className="min-h-screen bg-[#fdf6e3] dark:bg-gray-900 relative overflow-hidden">
+        {/* Floating Particles */}
+        {Array.from({ length: 15 }).map((_, i) => (
+          <FloatingParticle key={i} delay={i * 0.5} />
+        ))}
+
         {/* Hero Section */}
-        <section id="hero" className="relative min-h-screen flex items-center justify-center">
+        <section id="hero" className="relative min-h-screen flex items-center justify-center px-4">
           <div className="absolute inset-0">
             <img
               src="https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
@@ -419,12 +455,39 @@ const LandingPage = () => {
             <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/70" />
           </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-32 h-32 border border-amber-500/20 rounded-full"
+                initial={{ 
+                  x: Math.random() * window.innerWidth,
+                  y: Math.random() * window.innerHeight,
+                  scale: 0 
+                }}
+                animate={{
+                  scale: [0, 1, 0],
+                  rotate: 360,
+                  opacity: [0, 0.3, 0]
+                }}
+                transition={{
+                  duration: 10,
+                  delay: i * 1.5,
+                  repeat: Infinity,
+                  ease: "linear"
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="relative z-10 max-w-7xl mx-auto text-center">
             <motion.div
               initial="hidden"
               animate="visible"
-              className="space-y-12"
+              className="space-y-8 sm:space-y-12"
             >
+              {/* Logo with Enhanced Effects */}
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
@@ -434,76 +497,146 @@ const LandingPage = () => {
                   damping: 20,
                   duration: 1.5
                 }}
-                className="w-48 h-48 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group"
+                className="relative mx-auto"
               >
-                <div className="absolute inset-0 bg-gradient-to-tr from-amber-500 to-amber-300 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-                <img
-                  src="/logo.jpg"
-                  alt="Biryani Boyz Logo"
-                  className="w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
-                />
-                <motion.div
-                  className="absolute inset-0 border-4 border-amber-500 rounded-full"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [1, 0.5, 1]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
+                <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto rounded-full border-4 border-amber-500 overflow-hidden bg-white relative group">
+                  {/* Glowing ring effect */}
+                  <motion.div
+                    className="absolute -inset-2 rounded-full bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 opacity-75"
+                    animate={{
+                      rotate: 360,
+                      scale: [1, 1.1, 1]
+                    }}
+                    transition={{
+                      rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                      scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                    style={{ filter: 'blur(8px)' }}
+                  />
+                  
+                  {/* Sparkle effects */}
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-2 h-2 bg-amber-300 rounded-full"
+                      style={{
+                        top: `${20 + Math.sin(i * 60 * Math.PI / 180) * 40}%`,
+                        left: `${50 + Math.cos(i * 60 * Math.PI / 180) * 40}%`,
+                      }}
+                      animate={{
+                        scale: [0, 1, 0],
+                        opacity: [0, 1, 0]
+                      }}
+                      transition={{
+                        duration: 2,
+                        delay: i * 0.3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
+                  
+                  <img
+                    src="/logo.jpg"
+                    alt="Biryani Boyz Logo"
+                    className="relative z-10 w-full h-full object-cover translate-x-1 transform transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
               </motion.div>
               
-              <div className="space-y-6">
+              {/* Title and Description */}
+              <div className="space-y-4 sm:space-y-6">
                 <motion.h1 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.5 }}
-                  className="font-cormorant text-5xl md:text-6xl font-bold text-white tracking-tight"
+                  className="font-cormorant text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight"
                 >
-                  <span className="inline-block mr-4">Biryani</span>
-                  <span className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text">
+                  <span className="inline-block mr-2 sm:mr-4">Biryani</span>
+                  <motion.span 
+                    className="inline-block bg-gradient-to-r from-amber-400 to-amber-600 text-transparent bg-clip-text"
+                    animate={{
+                      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear"
+                    }}
+                  >
                     Boyz
-                  </span>
+                  </motion.span>
                 </motion.h1>
 
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, delay: 0.8 }}
-                  className="font-montserrat text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto tracking-wide"
+                  className="font-montserrat text-base sm:text-lg md:text-xl text-gray-300 font-light max-w-3xl mx-auto tracking-wide px-4"
                 >
                   Experience the authentic flavors of India, crafted with passion and served with love
                 </motion.p>
               </div>
 
+              {/* Action Buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.1 }}
-                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4"
               >
                 <motion.button
                   onClick={handleOrderOnline}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="font-montserrat group relative overflow-hidden rounded-full bg-amber-500 px-8 py-4 text-lg font-medium text-white shadow-xl transition-transform duration-200"
+                  className="font-montserrat group relative overflow-hidden rounded-full bg-amber-500 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-medium text-white shadow-xl transition-all duration-300 w-full sm:w-auto"
                 >
-                  <span className="relative z-10">Order Online</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <Sparkles className="w-5 h-5" />
+                    Order Online
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-amber-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+                  
+                  {/* Shimmer effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                    animate={{ x: ['-100%', '100%'] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                  />
                 </motion.button>
 
                 <motion.a
                   href="tel:+15185287832"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="font-montserrat group relative overflow-hidden rounded-full bg-white px-8 py-4 text-lg font-medium text-amber-600 shadow-xl transition-transform duration-200"
+                  className="font-montserrat group relative overflow-hidden rounded-full bg-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-medium text-amber-600 shadow-xl transition-all duration-300 w-full sm:w-auto"
                 >
-                  <span className="relative z-10">Call to Order</span>
-                  <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <Phone className="w-5 h-5" />
+                    Call to Order
+                  </span>
+                  <div className="absolute inset-0 bg-amber-50 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
                 </motion.a>
+              </motion.div>
+
+              {/* Scroll Indicator */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2 }}
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+              >
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center"
+                >
+                  <motion.div
+                    animate={{ y: [0, 12, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-1 h-3 bg-white/70 rounded-full mt-2"
+                  />
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>
@@ -512,8 +645,6 @@ const LandingPage = () => {
         <MenuSection />
         <TraditionalMealSection />
 
-
-
         {/* Reviews Section */}
         <section className="py-20 px-4 bg-white dark:bg-gray-800 relative">
           <div className="max-w-6xl mx-auto">
@@ -521,7 +652,7 @@ const LandingPage = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-4xl font-bold text-center mb-16"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-16"
             >
               What Our <span className="text-gradient">Customers</span> Say
             </motion.h2>
