@@ -4,6 +4,8 @@ import {
   signOut as firebaseSignOut,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   browserPopupRedirectResolver
 } from 'firebase/auth';
 import { auth } from '../services/firebase';
@@ -53,6 +55,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  // Check for redirect result on component mount
+  useEffect(() => {
+    const checkRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          setUser({
+            uid: result.user.uid,
+            displayName: result.user.displayName || 'Anonymous',
+            email: result.user.email,
+            photoURL: result.user.photoURL
+          });
+          toast.success('Signed in successfully!');
+        }
+      } catch (error: any) {
+        console.error('Redirect result error:', error);
+        toast.error('Failed to complete sign-in. Please try again.');
+      }
+    };
+
+    checkRedirectResult();
+  }, []);
+
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -60,23 +85,32 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         prompt: 'select_account'
       });
       
-      // Use popup for better compatibility with preview environments
-      const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
-      setUser({
-        uid: result.user.uid,
-        displayName: result.user.displayName || 'Anonymous',
-        email: result.user.email,
-        photoURL: result.user.photoURL
-      });
-      toast.success('Signed in successfully!');
+      // First try popup method
+      try {
+        const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
+        setUser({
+          uid: result.user.uid,
+          displayName: result.user.displayName || 'Anonymous',
+          email: result.user.email,
+          photoURL: result.user.photoURL
+        });
+        toast.success('Signed in successfully!');
+      } catch (popupError: any) {
+        // If popup is blocked, fall back to redirect
+        if (popupError.code === 'auth/popup-blocked') {
+          toast.loading('Redirecting to Google sign-in...', { duration: 2000 });
+          await signInWithRedirect(auth, provider);
+          // Note: The redirect will reload the page, so we won't reach this point
+          return;
+        }
+        throw popupError; // Re-throw other popup errors
+      }
     } catch (error: any) {
       console.error('Google sign in error:', error);
       
       // Handle specific error cases for better user experience
       if (error.code === 'auth/popup-closed-by-user') {
         toast.error('Sign-in cancelled. Please try again.');
-      } else if (error.code === 'auth/popup-blocked') {
-        toast.error('Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.');
       } else if (error.code === 'auth/unauthorized-domain') {
         toast.error('This domain is not authorized for Google sign-in. Please contact support.');
       } else {
