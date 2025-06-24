@@ -2,26 +2,19 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 
 const SignIn: React.FC = () => {
   const { signInWithGoogle } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
-  const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
     try {
       setIsSigningIn(true);
       await signInWithGoogle();
-      navigate('/dashboard');
+      // Note: Navigation will happen automatically after redirect
     } catch (error: any) {
       console.error('Sign in error:', error);
-      if (error.code === 'auth/popup-blocked') {
-        toast.error('Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.');
-      } else {
-        toast.error('Failed to sign in with Google');
-      }
-    } finally {
+      toast.error('Failed to sign in with Google');
       setIsSigningIn(false);
     }
   };
