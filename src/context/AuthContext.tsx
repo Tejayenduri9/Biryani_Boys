@@ -62,6 +62,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             photoURL: result.user.photoURL
           });
           toast.success('Signed in successfully!');
+          // Navigate to dashboard after successful sign in
+          window.location.href = '/dashboard';
         }
       } catch (error: any) {
         console.error('Redirect result error:', error);
