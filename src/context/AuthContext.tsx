@@ -3,8 +3,8 @@ import {
   onAuthStateChanged,
   signOut as firebaseSignOut,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult
+  signInWithPopup,
+  browserPopupRedirectResolver
 } from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { User } from '../types';
@@ -50,29 +50,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setLoading(false);
     });
 
-    // Check for redirect result on app load
-    const checkRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result) {
-          setUser({
-            uid: result.user.uid,
-            displayName: result.user.displayName || 'Anonymous',
-            email: result.user.email,
-            photoURL: result.user.photoURL
-          });
-          toast.success('Signed in successfully!');
-          // Navigate to dashboard after successful sign in
-          window.location.href = '/dashboard';
-        }
-      } catch (error: any) {
-        console.error('Redirect result error:', error);
-        toast.error('Failed to complete sign in. Please try again.');
-      }
-    };
-
-    checkRedirectResult();
-
     return () => unsubscribe();
   }, []);
 
@@ -82,10 +59,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       provider.setCustomParameters({
         prompt: 'select_account'
       });
-      await signInWithRedirect(auth, provider);
+      
+      // Use popup for better compatibility with preview environments
+      const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
+      setUser({
+        uid: result.user.uid,
+        displayName: result.user.displayName || 'Anonymous',
+        email: result.user.email,
+        photoURL: result.user.photoURL
+      });
+      toast.success('Signed in successfully!');
     } catch (error: any) {
       console.error('Google sign in error:', error);
-      toast.error('Failed to initiate sign in with Google. Please try again.');
+      
+      // Handle specific error cases for better user experience
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Sign-in cancelled. Please try again.');
+      } else if (error.code === 'auth/popup-blocked') {
+        toast.error('Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        toast.error('This domain is not authorized for Google sign-in. Please contact support.');
+      } else {
+        toast.error('Failed to sign in with Google. Please try again.');
+      }
       throw error;
     }
   };
