@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { UserCheck, AlertCircle } from 'lucide-react';
 
 const SignIn: React.FC = () => {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, signInAsGuest, authError } = useAuth();
   const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isGuestSignIn, setIsGuestSignIn] = useState(false);
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
@@ -19,6 +21,19 @@ const SignIn: React.FC = () => {
       // Error handling is now done in the AuthContext
     } finally {
       setIsSigningIn(false);
+    }
+  };
+
+  const handleGuestSignIn = async () => {
+    try {
+      setIsGuestSignIn(true);
+      await signInAsGuest();
+      navigate('/dashboard');
+    } catch (error: any) {
+      console.error('Guest sign in error:', error);
+      // Error handling is done in AuthContext
+    } finally {
+      setIsGuestSignIn(false);
     }
   };
 
@@ -73,26 +88,87 @@ const SignIn: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Google Sign-In Button */}
-        <motion.button
-          onClick={handleGoogleSignIn}
-          disabled={isSigningIn}
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          transition={{ duration: 0.5, delay: 1 }}
-          className={`flex items-center rounded-lg overflow-hidden shadow-lg transition-all ${
-            isSigningIn ? "opacity-70 cursor-not-allowed" : "hover:shadow-xl"
-          }`}
+        {/* Error Message */}
+        {authError && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-3 text-amber-800 dark:text-amber-200 text-sm max-w-md"
+          >
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{authError}. You can continue as a guest below.</span>
+          </motion.div>
+        )}
+
+        {/* Sign-In Buttons */}
+        <div className="space-y-4 w-full max-w-sm">
+          {/* Google Sign-In Button */}
+          <motion.button
+            onClick={handleGoogleSignIn}
+            disabled={isSigningIn || isGuestSignIn}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.5, delay: 1 }}
+            className={`flex items-center rounded-lg overflow-hidden shadow-lg transition-all w-full ${
+              isSigningIn || isGuestSignIn ? "opacity-70 cursor-not-allowed" : "hover:shadow-xl"
+            }`}
+          >
+            <div className="bg-white p-3 px-5 flex items-center justify-center">
+              <img src="/google.webp" alt="Google" className="w-7 h-7" />
+            </div>
+            <div className="bg-[#4285F4] text-white px-8 py-3 text-lg font-semibold flex-1 text-center">
+              {isSigningIn ? "Signing in..." : "Sign in with Google"}
+            </div>
+          </motion.button>
+
+          {/* Divider */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="flex items-center gap-4"
+          >
+            <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+            <span className="text-sm text-gray-500 dark:text-gray-400">or</span>
+            <div className="flex-1 h-px bg-gray-300 dark:bg-gray-600"></div>
+          </motion.div>
+
+          {/* Guest Sign-In Button */}
+          <motion.button
+            onClick={handleGuestSignIn}
+            disabled={isSigningIn || isGuestSignIn}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.5, delay: 1.4 }}
+            className={`flex items-center rounded-lg overflow-hidden shadow-lg transition-all w-full ${
+              isSigningIn || isGuestSignIn ? "opacity-70 cursor-not-allowed" : "hover:shadow-xl"
+            }`}
+          >
+            <div className="bg-gray-100 dark:bg-gray-700 p-3 px-5 flex items-center justify-center">
+              <UserCheck className="w-7 h-7 text-gray-600 dark:text-gray-300" />
+            </div>
+            <div className="bg-gray-600 dark:bg-gray-800 text-white px-8 py-3 text-lg font-semibold flex-1 text-center">
+              {isGuestSignIn ? "Signing in..." : "Continue as Guest"}
+            </div>
+          </motion.button>
+        </div>
+
+        {/* Guest Info */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6 }}
+          className="text-center text-xs text-gray-500 dark:text-gray-400 max-w-md"
         >
-          <div className="bg-white p-3 px-5 flex items-center justify-center">
-            <img src="/google.webp" alt="Google" className="w-7 h-7" />
-          </div>
-          <div className="bg-[#4285F4] text-white px-8 py-3 text-lg font-semibold">
-            {isSigningIn ? "Signing in..." : "Sign in with Google"}
-          </div>
-        </motion.button>
+          <p>
+            Guest access allows you to browse the menu and place orders. 
+            Sign in with Google to leave reviews and save your preferences.
+          </p>
+        </motion.div>
 
         {/* Footer */}
         <p className="text-xs text-gray-500 dark:text-gray-400 pt-8">
