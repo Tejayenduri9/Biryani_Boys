@@ -1,224 +1,342 @@
-// Dashboard.tsx (final with updated countdown and date next to day)
-
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
-import MealCard from '../components/MealCard';
-import Cart from '../components/Cart';
 import { useReviews } from '../hooks/useReviews';
 import { useAuth } from '../context/AuthContext';
-import { CartProvider } from '../context/CartContext';
+import { useCart } from '../context/CartContext';
 import { MealBox } from '../types';
-import { WifiOff, Search } from 'lucide-react';
-//import { useSidebar } from '../components/SidebarContext';
+import { WifiOff, Search, ChevronRight, Plus, Minus, Check } from 'lucide-react';
+import { getOrderStatus } from '../utils/getAvailableDays';
 
 const mealBoxes: MealBox[] = [
- // Biryani Section
- {
-   title: "Chicken Biryani",
-   description: "Classic Hyderabadi style biryani",
-   emoji: "🍗",
-   bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-   price: 10,
-   category: "biryani",
-   image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
- },
- {
-   title: "Extra Meat Chicken Biryani",
-   description: "Extra portion of meat! Must pre-order",
-   emoji: "🍖",
-   bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
-   price: 12,
-   category: "biryani",
-   tags: ["Pre-Order Required"],
-   image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
- },
- // Veg Meal Box Section
- {
-   title: "Kadai Paneer",
-   description: "Cottage cheese in rich gravy served with Pulav, Channa Masala, and Chapati",
-   emoji: "🧀",
-   bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-   price: 12,
-   category: "veg",
-   image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
- },
- {
-   title: "Okra Masala",
-   description: "Fresh okra in aromatic spices served with Pulav, Channa Masala, and Chapati",
-   emoji: "🥬",
-   bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
-   price: 12,
-   category: "veg",
-   isNew: true,
-   image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
- },
- // Others Section
- {
-   title: "Bisi Bele Bath",
-   description: "Traditional Karnataka style rice dish",
-   emoji: "🍚",
-   bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
-   price: 12,
-   category: "others",
-   image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
- },
- // Non-Veg Meal Box Section
- {
-   title: "Andhra Chicken",
-   description: "Spicy Andhra style chicken served with Pulav, Channa Masala, and Chapati",
-   emoji: "🌶️",
-   bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
-   price: 12,
-   category: "non-veg",
-   image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
- },
- {
-   title: "Kadai Chicken",
-   description: "Chicken in aromatic kadai gravy served with Pulav, Channa Masala, and Chapati",
-   emoji: "🍗",
-   bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
-   price: 12,
-   category: "non-veg",
-   image: "https://myfoodstory.com/wp-content/uploads/2021/09/kadai-chicken-1.jpg"
- }
+  {
+    title: "Chicken Biryani",
+    description: "Classic Hyderabadi style biryani with aromatic basmati rice",
+    emoji: "🍗",
+    bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+    price: 10,
+    category: "biryani",
+    image: "https://images.pexels.com/photos/7394819/pexels-photo-7394819.jpeg"
+  },
+  {
+    title: "Extra Meat Chicken Biryani",
+    description: "Double the protein! Must pre-order for extra portions",
+    emoji: "🍖",
+    bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
+    price: 12,
+    category: "biryani",
+    tags: ["Pre-Order Required"],
+    image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
+  },
+  {
+    title: "Kadai Paneer",
+    description: "Cottage cheese in rich gravy served with Pulav, Channa Masala, and Chapati",
+    emoji: "🧀",
+    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+    price: 12,
+    category: "veg",
+    image: "https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
+  },
+  {
+    title: "Okra Masala",
+    description: "Fresh okra in aromatic spices served with Pulav, Channa Masala, and Chapati",
+    emoji: "🥬",
+    bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+    price: 12,
+    category: "veg",
+    isNew: true,
+    image: "https://aromaticessence.co/wp-content/uploads/2022/06/punjabi_bhindi_masala_gravy_1.jpg"
+  },
+  {
+    title: "Bisi Bele Bath",
+    description: "Traditional Karnataka style rice dish with lentils and vegetables",
+    emoji: "🍚",
+    bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
+    price: 12,
+    category: "others",
+    image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/07/bisi-bele-bath.jpg"
+  },
+  {
+    title: "Andhra Chicken",
+    description: "Spicy Andhra style chicken served with Pulav, Channa Masala, and Chapati",
+    emoji: "🌶️",
+    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
+    price: 12,
+    category: "non-veg",
+    image: "https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
+  },
+  {
+    title: "Kadai Chicken",
+    description: "Chicken in aromatic kadai gravy served with Pulav, Channa Masala, and Chapati",
+    emoji: "🍗",
+    bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
+    price: 12,
+    category: "non-veg",
+    image: "https://myfoodstory.com/wp-content/uploads/2021/09/kadai-chicken-1.jpg"
+  }
 ];
 
-const getOrderStatus = () => {
-  const now = new Date();
-  const day = now.getDay();
-  const hour = now.getHours();
-  const minute = now.getMinutes();
-  const cutoffPassed = hour > 9 || (hour === 9 && minute >= 30);
+const categories = [
+  { id: 'biryani', name: 'Biryani Special', icon: '🍗' },
+  { id: 'veg', name: 'Vegetarian', icon: '🥬' },
+  { id: 'non-veg', name: 'Non-Vegetarian', icon: '🌶️' },
+  { id: 'others', name: 'Traditional', icon: '🍚' }
+];
 
-  const availableDays: string[] = [];
+const OrderSteps = () => {
+  const steps = ['Choose Category', 'Select Meal', 'Review Order'];
+  const [currentStep, setCurrentStep] = useState(0);
 
-  if (day === 5) {
-    if (!cutoffPassed) availableDays.push('Friday');
-    availableDays.push('Saturday');
-  } else if (day === 6) {
-    if (!cutoffPassed) availableDays.push('Saturday');
-    else availableDays.push('Next Friday', 'Next Saturday');
-  } else if (day === 0) {
-    availableDays.push('Next Friday', 'Next Saturday');
-  } else {
-    availableDays.push('Friday', 'Saturday');
-  }
-
-  return availableDays;
+  return (
+    <div className="flex items-center justify-center mb-8">
+      {steps.map((step, index) => (
+        <div key={step} className="flex items-center">
+          <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
+            index <= currentStep 
+              ? 'bg-amber-600 text-white' 
+              : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+          }`}>
+            {index < currentStep ? <Check className="w-4 h-4" /> : index + 1}
+          </div>
+          {index < steps.length - 1 && (
+            <div className={`w-12 h-0.5 mx-2 ${
+              index < currentStep ? 'bg-amber-600' : 'bg-gray-200 dark:bg-gray-700'
+            }`} />
+          )}
+        </div>
+      ))}
+    </div>
+  );
 };
 
-const getCutoffDate = (targetDay: number) => {
-  const now = new Date();
-  const result = new Date(now);
-  const currentDay = now.getDay();
-  const hour = now.getHours();
-  const minute = now.getMinutes();
-  const cutoffPassed = hour > 9 || (hour === 9 && minute >= 30);
+const CategoryCard = ({ category, isSelected, onClick }: any) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    onClick={onClick}
+    className={`relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-300 ${
+      isSelected 
+        ? 'ring-4 ring-amber-500 shadow-xl' 
+        : 'hover:shadow-lg'
+    }`}
+  >
+    <div className="aspect-[4/3] bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 p-8 flex flex-col items-center justify-center text-center">
+      <div className="text-4xl mb-4">{category.icon}</div>
+      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+        {category.name}
+      </h3>
+      <div className={`w-12 h-1 rounded-full transition-all duration-300 ${
+        isSelected ? 'bg-amber-600' : 'bg-gray-300'
+      }`} />
+    </div>
+  </motion.div>
+);
 
-  let daysUntil = (targetDay - currentDay + 7) % 7;
-  if (daysUntil === 0 && cutoffPassed) daysUntil = 7;
+const MealCard = ({ meal, onAddToCart }: any) => {
+  const [quantity, setQuantity] = useState(0);
+  const { addItem } = useCart();
 
-  result.setDate(now.getDate() + daysUntil);
-  result.setHours(9, 30, 0, 0);
-  return result;
-};
-
-const formatDate = (targetTime: Date): string => {
-  return targetTime.toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric'
-  });
-};
-
-const CountdownTimer = ({ targetTime }: { targetTime: Date }) => {
-  const [timeLeft, setTimeLeft] = useState<string>('');
-
-  useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      const diff = targetTime.getTime() - now.getTime();
-
-      if (diff <= 0) {
-        setTimeLeft('Cutoff reached');
-        return;
+  const handleAddToCart = () => {
+    if (quantity > 0) {
+      for (let i = 0; i < quantity; i++) {
+        addItem(meal.title, meal.price);
       }
+      setQuantity(0);
+    }
+  };
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / (3600 * 24));
-      const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+    >
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={meal.image}
+          alt={meal.title}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+        <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-3 py-1 shadow-lg">
+          <span className="text-amber-600 dark:text-amber-500 font-bold">
+            ${meal.price}
+          </span>
+        </div>
+        {meal.isNew && (
+          <div className="absolute top-4 left-4">
+            <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+              NEW
+            </span>
+          </div>
+        )}
+      </div>
 
-      const formatted = `${days > 0 ? `${days}d ` : ''}${hours}h ${minutes}m ${seconds}s`;
-      setTimeLeft(formatted);
-    };
+      <div className="p-6">
+        <h3 className="text-xl font-bold mb-2">{meal.title}</h3>
+        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
+          {meal.description}
+        </p>
 
-    update();
-    const interval = setInterval(update, 1000);
-    return () => clearInterval(interval);
-  }, [targetTime]);
+        {meal.tags && meal.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {meal.tags.map((tag) => (
+              <span
+                key={tag}
+                className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-xs px-2 py-1 rounded-full font-medium"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
 
-  return <p className="font-mono text-sm text-red-600">⏰ {timeLeft}</p>;
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setQuantity(Math.max(0, quantity - 1))}
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <Minus className="w-4 h-4" />
+            </button>
+            <span className="w-8 text-center font-medium">{quantity}</span>
+            <button
+              onClick={() => setQuantity(quantity + 1)}
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleAddToCart}
+            disabled={quantity === 0}
+            className={`px-6 py-2 rounded-full font-medium transition-all ${
+              quantity > 0
+                ? 'bg-amber-600 text-white hover:bg-amber-700'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
+            }`}
+          >
+            Add to Order
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+const StickyCartSummary = () => {
+  const { items, total } = useCart();
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  if (items.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ x: 300 }}
+      animate={{ x: 0 }}
+      className="fixed right-4 top-1/2 -translate-y-1/2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 z-40"
+    >
+      <div className="p-4">
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div>
+            <h3 className="font-bold text-lg">Your Order</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              {items.length} item{items.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="font-bold text-xl text-amber-600">${total.toFixed(2)}</p>
+            <ChevronRight className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+          </div>
+        </button>
+
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="mt-4 space-y-3 max-h-60 overflow-y-auto"
+            >
+              {items.map((item) => (
+                <div key={item.id} className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
+                  <div>
+                    <p className="font-medium text-sm">{item.title}</p>
+                    <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                  </div>
+                  <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full mt-4 bg-amber-600 text-white py-3 rounded-xl font-medium hover:bg-amber-700 transition-colors"
+        >
+          Proceed to Checkout
+        </motion.button>
+      </div>
+    </motion.div>
+  );
 };
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
   const isDashboard = location.pathname === '/dashboard';
-  //const { isSidebarOpen } = useSidebar();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkSize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkSize();
-    window.addEventListener('resize', checkSize);
-    return () => window.removeEventListener('resize', checkSize);
-  }, []);
 
   const {
     reviews,
     loading,
-    submitReview,
-    updateReview,
-    deleteReview,
-    getAverageRating,
     offline
   } = useReviews(mealBoxes);
 
   const availableDays = getOrderStatus();
 
   const filteredMealBoxes = useMemo(() => {
-    return mealBoxes.filter(mealBox => {
-      const matchesSearch = searchQuery === '' ||
-        mealBox.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        mealBox.description?.toLowerCase().includes(searchQuery.toLowerCase());
-
-      return matchesSearch;
-    });
-  }, [searchQuery]);
+    let filtered = mealBoxes;
+    
+    if (selectedCategory) {
+      filtered = filtered.filter(meal => meal.category === selectedCategory);
+    }
+    
+    if (searchQuery) {
+      filtered = filtered.filter(meal =>
+        meal.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        meal.description?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    return filtered;
+  }, [selectedCategory, searchQuery]);
 
   return (
-    <CartProvider>
-      <Layout>
-        <div className="py-6 pb-24">
+    <Layout>
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* Header Section */}
+        <div className="pt-8 pb-6 px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-10"
           >
-            <h1 className="text-3xl md:text-4xl font-bold mb-3">
-              Welcome to <span className="text-amber-600 dark:text-amber-500">Biryani Boyz</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Build Your <span className="text-amber-600 dark:text-amber-500">Perfect Meal</span>
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Experience the authentic flavors of India with our carefully curated menu.
+            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
+              Choose from our authentic Indian dishes, crafted with traditional recipes and fresh ingredients
             </p>
 
             {offline && (
@@ -229,110 +347,112 @@ const Dashboard: React.FC = () => {
                 </span>
               </div>
             )}
-
-            <div className="mt-6 max-w-md mx-auto">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search meals..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm"
-                />
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              </div>
-            </div>
-
-            <div className="mt-10 text-center">
-              <h2 className="text-lg font-semibold text-amber-600 dark:text-amber-400 mb-2">Now Accepting Orders For:</h2>
-              <div className="flex flex-wrap justify-center gap-4">
-                {availableDays.map((day) => {
-                  const baseDay = day.includes('Friday') ? 5 : 6;
-                  const targetTime = getCutoffDate(baseDay);
-                  
-                  return (
-                    <div key={day} className="bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow border border-gray-200 dark:border-gray-700">
-                      <p className="font-medium text-gray-800 dark:text-gray-200">
-                        {formatDate(targetTime)}
-                      </p>
-                      <CountdownTimer targetTime={targetTime} />
-                    </div>
-                  );
-                })}
-              </div>
-              <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0, scale: [1, 1.05, 1] }}
-                  transition={{
-                    opacity: { duration: 0.6 },
-                    y: { duration: 0.6 },
-                    scale: {
-                      delay: 0.8,
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    },
-                  }}
-                  className="text-sm font-semibold text-amber-600 dark:text-amber-400 mt-4"
-                >
-                  ⏳ Orders close automatically when the countdown ends. Don’t miss out!
-              </motion.p>
-            </div>
           </motion.div>
 
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
+          {/* Order Steps */}
+          <div className="mt-8">
+            <OrderSteps />
+          </div>
+
+          {/* Search Bar */}
+          <div className="mt-8 max-w-md mx-auto">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search for your favorite dish..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm shadow-sm"
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {filteredMealBoxes.map((meal) => (
-                <MealCard
-                  key={meal.title}
-                  meal={meal}
-                  reviews={reviews[meal.title] || []}
-                  averageRating={getAverageRating(meal.title)}
-                  user={user}
-                  onSubmitReview={(comment, rating) => submitReview(meal.title, comment, rating)}
-                  onUpdateReview={(reviewId, comment, rating) =>
-                    updateReview(meal.title, reviewId, comment, rating)
-                  }
-                  onDeleteReview={(reviewId) => deleteReview(meal.title, reviewId)}
-                />
-              ))}
-            </motion.div>
-          )}
-
-          <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+          </div>
         </div>
-{isDashboard && availableDays.length > 0 && (
-  <motion.div
-    initial={{ y: 100, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
-    className="fixed bottom-0 left-0 right-0 w-full z-50 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 text-sm text-center py-2 shadow-md shadow-amber-300 dark:shadow-amber-800"
-  >
-    <div className="flex justify-center items-center gap-2 flex-wrap px-4">
-      🛍️ Orders open for
-      {availableDays.map((day, i) => {
-        const baseDay = day.includes('Friday') ? 5 : 6;
-        const targetTime = getCutoffDate(baseDay);
-        return (
-          <span key={i} className="font-semibold">
-            {i > 0 ? ' and ' : ' '}{formatDate(targetTime)}
-          </span>
-        );
-      })}
-    </div>
-  </motion.div>
 
-)}
-</Layout>
-    </CartProvider>
+        {/* Category Selection */}
+        {!selectedCategory && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="px-4 mb-12"
+          >
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-2xl font-bold text-center mb-8">Choose Your Category</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {categories.map((category) => (
+                  <CategoryCard
+                    key={category.id}
+                    category={category}
+                    isSelected={false}
+                    onClick={() => setSelectedCategory(category.id)}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Meal Selection */}
+        {selectedCategory && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="px-4 pb-24"
+          >
+            <div className="max-w-6xl mx-auto">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className="text-2xl font-bold">
+                  {categories.find(c => c.id === selectedCategory)?.name} Menu
+                </h2>
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className="text-amber-600 hover:text-amber-700 font-medium"
+                >
+                  ← Back to Categories
+                </button>
+              </div>
+
+              {loading ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredMealBoxes.map((meal) => (
+                    <MealCard
+                      key={meal.title}
+                      meal={meal}
+                      onAddToCart={() => {}}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Sticky Cart Summary */}
+        <StickyCartSummary />
+
+        {/* Order Status Banner */}
+        {isDashboard && availableDays.length > 0 && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
+            className="fixed bottom-0 left-0 right-0 w-full z-30 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 text-sm text-center py-3 shadow-lg"
+          >
+            <div className="flex justify-center items-center gap-2 flex-wrap px-4">
+              🛍️ Orders open for {availableDays.map((day, i) => (
+                <span key={i} className="font-semibold">
+                  {i > 0 ? ' and ' : ' '}{day.label} ({day.date})
+                </span>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </Layout>
   );
 };
 
