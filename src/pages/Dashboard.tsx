@@ -631,19 +631,189 @@ const Dashboard: React.FC = () => {
               BIRYANI BOWL
             </motion.h1>
 
-            {/* Order Button */}
+            {/* Three Meal Options */}
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12"
+            >
+              {/* Chicken Biryani Bowl */}
+              <motion.div
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl text-center group cursor-pointer"
+              >
+                <div className="relative mb-6">
+                  <motion.div
+                    className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-amber-500 shadow-xl"
+                    whileHover={{ rotate: 5, scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img
+                      src="https://images.pexels.com/photos/9609868/pexels-photo-9609868.jpeg"
+                      alt="Chicken Biryani Bowl"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                  
+                  {/* Steam effect */}
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-1 h-6 bg-gradient-to-t from-gray-300 to-transparent rounded-full opacity-60"
+                        style={{ left: `${i * 6 - 6}px` }}
+                        animate={{
+                          y: [0, -15, -30],
+                          opacity: [0.6, 0.3, 0],
+                          scale: [1, 1.2, 1.5]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          delay: i * 0.3,
+                          ease: "easeOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-amber-600 transition-colors">
+                  CHICKEN BIRYANI
+                </h3>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  ORDER →
+                </motion.button>
+              </motion.div>
+
+              {/* Veg Meal Bowl */}
+              <motion.div
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl text-center group cursor-pointer"
+              >
+                <div className="relative mb-6">
+                  <motion.div
+                    className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-green-500 shadow-xl"
+                    whileHover={{ rotate: -5, scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img
+                      src="https://images.food52.com/zirBKZRt4KJi1v8xTDbtvY2J82Y=/1200x900/a46010f2-9c79-48a8-8705-faa2ca19185b--2023-1109_sponsored_milkpep_recipe-final_kadai-paneer_unbranded_3x2_julia-gartland_156.jpg"
+                      alt="Veg Meal Bowl"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                  
+                  {/* Steam effect */}
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-1 h-6 bg-gradient-to-t from-green-300 to-transparent rounded-full opacity-60"
+                        style={{ left: `${i * 6 - 6}px` }}
+                        animate={{
+                          y: [0, -15, -30],
+                          opacity: [0.6, 0.3, 0],
+                          scale: [1, 1.2, 1.5]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          delay: i * 0.3 + 0.5,
+                          ease: "easeOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-green-600 transition-colors">
+                  VEG MEAL BOWL
+                </h3>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  ORDER →
+                </motion.button>
+              </motion.div>
+
+              {/* Non-Veg Meal Bowl */}
+              <motion.div
+                whileHover={{ y: -10, scale: 1.02 }}
+                className="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl text-center group cursor-pointer"
+              >
+                <div className="relative mb-6">
+                  <motion.div
+                    className="w-48 h-48 mx-auto rounded-full overflow-hidden border-4 border-red-500 shadow-xl"
+                    whileHover={{ rotate: 5, scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <img
+                      src="https://www.whiskaffair.com/wp-content/uploads/2021/10/Andhra-Chicken-Curry-2-3.jpg"
+                      alt="Non-Veg Meal Bowl"
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                  
+                  {/* Steam effect */}
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="absolute w-1 h-6 bg-gradient-to-t from-red-300 to-transparent rounded-full opacity-60"
+                        style={{ left: `${i * 6 - 6}px` }}
+                        animate={{
+                          y: [0, -15, -30],
+                          opacity: [0.6, 0.3, 0],
+                          scale: [1, 1.2, 1.5]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          delay: i * 0.3 + 1,
+                          ease: "easeOut"
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 group-hover:text-red-600 transition-colors">
+                  NON-VEG MEAL BOWL
+                </h3>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  ORDER →
+                </motion.button>
+              </motion.div>
+            </motion.div>
+
+            {/* Main Order Button */}
             <motion.button
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 20px 40px rgba(245, 158, 11, 0.3)"
               }}
               whileTap={{ scale: 0.95 }}
-              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-12 py-4 rounded-full text-xl font-bold shadow-2xl hover:shadow-amber-500/30 transition-all duration-300"
+              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-12 py-4 rounded-full text-xl font-bold shadow-2xl hover:shadow-amber-500/30 transition-all duration-300 mt-8"
             >
-              <span>ORDER</span>
+              <span>VIEW FULL MENU</span>
               <motion.div
                 animate={{ x: [0, 5, 0] }}
                 transition={{ 
@@ -663,7 +833,7 @@ const Dashboard: React.FC = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1 }}
+                transition={{ delay: 1.5 }}
                 className="mt-8 inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-4 py-2 rounded-full"
               >
                 <WifiOff size={16} />
