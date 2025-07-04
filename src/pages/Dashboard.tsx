@@ -494,96 +494,82 @@ const Dashboard: React.FC = () => {
               transition={{ duration: 1, ease: "easeOut" }}
               className="relative mb-8"
             >
-              {/* Bowl Container */}
+              {/* Circular Biryani Image Container */}
               <div className="relative w-96 h-96 mx-auto">
-                {/* Bowl Base */}
-                <div className="absolute inset-0 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full shadow-2xl transform rotate-3">
-                  <div className="absolute inset-2 bg-gradient-to-b from-white to-amber-50 rounded-full shadow-inner">
-                    {/* Rice Base */}
-                    <div className="absolute inset-4 bg-gradient-to-b from-yellow-100 to-amber-100 rounded-full overflow-hidden">
-                      {/* Biryani Rice Pattern */}
-                      <div className="absolute inset-0 opacity-60">
-                        {Array.from({ length: 20 }).map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="absolute w-2 h-1 bg-yellow-300 rounded-full"
-                            style={{
-                              top: `${20 + Math.random() * 60}%`,
-                              left: `${20 + Math.random() * 60}%`,
-                              transform: `rotate(${Math.random() * 360}deg)`
-                            }}
-                            animate={{
-                              opacity: [0.6, 1, 0.6],
-                              scale: [1, 1.2, 1]
-                            }}
-                            transition={{
-                              duration: 2 + Math.random() * 2,
-                              repeat: Infinity,
-                              delay: Math.random() * 2
-                            }}
-                          />
-                        ))}
-                      </div>
-                      
-                      {/* Chicken Pieces */}
-                      <motion.div
-                        className="absolute top-1/4 left-1/3 w-8 h-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg shadow-lg"
-                        animate={{
-                          y: [0, -2, 0],
-                          rotate: [0, 2, 0]
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-                      <motion.div
-                        className="absolute top-1/2 right-1/3 w-6 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg shadow-lg"
-                        animate={{
-                          y: [0, -3, 0],
-                          rotate: [0, -2, 0]
-                        }}
-                        transition={{
-                          duration: 2.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: 0.5
-                        }}
-                      />
-                      
-                      {/* Garnish - Green herbs */}
-                      <motion.div
-                        className="absolute top-1/3 right-1/4 w-3 h-3 bg-green-500 rounded-full"
-                        animate={{
-                          scale: [1, 1.3, 1],
-                          opacity: [0.8, 1, 0.8]
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: 1
-                        }}
-                      />
-                      <motion.div
-                        className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-green-400 rounded-full"
-                        animate={{
-                          scale: [1, 1.2, 1],
-                          opacity: [0.7, 1, 0.7]
-                        }}
-                        transition={{
-                          duration: 1.8,
-                          repeat: Infinity,
-                          delay: 1.5
-                        }}
-                      />
-                      
-                      {/* Saffron strands */}
-                      <div className="absolute top-1/4 left-1/2 w-8 h-0.5 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full transform -rotate-12" />
-                      <div className="absolute bottom-1/3 right-1/2 w-6 h-0.5 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full transform rotate-45" />
-                    </div>
-                  </div>
-                </div>
+                {/* Glowing ring effect */}
+                <motion.div
+                  className="absolute -inset-4 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-600 opacity-75"
+                  animate={{
+                    rotate: 360,
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{
+                    rotate: { duration: 8, repeat: Infinity, ease: "linear" },
+                    scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                  style={{ filter: 'blur(12px)' }}
+                />
+                
+                {/* Multiple sparkle rings */}
+                {Array.from({ length: 12 }).map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-3 h-3 bg-amber-300 rounded-full"
+                    style={{
+                      top: `${50 + Math.sin(i * 30 * Math.PI / 180) * 50}%`,
+                      left: `${50 + Math.cos(i * 30 * Math.PI / 180) * 50}%`,
+                    }}
+                    animate={{
+                      scale: [0, 1.5, 0],
+                      opacity: [0, 1, 0],
+                      rotate: 360
+                    }}
+                    transition={{
+                      duration: 3,
+                      delay: i * 0.2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                ))}
+                
+                {/* Main circular image */}
+                <motion.div
+                  className="relative w-full h-full rounded-full overflow-hidden border-4 border-amber-500 shadow-2xl"
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    rotate: [0, 2, -2, 0]
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  <img
+                    src="https://images.pexels.com/photos/9609868/pexels-photo-9609868.jpeg"
+                    alt="Delicious Biryani Bowl"
+                    className="w-full h-full object-cover"
+                  />
+                  
+                  {/* Overlay gradient for better text contrast */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                </motion.div>
+                
+                {/* Magical shine effect */}
+                <motion.div
+                  className="absolute top-8 left-8 w-6 h-6 bg-white/60 rounded-full"
+                  animate={{
+                    opacity: [0.3, 0.8, 0.3],
+                    scale: [1, 1.3, 1]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                />
+              </div>
                 
                 {/* Steam Effect */}
                 <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
