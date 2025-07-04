@@ -485,24 +485,201 @@ const Dashboard: React.FC = () => {
             <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-yellow-200/30 to-amber-200/30 rounded-full blur-3xl" />
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative z-10"
-          >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
-              Build Your Perfect Meal
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-xl leading-relaxed">
-              Choose from our authentic Indian dishes, crafted with traditional recipes and the finest ingredients
-            </p>
+          {/* Biryani Bowl Hero Section */}
+          <div className="relative z-10 max-w-6xl mx-auto">
+            {/* Biryani Bowl Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="relative mb-8"
+            >
+              {/* Bowl Container */}
+              <div className="relative w-96 h-96 mx-auto">
+                {/* Bowl Base */}
+                <div className="absolute inset-0 bg-gradient-to-b from-amber-100 to-amber-200 rounded-full shadow-2xl transform rotate-3">
+                  <div className="absolute inset-2 bg-gradient-to-b from-white to-amber-50 rounded-full shadow-inner">
+                    {/* Rice Base */}
+                    <div className="absolute inset-4 bg-gradient-to-b from-yellow-100 to-amber-100 rounded-full overflow-hidden">
+                      {/* Biryani Rice Pattern */}
+                      <div className="absolute inset-0 opacity-60">
+                        {Array.from({ length: 20 }).map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="absolute w-2 h-1 bg-yellow-300 rounded-full"
+                            style={{
+                              top: `${20 + Math.random() * 60}%`,
+                              left: `${20 + Math.random() * 60}%`,
+                              transform: `rotate(${Math.random() * 360}deg)`
+                            }}
+                            animate={{
+                              opacity: [0.6, 1, 0.6],
+                              scale: [1, 1.2, 1]
+                            }}
+                            transition={{
+                              duration: 2 + Math.random() * 2,
+                              repeat: Infinity,
+                              delay: Math.random() * 2
+                            }}
+                          />
+                        ))}
+                      </div>
+                      
+                      {/* Chicken Pieces */}
+                      <motion.div
+                        className="absolute top-1/4 left-1/3 w-8 h-6 bg-gradient-to-br from-orange-400 to-red-500 rounded-lg shadow-lg"
+                        animate={{
+                          y: [0, -2, 0],
+                          rotate: [0, 2, 0]
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      />
+                      <motion.div
+                        className="absolute top-1/2 right-1/3 w-6 h-8 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg shadow-lg"
+                        animate={{
+                          y: [0, -3, 0],
+                          rotate: [0, -2, 0]
+                        }}
+                        transition={{
+                          duration: 2.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: 0.5
+                        }}
+                      />
+                      
+                      {/* Garnish - Green herbs */}
+                      <motion.div
+                        className="absolute top-1/3 right-1/4 w-3 h-3 bg-green-500 rounded-full"
+                        animate={{
+                          scale: [1, 1.3, 1],
+                          opacity: [0.8, 1, 0.8]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          delay: 1
+                        }}
+                      />
+                      <motion.div
+                        className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-green-400 rounded-full"
+                        animate={{
+                          scale: [1, 1.2, 1],
+                          opacity: [0.7, 1, 0.7]
+                        }}
+                        transition={{
+                          duration: 1.8,
+                          repeat: Infinity,
+                          delay: 1.5
+                        }}
+                      />
+                      
+                      {/* Saffron strands */}
+                      <div className="absolute top-1/4 left-1/2 w-8 h-0.5 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full transform -rotate-12" />
+                      <div className="absolute bottom-1/3 right-1/2 w-6 h-0.5 bg-gradient-to-r from-orange-400 to-yellow-400 rounded-full transform rotate-45" />
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Steam Effect */}
+                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1 h-8 bg-gradient-to-t from-gray-300 to-transparent rounded-full opacity-60"
+                      style={{ left: `${i * 8 - 8}px` }}
+                      animate={{
+                        y: [0, -20, -40],
+                        opacity: [0.6, 0.3, 0],
+                        scale: [1, 1.5, 2]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                        ease: "easeOut"
+                      }}
+                    />
+                  ))}
+                </div>
+                
+                {/* Floating spices */}
+                <div className="absolute inset-0">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1 h-1 bg-amber-500 rounded-full"
+                      style={{
+                        top: `${30 + Math.random() * 40}%`,
+                        left: `${30 + Math.random() * 40}%`
+                      }}
+                      animate={{
+                        y: [0, -10, 0],
+                        x: [0, Math.random() * 10 - 5, 0],
+                        opacity: [0.5, 1, 0.5],
+                        scale: [1, 1.5, 1]
+                      }}
+                      transition={{
+                        duration: 3 + Math.random() * 2,
+                        repeat: Infinity,
+                        delay: Math.random() * 2,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-6xl md:text-8xl font-bold mb-6 text-amber-900 dark:text-amber-100"
+              style={{ fontFamily: 'serif' }}
+            >
+              BIRYANI BOWL
+            </motion.h1>
+
+            {/* Order Button */}
+            <motion.button
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 20px 40px rgba(245, 158, 11, 0.3)"
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-12 py-4 rounded-full text-xl font-bold shadow-2xl hover:shadow-amber-500/30 transition-all duration-300"
+            >
+              <span>ORDER</span>
+              <motion.div
+                animate={{ x: [0, 5, 0] }}
+                transition={{ 
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <ChevronRight className="w-6 h-6" />
+              </motion.div>
+              
+              {/* Button glow effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl" />
+            </motion.button>
 
             {offline && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="mt-6 inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-4 py-2 rounded-full"
+                transition={{ delay: 1 }}
+                className="mt-8 inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-4 py-2 rounded-full"
               >
                 <WifiOff size={16} />
                 <span className="text-sm font-medium">
@@ -510,7 +687,7 @@ const Dashboard: React.FC = () => {
                 </span>
               </motion.div>
             )}
-          </motion.div>
+          </div>
         </div>
       </div>
     </Layout>
