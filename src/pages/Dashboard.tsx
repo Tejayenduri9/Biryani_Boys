@@ -618,7 +618,6 @@ const Dashboard: React.FC = () => {
                     />
                   ))}
                 </div>
-              </div>
             </motion.div>
 
             {/* Title */}
