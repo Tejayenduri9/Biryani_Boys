@@ -6,13 +6,13 @@ import { useReviews } from '../hooks/useReviews';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { MealBox } from '../types';
-import { WifiOff, Search, ChevronRight, Plus, Minus, Check } from 'lucide-react';
+import { WifiOff, Search, ChevronRight, Plus, Minus, Check, Star, Clock, Users, ArrowLeft } from 'lucide-react';
 import { getOrderStatus } from '../utils/getAvailableDays';
 
 const mealBoxes: MealBox[] = [
   {
     title: "Chicken Biryani",
-    description: "Classic Hyderabadi style biryani with aromatic basmati rice",
+    description: "Aromatic basmati rice layered with tender chicken, saffron, and traditional spices. Served with cooling raita and pickled onions.",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
     price: 10,
@@ -21,17 +21,17 @@ const mealBoxes: MealBox[] = [
   },
   {
     title: "Extra Meat Chicken Biryani",
-    description: "Double the protein! Must pre-order for extra portions",
+    description: "Our signature biryani with double the protein! Generous portions of succulent chicken for the true meat lovers.",
     emoji: "🍖",
     bg: "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20",
     price: 12,
     category: "biryani",
-    tags: ["Pre-Order Required"],
+    tags: ["Pre-Order Required", "Popular"],
     image: "https://images.pexels.com/photos/12737656/pexels-photo-12737656.jpeg"
   },
   {
     title: "Kadai Paneer",
-    description: "Cottage cheese in rich gravy served with Pulav, Channa Masala, and Chapati",
+    description: "Fresh cottage cheese cooked in a rich tomato-based gravy with bell peppers. Complete meal with pulav, channa masala, and fresh chapati.",
     emoji: "🧀",
     bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
     price: 12,
@@ -40,7 +40,7 @@ const mealBoxes: MealBox[] = [
   },
   {
     title: "Okra Masala",
-    description: "Fresh okra in aromatic spices served with Pulav, Channa Masala, and Chapati",
+    description: "Crispy okra sautéed with onions and aromatic spices. A delightful vegetarian option served with our signature sides.",
     emoji: "🥬",
     bg: "bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
     price: 12,
@@ -50,7 +50,7 @@ const mealBoxes: MealBox[] = [
   },
   {
     title: "Bisi Bele Bath",
-    description: "Traditional Karnataka style rice dish with lentils and vegetables",
+    description: "Traditional Karnataka comfort food - a hearty rice dish with lentils, vegetables, and aromatic spices. A complete meal in itself.",
     emoji: "🍚",
     bg: "bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
     price: 12,
@@ -59,7 +59,7 @@ const mealBoxes: MealBox[] = [
   },
   {
     title: "Andhra Chicken",
-    description: "Spicy Andhra style chicken served with Pulav, Channa Masala, and Chapati",
+    description: "Fiery Andhra-style chicken curry with bold spices and tangy flavors. For those who love authentic South Indian heat.",
     emoji: "🌶️",
     bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
     price: 12,
@@ -68,7 +68,7 @@ const mealBoxes: MealBox[] = [
   },
   {
     title: "Kadai Chicken",
-    description: "Chicken in aromatic kadai gravy served with Pulav, Channa Masala, and Chapati",
+    description: "Tender chicken pieces cooked in a robust kadai gravy with bell peppers and onions. A restaurant favorite.",
     emoji: "🍗",
     bg: "bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20",
     price: 12,
@@ -78,63 +78,135 @@ const mealBoxes: MealBox[] = [
 ];
 
 const categories = [
-  { id: 'biryani', name: 'Biryani Special', icon: '🍗' },
-  { id: 'veg', name: 'Vegetarian', icon: '🥬' },
-  { id: 'non-veg', name: 'Non-Vegetarian', icon: '🌶️' },
-  { id: 'others', name: 'Traditional', icon: '🍚' }
+  { 
+    id: 'biryani', 
+    name: 'Biryani Special', 
+    icon: '🍗',
+    description: 'Aromatic rice dishes',
+    color: 'from-amber-500 to-orange-500'
+  },
+  { 
+    id: 'veg', 
+    name: 'Vegetarian', 
+    icon: '🥬',
+    description: 'Plant-based delights',
+    color: 'from-green-500 to-emerald-500'
+  },
+  { 
+    id: 'non-veg', 
+    name: 'Non-Vegetarian', 
+    icon: '🌶️',
+    description: 'Protein-rich curries',
+    color: 'from-red-500 to-pink-500'
+  },
+  { 
+    id: 'others', 
+    name: 'Traditional', 
+    icon: '🍚',
+    description: 'Regional specialties',
+    color: 'from-yellow-500 to-amber-500'
+  }
 ];
 
-const OrderSteps = () => {
-  const steps = ['Choose Category', 'Select Meal', 'Review Order'];
-  const [currentStep, setCurrentStep] = useState(0);
+const OrderProgress = ({ currentStep }: { currentStep: number }) => {
+  const steps = [
+    { name: 'Choose Category', icon: '🎯' },
+    { name: 'Select Items', icon: '🍽️' },
+    { name: 'Review Order', icon: '✅' }
+  ];
 
   return (
-    <div className="flex items-center justify-center mb-8">
-      {steps.map((step, index) => (
-        <div key={step} className="flex items-center">
-          <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium ${
-            index <= currentStep 
-              ? 'bg-amber-600 text-white' 
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
-          }`}>
-            {index < currentStep ? <Check className="w-4 h-4" /> : index + 1}
-          </div>
-          {index < steps.length - 1 && (
-            <div className={`w-12 h-0.5 mx-2 ${
-              index < currentStep ? 'bg-amber-600' : 'bg-gray-200 dark:bg-gray-700'
-            }`} />
-          )}
-        </div>
-      ))}
+    <div className="flex items-center justify-center mb-12">
+      <div className="flex items-center space-x-4">
+        {steps.map((step, index) => (
+          <React.Fragment key={step.name}>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0.5 }}
+              animate={{ 
+                scale: index <= currentStep ? 1 : 0.8,
+                opacity: index <= currentStep ? 1 : 0.5
+              }}
+              className="flex flex-col items-center"
+            >
+              <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all duration-300 ${
+                index <= currentStep 
+                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg' 
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
+              }`}>
+                {index < currentStep ? <Check className="w-6 h-6" /> : step.icon}
+              </div>
+              <span className={`mt-2 text-sm font-medium transition-colors ${
+                index <= currentStep ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500'
+              }`}>
+                {step.name}
+              </span>
+            </motion.div>
+            {index < steps.length - 1 && (
+              <div className={`w-16 h-1 rounded-full transition-all duration-300 ${
+                index < currentStep ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gray-200 dark:bg-gray-700'
+              }`} />
+            )}
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 };
 
 const CategoryCard = ({ category, isSelected, onClick }: any) => (
   <motion.div
-    whileHover={{ scale: 1.02 }}
+    whileHover={{ scale: 1.03, y: -5 }}
     whileTap={{ scale: 0.98 }}
     onClick={onClick}
-    className={`relative overflow-hidden rounded-2xl cursor-pointer transition-all duration-300 ${
+    className={`relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-500 group ${
       isSelected 
-        ? 'ring-4 ring-amber-500 shadow-xl' 
-        : 'hover:shadow-lg'
+        ? 'ring-4 ring-amber-400 shadow-2xl' 
+        : 'hover:shadow-xl'
     }`}
   >
-    <div className="aspect-[4/3] bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 p-8 flex flex-col items-center justify-center text-center">
-      <div className="text-4xl mb-4">{category.icon}</div>
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+    <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-10 group-hover:opacity-20 transition-opacity duration-300`} />
+    
+    <div className="relative bg-white dark:bg-gray-800 p-8 h-48 flex flex-col items-center justify-center text-center">
+      {/* Floating icon with animation */}
+      <motion.div
+        animate={{ 
+          y: [0, -10, 0],
+          rotate: [0, 5, -5, 0]
+        }}
+        transition={{ 
+          duration: 3,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="text-5xl mb-4 filter drop-shadow-lg"
+      >
+        {category.icon}
+      </motion.div>
+      
+      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-amber-600 transition-colors">
         {category.name}
       </h3>
-      <div className={`w-12 h-1 rounded-full transition-all duration-300 ${
-        isSelected ? 'bg-amber-600' : 'bg-gray-300'
-      }`} />
+      
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        {category.description}
+      </p>
+      
+      <motion.div 
+        className={`w-16 h-1 rounded-full transition-all duration-300 ${
+          isSelected ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gray-300 group-hover:bg-amber-400'
+        }`}
+        layoutId={`category-indicator-${category.id}`}
+      />
     </div>
+
+    {/* Hover effect overlay */}
+    <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
   </motion.div>
 );
 
 const MealCard = ({ meal, onAddToCart }: any) => {
   const [quantity, setQuantity] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const { addItem } = useCart();
 
   const handleAddToCart = () => {
@@ -148,65 +220,119 @@ const MealCard = ({ meal, onAddToCart }: any) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+      whileHover={{ y: -8 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 group"
     >
-      <div className="relative h-48 overflow-hidden">
-        <img
+      {/* Image Section */}
+      <div className="relative h-64 overflow-hidden">
+        <motion.img
           src={meal.image}
           alt={meal.title}
           className="w-full h-full object-cover"
+          animate={{ scale: isHovered ? 1.1 : 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        <div className="absolute top-4 right-4 bg-white dark:bg-gray-800 rounded-full px-3 py-1 shadow-lg">
-          <span className="text-amber-600 dark:text-amber-500 font-bold">
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        
+        {/* Price badge */}
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0.9 }}
+          animate={{ scale: isHovered ? 1.1 : 1, opacity: 1 }}
+          className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm rounded-2xl px-4 py-2 shadow-lg"
+        >
+          <span className="text-amber-600 dark:text-amber-500 font-bold text-lg">
             ${meal.price}
           </span>
-        </div>
-        {meal.isNew && (
-          <div className="absolute top-4 left-4">
-            <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">
+        </motion.div>
+        
+        {/* Tags */}
+        <div className="absolute top-4 left-4 space-y-2">
+          {meal.isNew && (
+            <motion.span
+              initial={{ scale: 0, rotate: -12 }}
+              animate={{ scale: 1, rotate: 0 }}
+              className="inline-block bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-lg"
+            >
               NEW
-            </span>
-          </div>
-        )}
+            </motion.span>
+          )}
+          {meal.tags?.map((tag) => (
+            <motion.span
+              key={tag}
+              initial={{ scale: 0, rotate: 12 }}
+              animate={{ scale: 1, rotate: 0 }}
+              className="block bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs px-3 py-1 rounded-full font-medium shadow-lg"
+            >
+              {tag}
+            </motion.span>
+          ))}
+        </div>
+
+        {/* Rating overlay */}
+        <div className="absolute bottom-4 left-4 flex items-center space-x-1 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
+          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+          <span className="text-white text-sm font-medium">4.8</span>
+        </div>
       </div>
 
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-2">{meal.title}</h3>
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2">
-          {meal.description}
-        </p>
+      {/* Content Section */}
+      <div className="p-6 space-y-4">
+        <div>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-amber-600 transition-colors">
+            {meal.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-3">
+            {meal.description}
+          </p>
+        </div>
 
-        {meal.tags && meal.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {meal.tags.map((tag) => (
-              <span
-                key={tag}
-                className="inline-block bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-200 text-xs px-2 py-1 rounded-full font-medium"
-              >
-                {tag}
-              </span>
-            ))}
+        {/* Stats */}
+        <div className="flex items-center space-x-4 text-xs text-gray-500">
+          <div className="flex items-center space-x-1">
+            <Clock className="w-3 h-3" />
+            <span>15-20 min</span>
           </div>
-        )}
+          <div className="flex items-center space-x-1">
+            <Users className="w-3 h-3" />
+            <span>Serves 1</span>
+          </div>
+        </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
+        {/* Quantity and Add to Cart */}
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+          <div className="flex items-center space-x-3">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setQuantity(Math.max(0, quantity - 1))}
-              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors"
             >
               <Minus className="w-4 h-4" />
-            </button>
-            <span className="w-8 text-center font-medium">{quantity}</span>
-            <button
+            </motion.button>
+            
+            <motion.span 
+              key={quantity}
+              initial={{ scale: 1.2 }}
+              animate={{ scale: 1 }}
+              className="w-8 text-center font-bold text-lg"
+            >
+              {quantity}
+            </motion.span>
+            
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => setQuantity(quantity + 1)}
-              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-amber-100 dark:hover:bg-amber-900/30 transition-colors"
             >
               <Plus className="w-4 h-4" />
-            </button>
+            </motion.button>
           </div>
           
           <motion.button
@@ -214,9 +340,9 @@ const MealCard = ({ meal, onAddToCart }: any) => {
             whileTap={{ scale: 0.95 }}
             onClick={handleAddToCart}
             disabled={quantity === 0}
-            className={`px-6 py-2 rounded-full font-medium transition-all ${
+            className={`px-6 py-3 rounded-2xl font-bold transition-all duration-300 ${
               quantity > 0
-                ? 'bg-amber-600 text-white hover:bg-amber-700'
+                ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg hover:shadow-xl'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-500 cursor-not-allowed'
             }`}
           >
@@ -236,52 +362,69 @@ const StickyCartSummary = () => {
 
   return (
     <motion.div
-      initial={{ x: 300 }}
-      animate={{ x: 0 }}
-      className="fixed right-4 top-1/2 -translate-y-1/2 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 z-40"
+      initial={{ x: 400, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      className="fixed right-6 top-1/2 -translate-y-1/2 w-80 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 z-40 overflow-hidden"
     >
-      <div className="p-4">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-4">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full flex items-center justify-between text-left"
+          className="w-full flex items-center justify-between text-white"
         >
-          <div>
+          <div className="text-left">
             <h3 className="font-bold text-lg">Your Order</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-amber-100 text-sm">
               {items.length} item{items.length !== 1 ? 's' : ''}
             </p>
           </div>
           <div className="text-right">
-            <p className="font-bold text-xl text-amber-600">${total.toFixed(2)}</p>
-            <ChevronRight className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
+            <p className="font-bold text-2xl">${total.toFixed(2)}</p>
+            <motion.div
+              animate={{ rotate: isExpanded ? 90 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ChevronRight className="w-5 h-5" />
+            </motion.div>
           </div>
         </button>
+      </div>
 
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="mt-4 space-y-3 max-h-60 overflow-y-auto"
-            >
-              {items.map((item) => (
-                <div key={item.id} className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700">
-                  <div>
-                    <p className="font-medium text-sm">{item.title}</p>
-                    <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
-                  </div>
-                  <p className="font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+      {/* Expandable Content */}
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="p-4 space-y-3 max-h-60 overflow-y-auto"
+          >
+            {items.map((item, index) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+              >
+                <div className="flex-1">
+                  <p className="font-medium text-sm">{item.title}</p>
+                  <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                 </div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <p className="font-bold text-amber-600">${(item.price * item.quantity).toFixed(2)}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
+      {/* Checkout Button */}
+      <div className="p-4 border-t border-gray-100 dark:border-gray-700">
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
-          className="w-full mt-4 bg-amber-600 text-white py-3 rounded-xl font-medium hover:bg-amber-700 transition-colors"
+          className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
         >
           Proceed to Checkout
         </motion.button>
@@ -294,6 +437,7 @@ const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentStep, setCurrentStep] = useState(0);
   const location = useLocation();
   const isDashboard = location.pathname === '/dashboard';
 
@@ -322,114 +466,176 @@ const Dashboard: React.FC = () => {
     return filtered;
   }, [selectedCategory, searchQuery]);
 
+  useEffect(() => {
+    if (selectedCategory) {
+      setCurrentStep(1);
+    } else {
+      setCurrentStep(0);
+    }
+  }, [selectedCategory]);
+
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        {/* Header Section */}
-        <div className="pt-8 pb-6 px-4 text-center">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        {/* Hero Header */}
+        <div className="relative pt-12 pb-8 px-4 text-center overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-amber-200/30 to-orange-200/30 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-yellow-200/30 to-amber-200/30 rounded-full blur-3xl" />
+          </div>
+
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="relative z-10"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Build Your <span className="text-amber-600 dark:text-amber-500">Perfect Meal</span>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 bg-clip-text text-transparent">
+              Build Your Perfect Meal
             </h1>
-            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto text-lg">
-              Choose from our authentic Indian dishes, crafted with traditional recipes and fresh ingredients
+            <p className="text-gray-600 dark:text-gray-400 max-w-3xl mx-auto text-xl leading-relaxed">
+              Choose from our authentic Indian dishes, crafted with traditional recipes and the finest ingredients
             </p>
 
             {offline && (
-              <div className="mt-4 flex items-center justify-center gap-2 text-amber-600 dark:text-amber-500">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="mt-6 inline-flex items-center gap-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 px-4 py-2 rounded-full"
+              >
                 <WifiOff size={16} />
                 <span className="text-sm font-medium">
                   You're offline. Changes will sync when you're back online.
                 </span>
-              </div>
+              </motion.div>
             )}
           </motion.div>
-
-          {/* Order Steps */}
-          <div className="mt-8">
-            <OrderSteps />
-          </div>
-
-          {/* Search Bar */}
-          <div className="mt-8 max-w-md mx-auto">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search for your favorite dish..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm shadow-sm"
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            </div>
-          </div>
         </div>
 
+        {/* Order Progress */}
+        <OrderProgress currentStep={currentStep} />
+
+        {/* Search Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="max-w-2xl mx-auto px-4 mb-12"
+        >
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search for your favorite dish..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-6 py-4 rounded-3xl border-2 border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm focus:ring-4 focus:ring-amber-500/20 focus:border-amber-500 transition-all text-lg shadow-lg"
+            />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400" />
+          </div>
+        </motion.div>
+
         {/* Category Selection */}
-        {!selectedCategory && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="px-4 mb-12"
-          >
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-2xl font-bold text-center mb-8">Choose Your Category</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {categories.map((category) => (
-                  <CategoryCard
-                    key={category.id}
-                    category={category}
-                    isSelected={false}
-                    onClick={() => setSelectedCategory(category.id)}
-                  />
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Meal Selection */}
-        {selectedCategory && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="px-4 pb-24"
-          >
-            <div className="max-w-6xl mx-auto">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold">
-                  {categories.find(c => c.id === selectedCategory)?.name} Menu
-                </h2>
-                <button
-                  onClick={() => setSelectedCategory(null)}
-                  className="text-amber-600 hover:text-amber-700 font-medium"
+        <AnimatePresence mode="wait">
+          {!selectedCategory && (
+            <motion.div
+              key="categories"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              className="px-4 mb-16"
+            >
+              <div className="max-w-7xl mx-auto">
+                <motion.h2 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white"
                 >
-                  ← Back to Categories
-                </button>
-              </div>
-
-              {loading ? (
-                <div className="flex justify-center items-center py-20">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-600"></div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {filteredMealBoxes.map((meal) => (
-                    <MealCard
-                      key={meal.title}
-                      meal={meal}
-                      onAddToCart={() => {}}
-                    />
+                  Choose Your Category
+                </motion.h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  {categories.map((category, index) => (
+                    <motion.div
+                      key={category.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <CategoryCard
+                        category={category}
+                        isSelected={false}
+                        onClick={() => setSelectedCategory(category.id)}
+                      />
+                    </motion.div>
                   ))}
                 </div>
-              )}
-            </div>
-          </motion.div>
-        )}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Meal Selection */}
+          {selectedCategory && (
+            <motion.div
+              key="meals"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              className="px-4 pb-32"
+            >
+              <div className="max-w-7xl mx-auto">
+                <div className="flex items-center justify-between mb-12">
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                      {categories.find(c => c.id === selectedCategory)?.name} Menu
+                    </h2>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      {categories.find(c => c.id === selectedCategory)?.description}
+                    </p>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedCategory(null)}
+                    className="flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium bg-amber-50 dark:bg-amber-900/20 px-4 py-2 rounded-2xl transition-colors"
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    Back to Categories
+                  </motion.button>
+                </div>
+
+                {loading ? (
+                  <div className="flex justify-center items-center py-32">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full"
+                    />
+                  </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                  >
+                    {filteredMealBoxes.map((meal, index) => (
+                      <motion.div
+                        key={meal.title}
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <MealCard
+                          meal={meal}
+                          onAddToCart={() => {}}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Sticky Cart Summary */}
         <StickyCartSummary />
@@ -439,13 +645,15 @@ const Dashboard: React.FC = () => {
           <motion.div
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.2 }}
-            className="fixed bottom-0 left-0 right-0 w-full z-30 bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-100 text-sm text-center py-3 shadow-lg"
+            transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.5 }}
+            className="fixed bottom-0 left-0 right-0 w-full z-30 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-center py-4 shadow-2xl"
           >
             <div className="flex justify-center items-center gap-2 flex-wrap px-4">
-              🛍️ Orders open for {availableDays.map((day, i) => (
-                <span key={i} className="font-semibold">
-                  {i > 0 ? ' and ' : ' '}{day.label} ({day.date})
+              <span className="text-lg">🛍️</span>
+              <span className="font-bold">Orders open for</span>
+              {availableDays.map((day, i) => (
+                <span key={i} className="font-bold bg-white/20 px-3 py-1 rounded-full">
+                  {day.label} ({day.date})
                 </span>
               ))}
             </div>
