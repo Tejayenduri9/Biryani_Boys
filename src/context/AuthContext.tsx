@@ -2,11 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { 
   onAuthStateChanged,
   signOut as firebaseSignOut,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult
 } from 'firebase/auth';
-import { auth } from '../services/firebase';
+import { auth, signInWithGoogle as firebaseSignInWithGoogle } from '../services/firebase';
 import { User } from '../types';
 import toast from 'react-hot-toast';
 
@@ -36,27 +33,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Handle redirect result first
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
-        if (result) {
-          setUser({
-            uid: result.user.uid,
-            displayName: result.user.displayName || 'Anonymous',
-            email: result.user.email,
-            photoURL: result.user.photoURL
-          });
-          toast.success('Signed in successfully!');
-        }
-      } catch (error: any) {
-        console.error('Redirect result error:', error);
-        toast.error('Failed to complete sign in. Please try again.');
-      }
-    };
-
-    handleRedirectResult();
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser({
@@ -76,14 +52,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const signInWithGoogle = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
+      const result = await firebaseSignInWithGoogle();
+      setUser({
+        uid: result.user.uid,
+        displayName: result.user.displayName || 'Anonymous',
+        email: result.user.email,
+        photoURL: result.user.photoURL
       });
-      await signInWithRedirect(auth, provider);
+      toast.success('Signed in successfully!');
     } catch (error: any) {
       console.error('Google sign in error:', error);
-      toast.error('Failed to initiate sign in. Please try again.');
+      if (error.code === 'auth/popup-blocked') {
+        toast.error('Pop-up was blocked. Please allow pop-ups for this site to sign in with Google.');
+      } else {
+        toast.error('Failed to sign in with Google');
+      }
       throw error;
     }
   };
